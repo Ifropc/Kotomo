@@ -1,17 +1,18 @@
-package net.kanjitomo;
+package net.kanjitomo
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
+import java.awt.Point
+import java.io.File
+import javax.imageio.ImageIO
 
-public class Main {
-    public static void main(String[] args) throws Exception {
-        KanjiTomo tomo = new KanjiTomo();
-        tomo.loadData();
-        BufferedImage image = ImageIO.read(new File(args[0]));
-        tomo.setTargetImage(image);
-        OCRResults results = tomo.runOCR(new Point(Integer.parseInt(args[1]), Integer.parseInt(args[2])));
-        System.out.println(results);
+object Main {
+    @Throws(Exception::class)
+    @JvmStatic
+    fun main(args: Array<String>) {
+        val tomo = KanjiTomo()
+        tomo.loadData()
+        val image = ImageIO.read(File(args[0]))
+        tomo.setTargetImage(image)
+        val results = tomo.runOCR(Point(args[1].toInt(), args[2].toInt()))
+        println(results)
     }
 }

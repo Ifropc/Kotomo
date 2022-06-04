@@ -1,22 +1,21 @@
-package net.kanjitomo;
+package net.kanjitomo
 
 /**
  * Text reading direction
  */
-public enum Orientation {
+enum class Orientation {
+    /**
+     * Reading direction is detected automatically. (default)
+     */
+    AUTOMATIC,
 
-	/**
-	 * Reading direction is detected automatically. (default)
-	 */
-	AUTOMATIC,
-	
-	/**
-	 * Vertical reading direction
-	 */
-	VERTICAL,
-	
-	/**
-	 * Horizontal reading direction.
-	 */
-	HORIZONTAL;
+    /**
+     * Vertical reading direction
+     */
+    VERTICAL,
+
+    /**
+     * Horizontal reading direction.
+     */
+    HORIZONTAL
 }

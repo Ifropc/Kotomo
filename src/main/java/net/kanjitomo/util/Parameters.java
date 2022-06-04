@@ -63,7 +63,7 @@ public class Parameters {
 	 * First font is the primary font used for initial alignment. Other fonts
 	 * are used for refined alignments.
 	 */
-	public String[] referenceFonts = new String[] {"MS Gothic","SimSun"	}; // MS Gothic, SimSun, Meiryo UI, SimHei, SimSun bold
+	public String[] referenceFonts = new String[] {"MS Gothic" }; // MS Gothic, SimSun, Meiryo UI, SimHei, SimSun bold
 	
 	/**
 	 * If true, font should be bold
