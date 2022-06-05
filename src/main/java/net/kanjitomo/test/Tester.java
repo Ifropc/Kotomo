@@ -1,7 +1,5 @@
 package net.kanjitomo.test;
 
-import static net.kanjitomo.DictionaryType.JAPANESE_DEFAULT;
-
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -14,7 +12,6 @@ import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 
 import net.kanjitomo.Column;
-import net.kanjitomo.DictionaryType;
 import net.kanjitomo.KanjiTomo;
 import net.kanjitomo.OCRResults;
 import net.kanjitomo.ocr.OCR;
@@ -136,49 +133,8 @@ public class Tester {
 			tomo.setTargetImage(image);
 		}
 	}
-	
-	/**
-	 * Searches default dictionary.
-	 * 
-	 * @param startsWith If true, only words starting with the searchString are
-	 * considered. If false, searchString can appear anywhere in the word (kanji or
-	 * kana fields, search from description field is not supported)
-	 */
-	public void runTestSearchDefault(String searchString, boolean startsWith) throws Exception {
-		
-		tomo.setDictionary(JAPANESE_DEFAULT, null);
-		tomo.loadData();
-		tomo.searchDictionary(searchString, startsWith);
-	}
-	
-	/**
-	 * Searches names dictionary.
-	 * 
-	 * @param startsWith If true, only words starting with the searchString are
-	 * considered. If false, searchString can appear anywhere in the word (kanji or
-	 * kana fields, search from description field is not supported)
-	 */
-	public void runTestSearchNames(String searchString, boolean startsWith) throws Exception {
-		
-		tomo.setDictionary(DictionaryType.JAPANESE_NAMES, null);
-		tomo.loadData();
-		tomo.searchDictionary(searchString, startsWith);
-	}
-	
-	/**
-	 * Searches names dictionary.
-	 * 
-	 * @param startsWith If true, only words starting with the searchString are
-	 * considered. If false, searchString can appear anywhere in the word (kanji or
-	 * kana fields, search from description field is not supported)
-	 */
-	public void runTestSearchCombined(String searchString, boolean startsWith) throws Exception {
-		
-		tomo.setDictionary(DictionaryType.JAPANESE_DEFAULT, DictionaryType.JAPANESE_NAMES);
-		tomo.loadData();
-		tomo.searchDictionary(searchString, startsWith);
-	}
-	
+
+
 	private void runTestSet(TestImage testImage, String characters) throws Exception {
 		
 		System.out.println("\nImage:"+testImage.file.getName());
@@ -319,8 +275,7 @@ public class Tester {
 		par.saveAreaImages = SaveAreaImages.OFF;
 		par.saveOCRImages = SaveOCRImages.OFF;
 		par.ocrThreads = 1;
-		par.primaryDictionary = null;
-		
+
 		Tester tester = new Tester();
 		try {
 			tester.loadData();

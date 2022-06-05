@@ -3,9 +3,6 @@ package net.kanjitomo
 import net.kanjitomo.area.AreaDetector
 import net.kanjitomo.area.AreaTask
 import net.kanjitomo.area.SubImage
-import net.kanjitomo.dictionary.MultiSearchResult
-import net.kanjitomo.dictionary.SearchManager
-import net.kanjitomo.dictionary.SearchMode
 import net.kanjitomo.ocr.OCRManager
 import net.kanjitomo.ocr.OCRTask
 import net.kanjitomo.ocr.ReferenceMatrixCacheLoader
@@ -21,10 +18,8 @@ import java.awt.image.BufferedImage
 class KanjiTomo {
     private val par = Parameters.getInstance()
     private var ocr: OCRManager? = null
-    private var searchManager: SearchManager? = null
     private var areaTask: AreaTask? = null
     private var subImages: List<SubImage>? = null
-    private var multiSearchResult: MultiSearchResult? = null
     private var results: OCRResults? = null
 
     /**
@@ -39,11 +34,6 @@ class KanjiTomo {
             ocr = OCRManager()
             ocr!!.loadReferenceData()
             ReferenceMatrixCacheLoader().load()
-            searchManager = SearchManager()
-        }
-        if (par.primaryDictionary != null) {
-            searchManager!!.loadData()
-            searchManager!!.waitForIndexing()
         }
     }
 
@@ -179,29 +169,9 @@ class KanjiTomo {
             }
             ocrScores.add(scores)
         }
-        if (par.primaryDictionary != null) {
-            // cut off characters from other columns
-            // This is used to restrict multisearch to characters within single column, multi-column
-            // multisearch is too unreliable since it can often connect unrelated characters into single word.
-            var maxWidth = 0
-            for (task in ocrTasks) {
-                if (task.columnChanged) {
-                    break
-                }
-                ++maxWidth
-            }
-            multiSearchResult = searchManager!!.multiSearch(characters, ocrScores, maxWidth)
-        }
 
-        // wrap results into final object
-        results = if (par.primaryDictionary != null) {
-            OCRResults(
-                characters, locations, ocrScores,
-                multiSearchResult!!.words, multiSearchResult!!.searchStr, verticalOrientation
-            )
-        } else {
-            OCRResults(characters, locations, ocrScores, null, null, verticalOrientation)
-        }
+        results = OCRResults(characters, locations, ocrScores, verticalOrientation)
+
         val time = System.currentTimeMillis() - started
         if (par.isPrintOutput) {
             println(
@@ -230,39 +200,6 @@ class KanjiTomo {
      * Vertical orientation was used in the area closest to selected point
      */
     private var verticalOrientation = true
-
-    /**
-     * Searches words from selected dictionary.
-     *
-     * @param searchString Search term supplied by the user or read from OCR results
-     *
-     * @param startsWith If true, only words starting with the searchString are
-     * considered. If false, searchString can appear anywhere in the word (kanji or
-     * kana fields, search from description field is not supported)
-     *
-     * @return List of maching words sorted by increasing length of kanji/kana field
-     */
-    @Throws(Exception::class)
-    fun searchDictionary(searchString: String?, startsWith: Boolean): List<Word> {
-        return searchManager!!.search(searchString, if (startsWith) SearchMode.STARTS_WITH else SearchMode.CONTAINS)
-    }
-
-    /**
-     * Sets which dictionary is used. It's recommended to call loadData() after changing the dictionary
-     * in background thread before user interaction. It's possible to turn off dictionary search
-     * by setting primaryDictionary to null but this is not recommended since search is used to
-     * refine OCR results.
-     *
-     * @param primaryDictionary First dictionary used for searching
-     * @param secondaryDictionary If a match is not found from primary dictionary, secondary is used for searching
-     */
-    fun setDictionary(primaryDictionary: DictionaryType, secondaryDictionary: DictionaryType) {
-        par.primaryDictionary = primaryDictionary
-        par.secondaryDictionary = secondaryDictionary
-        if (primaryDictionary == DictionaryType.CHINESE || secondaryDictionary == DictionaryType.CHINESE) {
-            throw Error("Chinese dictionary is not implemented")
-        }
-    }
 
     /**
      * Sets the reading direction. Default is automatic.

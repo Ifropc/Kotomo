@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.kanjitomo.CharacterColor;
-import net.kanjitomo.DictionaryType;
 import net.kanjitomo.Orientation;
 
 public class Parameters {
@@ -29,11 +28,6 @@ public class Parameters {
 	 * Directory relative to package root that contains the data files
 	 */
 	public String dataDirName = "data";
-	
-	/**
-	 * Directory inside data dir that contains dictionaries
-	 */
-	public String dictionaryDirName = "dictionary";
 	
 	/**
 	 * Directory inside data dir that contains cache files
@@ -174,72 +168,13 @@ public class Parameters {
 	 * search faster but takes more memory 
 	 */
 	public int indexMaxCharacters = 4;
-	
-	/**
-	 * In combined search mode search is done agains both default and names dictionaries.
-	 * Results are returned from names dictionary only if the score is better than this
-	 * compared to default dictionary.
-	 * 
-	 * Larger value makes more likely that results are from default dictionary.
-	 */
-	public float defaultDictionaryBias = 1.05f; 
-	
-	/**
-	 * First dictionary used for searching 
-	 */
-	public DictionaryType primaryDictionary = DictionaryType.JAPANESE_DEFAULT;
-	
-	/**
-	 * If a match is not found from primary dictionary, secondary is used for searching  
-	 */
-	public DictionaryType secondaryDictionary = DictionaryType.JAPANESE_NAMES;
-	
-	/**
-	 * Source file for default dictionary.
-	 * Jim Breen's EDICT
-	 * 
-	 * http://www.edrdg.org/jmdict/edict.html
-	 * http://nihongo.monash.edu/wwwjdicinf.html
-	 */
-	public String defaultDictionaryFileName= "edict2";
-	
-	/**
-	 * Source file for names dictionary.
-	 * Jim Breen's ENAMDICT
-	 *  
-	 * http://www.edrdg.org/enamdict/enamdict_doc.html
-	 */
-	public String namesDictionaryFileName= "enamdict";
-	
+
 	public File getDataDir() throws Exception {
 		return Util.findFile(dataDirName);
 	}
 	
-	public File getDictionaryDir() throws Exception {
-		return new File(Util.findFile(dataDirName)+"/"+dictionaryDirName);
-	}
-	
 	public File getCacheDir() throws Exception {
 		return new File(Util.findFile(dataDirName)+"/"+cacheDirName);
-	}
-	
-	/**
-	 * Returns file name that contains serialized dictionary
-	 * 
-	 * @param description default, names or chinese
-	 */
-	public String getDictionaryCacheFileName(DictionaryType dictionary) throws Exception {
-		return dictionary+".cache";
-	}
-	
-	/**
-	 * Returns file that contains serialized dictionary
-	 * 
-	 * @param description default, names or chinese
-	 */
-	public File getDictionaryCacheFile(DictionaryType dictionary) throws Exception {
-		return new File(Util.findFile(dataDirName)+"/"+cacheDirName+"/"+
-				getDictionaryCacheFileName(dictionary));
 	}
 
 	// debug-related parameters

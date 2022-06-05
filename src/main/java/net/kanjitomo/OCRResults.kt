@@ -6,8 +6,10 @@ import java.awt.Rectangle
  * Results of the OCR run
  */
 class OCRResults(
-    characters: List<String>, locations: List<Rectangle>,
-    scores: List<List<Int>>, words: List<Word>?, searchString: String?, vertical: Boolean
+    characters: List<String>,
+    locations: List<Rectangle>,
+    scores: List<List<Int>>,
+    vertical: Boolean
 ) {
     /**
      * String of best matches starting from OCR target point.
@@ -20,17 +22,6 @@ class OCRResults(
      * is added to bestMatchingCharacters.
      */
     val characters: MutableList<IdentifiedCharacter>
-
-    /**
-     * String used in dictionary search
-     */
-    val searchString: String?
-
-    /**
-     * Results of dictionary search from best matching characters.
-     * Sorted roughly by ascending length.
-     */
-    val words: List<Word>?
 
     /**
      * If true, vertical orientation was used as reading direction.
@@ -47,8 +38,6 @@ class OCRResults(
             this.characters.add(character)
         }
         this.bestMatchingCharacters = bestMatchingCharacters
-        this.words = words
-        this.searchString = searchString
         this.vertical = vertical
     }
 
@@ -71,19 +60,6 @@ class OCRResults(
     
     """.trimIndent()
             )
-        }
-        if (searchString != null) {
-            sb.append("\nSearch string:$searchString\n")
-            sb.append(
-                """
-    Words found:${words!!.size}
-    
-    """.trimIndent()
-            )
-            sb.append("First word:")
-            if (words.size > 0) {
-                sb.append(words[0])
-            }
         }
         return sb.toString()
     }
