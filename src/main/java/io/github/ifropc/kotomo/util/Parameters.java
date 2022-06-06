@@ -194,7 +194,7 @@ public class Parameters {
 
 	// debug-related parameters
 	
-	public PrintLevel printLevel = PrintLevel.OFF;
+	public PrintLevel printLevel = PrintLevel.DEBUG;
 	public SaveAreaImages saveAreaImages = SaveAreaImages.OFF;
 	public SaveOCRImages saveOCRImages = SaveOCRImages.OFF;
 	
