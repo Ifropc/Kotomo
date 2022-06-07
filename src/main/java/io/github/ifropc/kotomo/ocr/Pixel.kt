@@ -12,41 +12,28 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and limitations under the License.
  */
+package io.github.ifropc.kotomo.ocr
 
-package io.github.ifropc.kotomo.ocr;
+class Pixel(public val x: Int, val y: Int) {
+    override fun hashCode(): Int {
+        return x + 100000 * y
+    }
 
-public class Pixel {
-	
-	final int x;
-	final int y;
-	
-	public Pixel(int x, int y) {
-		this.x = x;
-		this.y = y;
-	}
-	
-	@Override
-	public int hashCode() {
-		return x + 100000*y;
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		return ((Pixel)obj).x == x && ((Pixel)obj).y == y;
-	}
-	
-	public boolean isNeighbour(Pixel px2) {
-		int deltaX = Math.abs(x - px2.x);
-		int deltaY = Math.abs(y - px2.y);
-		if (deltaX <= 1 && deltaY <= 1) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	@Override
-	public String toString() {
-		return x+","+y;
-	}
+    override fun equals(obj: Any?): Boolean {
+        return (obj as Pixel?)!!.x == x && obj!!.y == y
+    }
+
+    fun isNeighbour(px2: Pixel): Boolean {
+        val deltaX = Math.abs(x - px2.x)
+        val deltaY = Math.abs(y - px2.y)
+        return if (deltaX <= 1 && deltaY <= 1) {
+            true
+        } else {
+            false
+        }
+    }
+
+    override fun toString(): String {
+        return "$x,$y"
+    }
 }

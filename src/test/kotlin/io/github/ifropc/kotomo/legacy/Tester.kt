@@ -291,8 +291,8 @@ class Tester {
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-            if (OCR.getTotalOCRCount() > 0) {
-                println("Average OCR time:" + Math.round(OCR.getAverageOCRTime()) + " ms")
+            if (OCR.totalOCRCount > 0) {
+                println("Average OCR time:" + Math.round(OCR.averageOCRTime) + " ms")
             }
             tester.close()
             System.exit(0)

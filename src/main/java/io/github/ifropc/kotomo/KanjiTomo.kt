@@ -179,7 +179,7 @@ class KanjiTomo {
         for (ocrTask in ocrTasks) {
             characters.add(ocrTask.resultString)
             val scores: MutableList<Int> = ArrayList()
-            for (result in ocrTask.results) {
+            for (result in ocrTask.results!!) {
                 scores.add(result.score)
             }
             ocrScores.add(scores)

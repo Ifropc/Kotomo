@@ -12,36 +12,37 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and limitations under the License.
  */
+package io.github.ifropc.kotomo.ocr
 
-package io.github.ifropc.kotomo.ocr;
-
-import java.awt.Rectangle;
-import java.io.Serializable;
+import java.awt.Rectangle
+import java.io.Serializable
 
 /**
  * Reference character component. Roughly equilevant to radical but automatically generated
  * and might be different from official radicals. Pixel groups that don't touch each other
  * form different components but might be divided further if large.
- * 
+ *
  * Components are used in third OCR stage to fine-tune results.
  */
-public class Component implements Serializable {
+class Component : Serializable {
+    /**
+     * Location of the component inside reference character
+     */
+    @JvmField
+    var bounds: Rectangle? = null
 
-	private static final long serialVersionUID = 2L;
-	
-	/**
-	 * Location of the component inside reference character
-	 */
-	Rectangle bounds;
-	
-	/**
-	 * Component's pixels. Matrix might also contain pixels that belong to other components 
-	 * outside bounds.
-	 */
-	int[] matrix;
-	
-	/**
-	 * Number of pixels in this component
-	 */
-	int pixels;
+    /**
+     * Component's pixels. Matrix might also contain pixels that belong to other components
+     * outside bounds.
+     */
+    lateinit var matrix: IntArray
+
+    /**
+     * Number of pixels in this component
+     */
+    var pixels = 0
+
+    companion object {
+        private const val serialVersionUID = 2L
+    }
 }
