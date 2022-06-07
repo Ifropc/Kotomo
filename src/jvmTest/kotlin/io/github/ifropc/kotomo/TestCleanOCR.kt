@@ -17,8 +17,7 @@ package io.github.ifropc.kotomo
 
 import io.github.ifropc.kotomo.ocr.ReferenceMatrixCacheBuilder
 import io.github.ifropc.kotomo.util.Parameters
-import org.junit.BeforeClass
-import org.junit.Ignore
+import org.junit.jupiter.api.Disabled
 import java.awt.Point
 import java.awt.Rectangle
 import javax.imageio.ImageIO
@@ -45,11 +44,11 @@ class TestCleanOCR {
         }
     }
 
-    private lateinit var tomo: KanjiTomo
+    private lateinit var tomo: io.github.ifropc.kotomo.KanjiTomo
 
     @BeforeTest
     fun init() {
-        tomo = KanjiTomo()
+        tomo = io.github.ifropc.kotomo.KanjiTomo()
         tomo.loadData()
     }
 
@@ -78,7 +77,7 @@ class TestCleanOCR {
     }
 
     @Test
-    @Ignore // TODO: doesn't work on this example at all
+    @Disabled // TODO: doesn't work on this example at all
     fun test5LowQuality() {
         testPoint("5.png", "地球侵略", 4f)
     }
@@ -90,7 +89,7 @@ class TestCleanOCR {
     }
 
     @Test
-    @Ignore // Gray background. Investigate if it's possible to detect characters
+    @Disabled // Gray background. Investigate if it's possible to detect characters
     fun test7Gray() {
         testPoint("7.png", "", 4f)
     }
@@ -108,12 +107,12 @@ class TestCleanOCR {
     }
 
     @Test
-    @Ignore // Same as test 7
+    @Disabled // Same as test 7
     fun test10GrayBG() {
         testPoint("10.png", "", 4f)
     }
 
-    private fun testPoint(filename: String, expected: String, accpetedMarginPercent: Float): MutableList<IdentifiedCharacter> {
+    private fun testPoint(filename: String, expected: String, accpetedMarginPercent: Float): MutableList<io.github.ifropc.kotomo.IdentifiedCharacter> {
         val image = ImageIO.read(this::class.java.classLoader.getResourceAsStream(filename))
         tomo.setTargetImage(image)
         val results = tomo.runOCR(Point(0, 0))

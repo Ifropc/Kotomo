@@ -39,12 +39,12 @@ class Column {
     /**
      * Next column in reading direction
      */
-    var nextColumn: Column? = null
+    var nextColumn: io.github.ifropc.kotomo.Column? = null
 
     /**
      * Previous column in reading direction
      */
-    var previousColumn: Column? = null
+    var previousColumn: io.github.ifropc.kotomo.Column? = null
 
     /**
      * If true, this column has vertical reading direction. If false, horizontal.
@@ -61,7 +61,7 @@ class Column {
     /**
      * Furigana columns next to this column
      */
-    var furiganaColumns: List<Column> = ArrayList()
+    var furiganaColumns: List<io.github.ifropc.kotomo.Column> = ArrayList()
     override fun toString(): String {
         return "rect:" + rect + " areas:" + areas!!.size + " vertical:" + vertical + " furigana:" + furigana
     }

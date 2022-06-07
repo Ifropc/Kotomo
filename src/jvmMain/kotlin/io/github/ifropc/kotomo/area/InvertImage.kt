@@ -17,7 +17,6 @@ package io.github.ifropc.kotomo.area
 import io.github.ifropc.kotomo.CharacterColor
 import io.github.ifropc.kotomo.util.FixedParameters
 import io.github.ifropc.kotomo.util.ImageUtil.createCopy
-import io.github.ifropc.kotomo.util.Parameters
 import java.awt.AlphaComposite
 import java.awt.Color
 import java.awt.Rectangle

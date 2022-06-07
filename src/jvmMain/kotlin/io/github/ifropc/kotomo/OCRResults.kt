@@ -36,7 +36,7 @@ class OCRResults(
      * List of characters identified by OCR algorithm. First character in each element
      * is added to bestMatchingCharacters.
      */
-    val characters: MutableList<IdentifiedCharacter>
+    val characters: MutableList<io.github.ifropc.kotomo.IdentifiedCharacter>
 
     /**
      * If true, vertical orientation was used as reading direction.
@@ -48,7 +48,7 @@ class OCRResults(
         this.characters = ArrayList()
         var bestMatchingCharacters = ""
         for (i in characters.indices) {
-            val character = IdentifiedCharacter(characters[i], locations[i], scores[i])
+            val character = io.github.ifropc.kotomo.IdentifiedCharacter(characters[i], locations[i], scores[i])
             bestMatchingCharacters += character.referenceCharacters[0]
             this.characters.add(character)
         }

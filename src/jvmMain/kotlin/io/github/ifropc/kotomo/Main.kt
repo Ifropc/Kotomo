@@ -23,7 +23,7 @@ object Main {
     @Throws(Exception::class)
     @JvmStatic
     fun main(args: Array<String>) {
-        val tomo = KanjiTomo()
+        val tomo = io.github.ifropc.kotomo.KanjiTomo()
         tomo.loadData()
         val image = ImageIO.read(File(args[0]))
         tomo.setTargetImage(image)

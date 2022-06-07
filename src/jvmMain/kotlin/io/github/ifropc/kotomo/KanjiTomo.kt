@@ -35,7 +35,7 @@ class KanjiTomo {
     private var ocr: OCRManager? = null
     private var areaTask: AreaTask? = null
     private var subImages: List<SubImage>? = null
-    private var results: OCRResults? = null
+    private var results: io.github.ifropc.kotomo.OCRResults? = null
 
     /**
      * Loads data structures into memory. This should be called first on it's own
@@ -74,12 +74,12 @@ class KanjiTomo {
     /**
      * Gets columns detected from target image
      */
-    val columns: List<Column>
+    val columns: List<io.github.ifropc.kotomo.Column>
         get() {
             if (areaTask == null) {
                 return ArrayList()
             }
-            val simpleColumns: MutableList<Column> = ArrayList()
+            val simpleColumns: MutableList<io.github.ifropc.kotomo.Column> = ArrayList()
             for (column in areaTask!!.columns!!) {
                 val simpleColumn = column.getSimpleColumn()
                 if (column.previousColumn != null) {
@@ -103,7 +103,7 @@ class KanjiTomo {
      * @return null if no characters found near point
      */
     @Throws(Exception::class)
-    fun runOCR(point: Point): OCRResults? {
+    fun runOCR(point: Point): io.github.ifropc.kotomo.OCRResults? {
         if (areaTask == null) {
             throw Exception("Target image not set")
         }
@@ -121,7 +121,7 @@ class KanjiTomo {
      * This can be used if area detection is done externally and KanjiTomo is only used for final OCR.
      */
     @Throws(Exception::class)
-    fun runOCR(areas: List<Rectangle?>): OCRResults? {
+    fun runOCR(areas: List<Rectangle?>): io.github.ifropc.kotomo.OCRResults? {
         if (areaTask == null) {
             throw Exception("Target image not set")
         }
@@ -138,7 +138,7 @@ class KanjiTomo {
      * Runs OCR for target areas (SubImages)
      */
     @Throws(Exception::class)
-    private fun runOCR(): OCRResults? {
+    private fun runOCR(): io.github.ifropc.kotomo.OCRResults? {
         val started = System.currentTimeMillis()
 
         // get target locations
@@ -185,7 +185,7 @@ class KanjiTomo {
             ocrScores.add(scores)
         }
 
-        results = OCRResults(characters, locations, ocrScores, verticalOrientation)
+        results = io.github.ifropc.kotomo.OCRResults(characters, locations, ocrScores, verticalOrientation)
 
         val time = System.currentTimeMillis() - started
         if (par.isPrintOutput) {
@@ -221,7 +221,7 @@ class KanjiTomo {
      *
      * Target image needs to be re-analyzed after changing the orientation by calling setTargetImage again.
      */
-    fun setOrientation(orientation: Orientation) {
+    fun setOrientation(orientation: io.github.ifropc.kotomo.Orientation) {
         par.orientationTarget = orientation
     }
 
