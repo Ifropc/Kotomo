@@ -302,14 +302,14 @@ public class ImageUtil {
 			if (area.isPunctuation()) {
 				col = Color.LIGHT_GRAY;
 			}
-			if (area.column != null && area.column.isFurigana()) {
+			if (area.getColumn() != null && area.getColumn().isFurigana()) {
 				col = Color.LIGHT_GRAY;
 			}
 			if (area.isChanged()) {
 				col = Color.BLUE;
 			}
-			if (area.debugColor != null) {
-				col = area.debugColor;
+			if (area.getDebugColor() != null) {
+				col = area.getDebugColor();
 			}
 			paintRectangle(newImage, area.getRectangle(), col);
 		}

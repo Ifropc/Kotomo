@@ -12,35 +12,19 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and limitations under the License.
  */
-
-package io.github.ifropc.kotomo.test;
-
-import java.io.File;
-import java.util.List;
+package io.github.ifropc.kotomo.legacy
 
 /**
- * Test image and it's associated tests
+ * Set of test images and associated tests.
  */
-public class TestImage {
+class TestSet {
+    /**
+     * Name of this test set. Loaded from "test/testSetName.txt" file
+     */
+    var name: String? = null
 
-	/**
-	 * Target image for tests
-	 */
-	File file;
-	
-	/**
-	 * Test definitions to be run agains target image
-	 */
-	List<Test> tests;
-	
-	public String toString() {
-		
-		String value = file.getName()+" ";
-		
-		for (Test test : tests) {
-			value += test.toString()+" ";
-		}
-		
-		return value;
-	}
+    /**
+     * List of test images.
+     */
+    var images: MutableList<TestImage>? = null
 }

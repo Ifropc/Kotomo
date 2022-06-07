@@ -12,21 +12,28 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and limitations under the License.
  */
+package io.github.ifropc.kotomo.legacy
 
-package io.github.ifropc.kotomo.area;
-
-import java.awt.Point;
-import java.awt.Rectangle;
+import java.io.File
 
 /**
- * Rectangle on target image
+ * Test image and it's associated tests
  */
-public interface HasRectangle {
+class TestImage {
+    /**
+     * Target image for tests
+     */
+    var file: File? = null
 
-	public Rectangle getRectangle();
-	
-	/**
-	 * Center of the rectangle
-	 */
-	public Point getMidpoint();
+    /**
+     * Test definitions to be run agains target image
+     */
+    var tests: MutableList<Test>? = null
+    override fun toString(): String {
+        var value = file!!.name + " "
+        for (test in tests!!) {
+            value += "$test "
+        }
+        return value
+    }
 }

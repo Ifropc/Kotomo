@@ -12,34 +12,14 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and limitations under the License.
  */
+package io.github.ifropc.kotomo.legacy
 
-package io.github.ifropc.kotomo.test;
-
-import java.awt.Rectangle;
+import java.io.File
 
 /**
- * Tests that represents correct area or column in the target image.
+ * Single test that will be run.
+ *
  */
-public class AreaTest extends Test {
-
-	public final Rectangle rect;
-	
-	/**
-	 * @param rect Expected area on target image
-	 */
-	public AreaTest(Rectangle rect) {
-		
-		this.rect = rect;
-	}
-	
-	public AreaTest(int x, int y, int width, int height) {
-		
-		rect = new Rectangle(x, y, width, height);
-	}
-	
-	@Override
-	public String toString() {
-		
-		return image.getName()+" area:"+rect;
-	}
+abstract class Test {
+    var image: File? = null
 }

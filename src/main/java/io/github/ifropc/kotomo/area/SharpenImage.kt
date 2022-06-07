@@ -12,28 +12,22 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and limitations under the License.
  */
+package io.github.ifropc.kotomo.area
 
-package io.github.ifropc.kotomo.area;
-
-import io.github.ifropc.kotomo.util.ImageUtil;
+import io.github.ifropc.kotomo.util.ImageUtil.sharpenImage
 
 /**
  * Runs unsharp mask to the original image
  */
-public class SharpenImage extends AreaStep {
-	
-	public SharpenImage(AreaTask task) {
-		super(task, "original", "sharpened");
-	}
+class SharpenImage(task: AreaTask?) : AreaStep(task, "original", "sharpened") {
+    @Throws(Exception::class)
+    override fun runImpl() {
+        task!!.sharpenedImage = sharpenImage(task!!.originalImage, par)
+    }
 
-	@Override
-	protected void runImpl() throws Exception {
-		task.sharpenedImage = ImageUtil.sharpenImage(task.originalImage, par);
-	}
-	
-	@Override
-	protected void addDebugImages() throws Exception {
-		task.addDebugImage(task.originalImage, "original");
-		task.addDebugImage(task.sharpenedImage, "sharpened");
-	}
+    @Throws(Exception::class)
+    override fun addDebugImages() {
+        task!!.addDebugImage(task!!.originalImage, "original")
+        task!!.addDebugImage(task!!.sharpenedImage, "sharpened")
+    }
 }

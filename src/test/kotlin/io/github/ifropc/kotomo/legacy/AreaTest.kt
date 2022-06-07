@@ -12,23 +12,28 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and limitations under the License.
  */
+package io.github.ifropc.kotomo.legacy
 
-package io.github.ifropc.kotomo.test;
-
-import java.util.List;
+import java.awt.Rectangle
 
 /**
- * Set of test images and associated tests.
+ * Tests that represents correct area or column in the target image.
  */
-public class TestSet {
+class AreaTest : Test {
+    val rect: Rectangle
 
-	/**
-	 * Name of this test set. Loaded from "test/testSetName.txt" file
-	 */
-	String name;
-	
-	/**
-	 * List of test images.
-	 */
-	List<TestImage> images;
+    /**
+     * @param rect Expected area on target image
+     */
+    constructor(rect: Rectangle) {
+        this.rect = rect
+    }
+
+    constructor(x: Int, y: Int, width: Int, height: Int) {
+        rect = Rectangle(x, y, width, height)
+    }
+
+    override fun toString(): String {
+        return image!!.name + " area:" + rect
+    }
 }

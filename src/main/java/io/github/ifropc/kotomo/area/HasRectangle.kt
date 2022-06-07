@@ -12,16 +12,19 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and limitations under the License.
  */
+package io.github.ifropc.kotomo.area
 
-package io.github.ifropc.kotomo.test;
-
-import java.io.File;
+import java.awt.Point
+import java.awt.Rectangle
 
 /**
- * Single test that will be run.
- *
+ * Rectangle on target image
  */
-public abstract class Test {
-	
-	public File image;
+interface HasRectangle {
+    val rectangle: Rectangle?
+
+    /**
+     * Center of the rectangle
+     */
+    val midpoint: Point
 }

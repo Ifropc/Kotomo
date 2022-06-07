@@ -13,20 +13,7 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-package io.github.ifropc.kotomo/*
- * Copyright 2022 Ifropc
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
- */
+package io.github.ifropc.kotomo
 
 import io.github.ifropc.kotomo.ocr.ReferenceMatrixCacheBuilder
 import io.github.ifropc.kotomo.util.Parameters
@@ -41,7 +28,9 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class TestCleanOCR {
-    var runRebuild = false
+    companion object {
+        var runRebuild = true
+    }
 
     @BeforeTest
     fun rebuild() {
@@ -66,7 +55,8 @@ class TestCleanOCR {
 
     @Test
     fun test1() {
-        testPoint("1.jpg", "俺の家", 4f)
+        val result = testPoint("1.jpg", "俺の家", 4f)
+        assertEquals(3951, result[0].scores[0])
     }
 
     @Test
@@ -123,7 +113,7 @@ class TestCleanOCR {
         testPoint("10.png", "", 4f)
     }
 
-    private fun testPoint(filename: String, expected: String, accpetedMarginPercent: Float) {
+    private fun testPoint(filename: String, expected: String, accpetedMarginPercent: Float): MutableList<IdentifiedCharacter> {
         val image = ImageIO.read(this::class.java.classLoader.getResourceAsStream(filename))
         tomo.setTargetImage(image)
         val results = tomo.runOCR(Point(0, 0))
@@ -131,6 +121,8 @@ class TestCleanOCR {
         assertEquals(expected, results!!.bestMatchingCharacters)
         results!!.characters.map { it.referenceCharacters.toCharArray().zip(it.scores.normalized()).drop(1).first() }
             .forEach { assertDominance(it, accpetedMarginPercent / 100) }
+
+        return results.characters
     }
 
     private fun testArea(filename: String, width: Int, height: Int, expected: String,  accpetedMarginPercent: Float) {

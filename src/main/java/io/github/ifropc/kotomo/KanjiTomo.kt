@@ -80,13 +80,13 @@ class KanjiTomo {
                 return ArrayList()
             }
             val simpleColumns: MutableList<Column> = ArrayList()
-            for (column in areaTask!!.columns) {
-                val simpleColumn = column.simpleColumn
+            for (column in areaTask!!.columns!!) {
+                val simpleColumn = column.getSimpleColumn()
                 if (column.previousColumn != null) {
-                    simpleColumn.previousColumn = column.previousColumn.simpleColumn
+                    simpleColumn.previousColumn = column.previousColumn!!.getSimpleColumn()
                 }
                 if (column.nextColumn != null) {
-                    simpleColumn.nextColumn = column.nextColumn.simpleColumn
+                    simpleColumn.nextColumn = column.nextColumn!!.getSimpleColumn()
                 }
                 simpleColumns.add(simpleColumn)
             }
@@ -121,7 +121,7 @@ class KanjiTomo {
      * This can be used if area detection is done externally and KanjiTomo is only used for final OCR.
      */
     @Throws(Exception::class)
-    fun runOCR(areas: List<Rectangle?>?): OCRResults? {
+    fun runOCR(areas: List<Rectangle?>): OCRResults? {
         if (areaTask == null) {
             throw Exception("Target image not set")
         }
@@ -144,7 +144,7 @@ class KanjiTomo {
         // get target locations
         val locations = mutableListOf<Rectangle>()
         for (subImage in subImages!!) {
-            locations.add(subImage.location)
+            locations.add(subImage.location!!)
             verticalOrientation = subImage.isVertical
         }
         if (subImages!!.size == 0) {
@@ -208,7 +208,7 @@ class KanjiTomo {
     @Throws(Exception::class)
     private fun detectAreas(image: BufferedImage) {
         areaTask = AreaTask(image)
-        AreaDetector().run(areaTask)
+        AreaDetector().run(areaTask!!)
     }
 
     /**
