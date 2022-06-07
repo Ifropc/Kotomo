@@ -15,12 +15,12 @@
 
 package io.github.ifropc.kotomo.ocr;
 
-import java.awt.Rectangle;
+import io.github.ifropc.kotomo.util.MatrixUtilKt;
+import io.github.ifropc.kotomo.util.Parameters;
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import io.github.ifropc.kotomo.util.MatrixUtil;
-import io.github.ifropc.kotomo.util.Parameters;
 
 /**
  * Builds reference components from ReferenceMatrix.
@@ -100,7 +100,7 @@ public class ComponentBuilder {
 	private boolean addToBaseLayer(Component component, int[] baseLayer) {
 		
 		// check if there are any pixels that belong to other components
-		if (MatrixUtil.countBits(baseLayer, component.bounds) > component.pixels) {
+		if (MatrixUtilKt.countBits(baseLayer, component.bounds) > component.pixels) {
 			return false;
 		}
 		
@@ -118,12 +118,12 @@ public class ComponentBuilder {
 	private boolean addToLayer(Component component, int[] layer) {
 		
 		// check if the layer contains pixels from other components within bounds
-		if (MatrixUtil.countBits(layer, component.bounds) > 0) {
+		if (MatrixUtilKt.countBits(layer, component.bounds) > 0) {
 			return false;
 		}
 		
 		// add to this layer
-		MatrixUtil.addBits(component.matrix, layer, component.bounds);
+		MatrixUtilKt.addBits(component.matrix, layer, component.bounds);
 		component.matrix = layer;
 		return true;
 	}
@@ -144,7 +144,7 @@ public class ComponentBuilder {
 				}
 			}
 			System.out.println("Reference");
-			MatrixUtil.debugPrintMatrix(reference.matrix);
+			MatrixUtilKt.debugPrintMatrix(reference.matrix);
 			
 			// build components
 			ComponentBuilder builder = new ComponentBuilder();
@@ -155,8 +155,8 @@ public class ComponentBuilder {
 			for (Component component : components) {
 				System.out.println(component.bounds+" pixels:"+component.pixels);
 				int[] pixels = new int[32];
-				MatrixUtil.addBits(component.matrix, pixels, component.bounds);
-				MatrixUtil.debugPrintMatrix(pixels, component.matrix);
+				MatrixUtilKt.addBits(component.matrix, pixels, component.bounds);
+				MatrixUtilKt.debugPrintMatrix(pixels, component.matrix);
 			}
 			
 		} catch (Exception e) {

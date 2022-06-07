@@ -15,6 +15,7 @@
 package io.github.ifropc.kotomo.area
 
 import io.github.ifropc.kotomo.CharacterColor
+import io.github.ifropc.kotomo.util.FixedParameters
 import io.github.ifropc.kotomo.util.ImageUtil.createCopy
 import io.github.ifropc.kotomo.util.Parameters
 import java.awt.AlphaComposite
@@ -29,7 +30,7 @@ import java.util.concurrent.LinkedBlockingQueue
 class InvertImage(task: AreaTask?) : AreaStep(task, "invert") {
     @Throws(Exception::class)
     override fun runImpl() {
-        if (Parameters.fixedBlackLevelEnabled || par.colorTarget === CharacterColor.BLACK_ON_WHITE) {
+        if (FixedParameters.fixedBlackLevelEnabled || par.colorTarget === CharacterColor.BLACK_ON_WHITE) {
             // don't invert
         } else if (par.colorTarget === CharacterColor.AUTOMATIC) {
             detectBlackOnWhite()

@@ -15,18 +15,17 @@
 
 package io.github.ifropc.kotomo.ocr;
 
+import io.github.ifropc.kotomo.util.ImageUtil;
+import io.github.ifropc.kotomo.util.MatrixUtilKt;
+import io.github.ifropc.kotomo.util.Parameters;
+
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.imageio.ImageIO;
-
-import io.github.ifropc.kotomo.util.ImageUtil;
-import io.github.ifropc.kotomo.util.MatrixUtil;
-import io.github.ifropc.kotomo.util.Parameters;
 
 /**
  * Applies stretch and offset transformations to target image. Caches intermediate 
@@ -108,8 +107,8 @@ public class Transform {
 		
 		TargetMatrix target = new TargetMatrix();
 		target.matrix = buildMatrix(image, parameters);
-		target.halo = MatrixUtil.buildMatrixHalo(target.matrix, Parameters.ocrHaloSize-1);
-		target.pixels = MatrixUtil.countBits(target.matrix);
+		target.halo = MatrixUtilKt.buildMatrixHalo(target.matrix, Parameters.ocrHaloSize-1);
+		target.pixels = MatrixUtilKt.countBits(target.matrix);
 		target.charIndex = task.charIndex;
 		target.transform = parameters;
 		
@@ -175,7 +174,7 @@ public class Transform {
 	 */
 	private int[] translateMatrix(int[] matrix, Transformation parameters) {
 
-		return MatrixUtil.moveMatrix(matrix, parameters.horizontalTranslate,
+		return MatrixUtilKt.moveMatrix(matrix, parameters.horizontalTranslate,
 				parameters.verticalTranslate);
 	}
 	

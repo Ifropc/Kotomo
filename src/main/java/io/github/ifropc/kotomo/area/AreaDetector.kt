@@ -21,7 +21,7 @@ import io.github.ifropc.kotomo.util.Parameters
  * Area detection coordinator.
  */
 class AreaDetector {
-    private val par = Parameters.getInstance()
+    private val par = Parameters.instance
     private var task: AreaTask? = null
     @Throws(Exception::class)
     fun run(task: AreaTask) {

@@ -35,8 +35,8 @@ class TestCleanOCR {
     @BeforeTest
     fun rebuild() {
         if (runRebuild) {
-            Parameters.getInstance().cacheDir.deleteRecursively()
-            Parameters.getInstance().cacheDir.mkdir()
+            Parameters.instance.cacheDir.deleteRecursively()
+            Parameters.instance.cacheDir.mkdir()
 
             val cache = ReferenceMatrixCacheBuilder()
             cache.buildCache()

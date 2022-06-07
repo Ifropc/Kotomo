@@ -15,11 +15,11 @@
 
 package io.github.ifropc.kotomo.ocr;
 
-import java.awt.Rectangle;
+import io.github.ifropc.kotomo.util.MatrixUtilKt;
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import io.github.ifropc.kotomo.util.MatrixUtil;
 
 /**
  * Splits large components into subcomponents along x and y axis.
@@ -98,21 +98,21 @@ public class ComponentSplit {
 		Component left = new Component();
 		left.bounds = new Rectangle(bounds.x, bounds.y, splitX - bounds.x + 1, bounds.height);
 		left.matrix = new int[32];
-		MatrixUtil.addBits(component.matrix, left.matrix, left.bounds);
-		left.pixels = MatrixUtil.countBits(left.matrix);
+		MatrixUtilKt.addBits(component.matrix, left.matrix, left.bounds);
+		left.pixels = MatrixUtilKt.countBits(left.matrix);
 		
 		Component right = new Component();
 		right.bounds = new Rectangle(splitX + 1, bounds.y, bounds.width - left.bounds.width, bounds.height);
 		right.matrix = new int[32];
-		MatrixUtil.addBits(component.matrix, right.matrix, right.bounds);
-		right.pixels = MatrixUtil.countBits(right.matrix);
+		MatrixUtilKt.addBits(component.matrix, right.matrix, right.bounds);
+		right.pixels = MatrixUtilKt.countBits(right.matrix);
 		
 		if (left.pixels > 0) {
-			left.bounds = MatrixUtil.findBounds(left.matrix);
+			left.bounds = MatrixUtilKt.findBounds(left.matrix);
 			splitted.add(left);
 		}
 		if (right.pixels > 0) {
-			right.bounds = MatrixUtil.findBounds(right.matrix);
+			right.bounds = MatrixUtilKt.findBounds(right.matrix);
 			splitted.add(right);
 		}
 		
@@ -137,21 +137,21 @@ public class ComponentSplit {
 		Component up = new Component();
 		up.bounds = new Rectangle(bounds.x, bounds.y, bounds.width, splitY - bounds.y + 1);
 		up.matrix = new int[32];
-		MatrixUtil.addBits(component.matrix, up.matrix, up.bounds);
-		up.pixels = MatrixUtil.countBits(up.matrix);
+		MatrixUtilKt.addBits(component.matrix, up.matrix, up.bounds);
+		up.pixels = MatrixUtilKt.countBits(up.matrix);
 		
 		Component down = new Component();
 		down.bounds = new Rectangle(bounds.x, splitY + 1, bounds.width, bounds.height - up.bounds.height);
 		down.matrix = new int[32];
-		MatrixUtil.addBits(component.matrix, down.matrix, down.bounds);
-		down.pixels = MatrixUtil.countBits(down.matrix);
+		MatrixUtilKt.addBits(component.matrix, down.matrix, down.bounds);
+		down.pixels = MatrixUtilKt.countBits(down.matrix);
 		
 		if (up.pixels > 0) {
-			up.bounds = MatrixUtil.findBounds(up.matrix);
+			up.bounds = MatrixUtilKt.findBounds(up.matrix);
 			splitted.add(up);
 		}
 		if (down.pixels > 0) {
-			down.bounds = MatrixUtil.findBounds(down.matrix);
+			down.bounds = MatrixUtilKt.findBounds(down.matrix);
 			splitted.add(down);
 		}
 		

@@ -31,7 +31,7 @@ import java.awt.image.BufferedImage
  * Main class of the KanjiTomo OCR library
  */
 class KanjiTomo {
-    private val par = Parameters.getInstance()
+    private val par = Parameters.instance
     private var ocr: OCRManager? = null
     private var areaTask: AreaTask? = null
     private var subImages: List<SubImage>? = null
@@ -221,7 +221,7 @@ class KanjiTomo {
      *
      * Target image needs to be re-analyzed after changing the orientation by calling setTargetImage again.
      */
-    fun setOrientation(orientation: Orientation?) {
+    fun setOrientation(orientation: Orientation) {
         par.orientationTarget = orientation
     }
 
@@ -233,7 +233,7 @@ class KanjiTomo {
      *
      * Default: CharacterColor.AUTOMATIC
      */
-    fun setCharacterColor(color: CharacterColor?) {
+    fun setCharacterColor(color: CharacterColor) {
         par.colorTarget = color
     }
 

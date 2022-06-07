@@ -29,10 +29,7 @@ import java.util.Set;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Output;
 
-import io.github.ifropc.kotomo.util.ImageUtil;
-import io.github.ifropc.kotomo.util.KryoFactory;
-import io.github.ifropc.kotomo.util.Parameters;
-import io.github.ifropc.kotomo.util.MatrixUtil;
+import io.github.ifropc.kotomo.util.*;
 
 /**
  * Builds the reference matrix cache.
@@ -110,8 +107,8 @@ public class ReferenceMatrixCacheBuilder {
 		ReferenceMatrix ref = new ReferenceMatrix();
 		ref.character = character;
 		ref.matrix = ImageUtil.buildMatrix32(image);
-		ref.halo = MatrixUtil.buildMatrixHalo(ref.matrix, Parameters.ocrHaloSize-1);
-		ref.pixels = MatrixUtil.countBits(ref.matrix);
+		ref.halo = MatrixUtilKt.buildMatrixHalo(ref.matrix, Parameters.ocrHaloSize-1);
+		ref.pixels = MatrixUtilKt.countBits(ref.matrix);
 		ref.fontName = fontName;
 		ref.components = components.buildComponents(ref);
 		

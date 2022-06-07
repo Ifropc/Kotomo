@@ -15,7 +15,7 @@
 
 package io.github.ifropc.kotomo
 
-import io.github.ifropc.kotomo.dictionary.CharacterUtil
+import io.github.ifropc.kotomo.util.CharacterUtil
 import java.io.Serializable
 
 /**

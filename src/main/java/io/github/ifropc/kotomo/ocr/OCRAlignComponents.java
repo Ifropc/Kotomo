@@ -15,19 +15,18 @@
 
 package io.github.ifropc.kotomo.ocr;
 
-import java.awt.Rectangle;
+import io.github.ifropc.kotomo.util.ImageUtil;
+import io.github.ifropc.kotomo.util.MatrixUtilKt;
+import io.github.ifropc.kotomo.util.Parameters;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
-import javax.imageio.ImageIO;
-
-import io.github.ifropc.kotomo.util.ImageUtil;
-import io.github.ifropc.kotomo.util.MatrixUtil;
-import io.github.ifropc.kotomo.util.Parameters;
 
 /**
  * Compares character components (radicals) against target bitmap. Iterates through
@@ -162,8 +161,8 @@ public class OCRAlignComponents {
 		}
 		
 		// halo and pixel count can change after translations
-		reference.halo = MatrixUtil.buildMatrixHalo(reference.matrix, Parameters.ocrHaloSize-1);
-		reference.pixels = MatrixUtil.countBits(reference.matrix);
+		reference.halo = MatrixUtilKt.buildMatrixHalo(reference.matrix, Parameters.ocrHaloSize-1);
+		reference.pixels = MatrixUtilKt.countBits(reference.matrix);
 		
 		// calculate score for new matrix
 		return calculator.calcScore(target, reference, true);
@@ -175,13 +174,13 @@ public class OCRAlignComponents {
 	private void applyTransformation(ReferenceMatrix reference, Component component, Transformation transform) {
 		
 		if (transform.horizontalStretch == 0 && transform.verticalStretch == 0) {
-			MatrixUtil.copyBits(component.matrix, reference.matrix, component.bounds,
+			MatrixUtilKt.copyBits(component.matrix, reference.matrix, component.bounds,
 					transform.horizontalTranslate, transform.verticalTranslate, false);
 		} else {
 			int[] stretchedMatrix = new int[32];
-			Rectangle newBounds = MatrixUtil.stretchBits(component.matrix, stretchedMatrix,
+			Rectangle newBounds = MatrixUtilKt.stretchBits(component.matrix, stretchedMatrix,
 					component.bounds, transform.horizontalStretch, transform.verticalStretch);
-			MatrixUtil.copyBits(stretchedMatrix, reference.matrix, newBounds,
+			MatrixUtilKt.copyBits(stretchedMatrix, reference.matrix, newBounds,
 					transform.horizontalTranslate, transform.verticalTranslate, false);
 		}
 	}

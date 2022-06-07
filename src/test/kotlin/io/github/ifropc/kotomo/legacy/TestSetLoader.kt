@@ -26,7 +26,7 @@ import java.util.*
  *
  */
 class TestSetLoader {
-    private val par = Parameters.getInstance()
+    private val par = Parameters.instance
     private var testDir: File? = null
 
     /**

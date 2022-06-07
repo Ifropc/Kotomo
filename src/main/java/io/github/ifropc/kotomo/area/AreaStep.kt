@@ -23,7 +23,7 @@ import io.github.ifropc.kotomo.util.Parameters
  * each step.
  */
 abstract class AreaStep(protected var task: AreaTask?, vararg debugImages: String) {
-    protected var par = Parameters.getInstance()
+    protected var par = Parameters.instance
 
     /**
      * If true, debug images are generated after this step.

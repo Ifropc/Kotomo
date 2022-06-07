@@ -16,6 +16,7 @@ package io.github.ifropc.kotomo.area
 
 import io.github.ifropc.kotomo.CharacterColor
 import io.github.ifropc.kotomo.util.DebugImage
+import io.github.ifropc.kotomo.util.FixedParameters
 import io.github.ifropc.kotomo.util.ImageUtil.buildScaledImage
 import io.github.ifropc.kotomo.util.ImageUtil.createGrayImage
 import io.github.ifropc.kotomo.util.ImageUtil.createImageFromMatrix
@@ -33,7 +34,7 @@ import javax.imageio.ImageIO
  * Area detection algorithm input and output values.
  */
 class AreaTask(targetImage: BufferedImage) {
-    private val par = Parameters.getInstance()
+    private val par = Parameters.instance
 
     /**
      * Target image width
@@ -325,7 +326,7 @@ class AreaTask(targetImage: BufferedImage) {
      * @return true if x,y pixels have been inverted.
      */
     protected fun isPixelInverted(x: Int, y: Int): Boolean {
-        return if (Parameters.fixedBlackLevelEnabled || par.colorTarget === CharacterColor.BLACK_ON_WHITE) {
+        return if (FixedParameters.fixedBlackLevelEnabled || par.colorTarget === CharacterColor.BLACK_ON_WHITE) {
             false
         } else if (par.colorTarget === CharacterColor.AUTOMATIC) {
             inverted[x / InvertImage.Companion.BLOCK_SIZE][y / InvertImage.Companion.BLOCK_SIZE]

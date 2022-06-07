@@ -15,12 +15,12 @@
 
 package io.github.ifropc.kotomo.ocr;
 
-import java.awt.Rectangle;
+import io.github.ifropc.kotomo.util.MatrixUtilKt;
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
-
-import io.github.ifropc.kotomo.util.MatrixUtil;
 
 /**
  * Finds unconnected components from characters (pixel groups that are not touching) 
@@ -77,7 +77,7 @@ public class ComponentFindUnconnected {
 			return;
 		}
 		
-		if (MatrixUtil.isBitSet(pixel.x, pixel.y, matrix)) {
+		if (MatrixUtilKt.isBitSet(pixel.x, pixel.y, matrix)) {
 			pixels.add(pixel);
 			todo.add(new Pixel(pixel.x-1, pixel.y));
 			todo.add(new Pixel(pixel.x+1, pixel.y));
@@ -101,7 +101,7 @@ public class ComponentFindUnconnected {
 		int maxY = 0;
 		component.matrix = new int[32];
 		for (Pixel pixel : pixels) {
-			MatrixUtil.setBit(pixel.x, pixel.y, component.matrix);
+			MatrixUtilKt.setBit(pixel.x, pixel.y, component.matrix);
 			if (pixel.x < minX) minX = pixel.x;
 			if (pixel.y < minY) minY = pixel.y;
 			if (pixel.x > maxX) maxX = pixel.x;
