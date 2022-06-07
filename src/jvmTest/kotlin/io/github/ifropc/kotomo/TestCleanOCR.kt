@@ -31,8 +31,10 @@ class TestCleanOCR {
         var runRebuild = true
     }
 
+    private lateinit var tomo: KanjiTomo
+
     @BeforeTest
-    fun rebuild() {
+    fun init() {
         if (runRebuild) {
             Parameters.instance.cacheDir.deleteRecursively()
             Parameters.instance.cacheDir.mkdir()
@@ -42,13 +44,8 @@ class TestCleanOCR {
 
             runRebuild = false
         }
-    }
 
-    private lateinit var tomo: io.github.ifropc.kotomo.KanjiTomo
-
-    @BeforeTest
-    fun init() {
-        tomo = io.github.ifropc.kotomo.KanjiTomo()
+        tomo = KanjiTomo()
         tomo.loadData()
     }
 

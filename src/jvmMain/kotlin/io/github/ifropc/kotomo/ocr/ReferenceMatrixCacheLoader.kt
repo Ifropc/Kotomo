@@ -14,14 +14,11 @@
  */
 package io.github.ifropc.kotomo.ocr
 
-import com.esotericsoftware.kryo.io.Input
+import io.github.ifropc.kotomo.KotomoConfig
 import io.github.ifropc.kotomo.ocr.Characters.getScoreModifier
-import io.github.ifropc.kotomo.util.KryoFactory.kryo
 import io.github.ifropc.kotomo.util.Parameters
 import io.github.ifropc.kotomo.util.Parameters.Companion.instance
 import java.io.File
-import java.io.FileInputStream
-import java.io.InputStream
 
 /**
  * Loads the cache of reference matrices
@@ -71,9 +68,6 @@ class ReferenceMatrixCacheLoader {
                 font, Parameters.targetSize,
                 Parameters.ocrHaloSize, Characters.all
             )
-            if (deserializeJar(font, fileName)) {
-                continue
-            }
             val file = ReferenceMatrixHashCalculator.getReferenceFile(
                 font, Parameters.targetSize,
                 Parameters.ocrHaloSize, Characters.all
@@ -86,16 +80,6 @@ class ReferenceMatrixCacheLoader {
     }
 
     @Throws(Exception::class)
-    private fun deserializeJar(font: String, resourceName: String?): Boolean {
-        val `in` = javaClass.getResourceAsStream("/$resourceName") ?: return false
-        if (par.isPrintOutput) {
-            println("Deserializing references:$resourceName from jar")
-        }
-        deserializeStream(font, `in`)
-        return true
-    }
-
-    @Throws(Exception::class)
     private fun deserializeFile(font: String, file: File?): Boolean {
         if (!file!!.exists()) {
             return false
@@ -103,16 +87,13 @@ class ReferenceMatrixCacheLoader {
         if (par.isPrintOutput) {
             println("Deserializing references from file:$file")
         }
-        deserializeStream(font, FileInputStream(file))
+        deserializeStream(font, file.path)
         return true
     }
 
-    private fun deserializeStream(font: String, `in`: InputStream) {
-        val kryo = kryo
-        val input = Input(`in`)
-        val list = kryo.readClassAndObject(input) as ArrayList<ReferenceMatrix>
+    private fun deserializeStream(font: String, file: String) {
+        val list = KotomoConfig.serializer.readFromFile<ArrayList<ReferenceMatrix>>(file)
         Companion.cache!!.put(font, list)
-        input.close()
     }
 
     private fun applyScoreModifiers() {

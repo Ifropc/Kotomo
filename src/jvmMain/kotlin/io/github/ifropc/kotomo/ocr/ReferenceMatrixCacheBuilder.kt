@@ -15,10 +15,10 @@
 package io.github.ifropc.kotomo.ocr
 
 import com.esotericsoftware.kryo.io.Output
+import io.github.ifropc.kotomo.KotomoConfig
 import io.github.ifropc.kotomo.util.ImageUtil.buildMatrix32
 import io.github.ifropc.kotomo.util.ImageUtil.makeBlackAndWhite
 import io.github.ifropc.kotomo.util.ImageUtil.stretchCheckRatio
-import io.github.ifropc.kotomo.util.KryoFactory.kryo
 import io.github.ifropc.kotomo.util.Parameters
 import io.github.ifropc.kotomo.util.Parameters.Companion.instance
 import io.github.ifropc.kotomo.util.buildMatrixHalo
@@ -226,10 +226,7 @@ class ReferenceMatrixCacheBuilder {
             font, Parameters.targetSize,
             Parameters.ocrHaloSize, Characters.all
         )
-        val kryo = kryo
-        val output = Output(FileOutputStream(file))
-        kryo.writeClassAndObject(output, matrixList)
-        output.close()
+        KotomoConfig.serializer.writeToFile(matrixList, file.path)
     }
 
     /**

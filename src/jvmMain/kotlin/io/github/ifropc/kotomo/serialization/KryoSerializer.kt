@@ -12,25 +12,50 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and limitations under the License.
  */
-package io.github.ifropc.kotomo.util
+
+package io.github.ifropc.kotomo.serialization
 
 import com.esotericsoftware.kryo.Kryo
+import com.esotericsoftware.kryo.io.Input
+import com.esotericsoftware.kryo.io.Output
 import io.github.ifropc.kotomo.Word
 import io.github.ifropc.kotomo.ocr.Component
 import io.github.ifropc.kotomo.ocr.ReferenceMatrix
+import io.github.ifropc.kotomo.ocr.ReferenceMatrixCacheLoader
 import io.github.ifropc.kotomo.ocr.Transformation
+import io.github.ifropc.kotomo.serialization.KryoFactory.kryo
 import java.awt.Rectangle
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
+
+@Deprecated("To be replaced with kotlin serialization")
+object KryoSerializer : Serializer {
+    override fun <T> writeToFile(value: T, path: String) {
+        Output(FileOutputStream(File(path))).use {
+            kryo.writeClassAndObject(it, value)
+        }
+    }
+
+    override fun <T> readFromFile(path: String): T {
+        val kryo = kryo
+        val input = Input(FileInputStream(File(path)))
+        return input.use {
+            kryo.readClassAndObject(it) as T
+        }
+    }
+}
 
 /**
  * Build Kryo objects and registers classes
  */
-object KryoFactory {// classes in serializable object trees must be defined here
+private object KryoFactory {// classes in serializable object trees must be defined here
     // all files serialized by Kryo must be rebuild if this list changes!
     /**
      * Gets Kryo object and registers classes
      */
-	@JvmStatic
-	val kryo: Kryo
+    @JvmStatic
+    val kryo: Kryo
         get() {
             val kryo = Kryo()
 
