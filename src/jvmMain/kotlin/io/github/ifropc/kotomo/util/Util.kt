@@ -14,6 +14,7 @@
  */
 package io.github.ifropc.kotomo.util
 
+import io.github.ifropc.kotomo.ocr.Rectangle
 import java.io.File
 
 object Util {
@@ -110,4 +111,12 @@ object Util {
         println("heapFreeSize:$heapFreeSize")
         println("heapUsedSize:$heapUsedSize")
     }
+}
+
+fun Rectangle.toAwt(): java.awt.Rectangle{
+    return java.awt.Rectangle(this.x, this.y, this.width, this.height)
+}
+
+fun java.awt.Rectangle.toKotomo(): Rectangle {
+   return Rectangle(this.x, this.y, this.width, this.height)
 }

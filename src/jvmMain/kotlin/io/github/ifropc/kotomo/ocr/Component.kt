@@ -14,8 +14,8 @@
  */
 package io.github.ifropc.kotomo.ocr
 
-import java.awt.Rectangle
-import java.io.Serializable
+import kotlinx.serialization.Serializable
+
 
 /**
  * Reference character component. Roughly equilevant to radical but automatically generated
@@ -24,11 +24,11 @@ import java.io.Serializable
  *
  * Components are used in third OCR stage to fine-tune results.
  */
-class Component : Serializable {
+@Serializable
+class Component {
     /**
      * Location of the component inside reference character
      */
-    @JvmField
     var bounds: Rectangle? = null
 
     /**
@@ -41,8 +41,4 @@ class Component : Serializable {
      * Number of pixels in this component
      */
     var pixels = 0
-
-    companion object {
-        private const val serialVersionUID = 2L
-    }
 }

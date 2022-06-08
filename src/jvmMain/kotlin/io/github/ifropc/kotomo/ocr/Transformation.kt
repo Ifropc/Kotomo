@@ -14,12 +14,13 @@
  */
 package io.github.ifropc.kotomo.ocr
 
-import java.io.Serializable
+import kotlinx.serialization.Serializable
 
 /**
  * Parameters used to modify bitmap before aligment.
  */
-class Transformation : Serializable {
+@Serializable
+class Transformation  {
     // positive translate moves image right or down by one pixel
     @JvmField
     val horizontalTranslate // TODO rename to deltaX?
@@ -81,9 +82,5 @@ class Transformation : Serializable {
     override fun toString(): String {
         return horizontalTranslate.toString() + "." + verticalTranslate + "." +
                 horizontalStretch + "." + verticalStretch
-    }
-
-    companion object {
-        private const val serialVersionUID = 1L
     }
 }

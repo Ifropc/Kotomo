@@ -14,13 +14,14 @@
  */
 package io.github.ifropc.kotomo.ocr
 
-import java.io.Serializable
+import kotlinx.serialization.Serializable
 
 /**
  * Matrix that represents a preloaded reference character.
  * All common Japanese characters have their own matrix.
  */
-class ReferenceMatrix : Serializable {
+@Serializable
+class ReferenceMatrix {
     /** Character represented by this matrix  */
     @JvmField
     var character = 0.toChar()
@@ -85,9 +86,5 @@ class ReferenceMatrix : Serializable {
             newReference.transformations!!.addAll(transformations!!)
         }
         return newReference
-    }
-
-    companion object {
-        private const val serialVersionUID = 3L
     }
 }

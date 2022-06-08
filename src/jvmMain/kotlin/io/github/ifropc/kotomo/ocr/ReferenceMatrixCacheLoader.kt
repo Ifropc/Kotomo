@@ -14,10 +14,11 @@
  */
 package io.github.ifropc.kotomo.ocr
 
-import io.github.ifropc.kotomo.KotomoConfig
 import io.github.ifropc.kotomo.ocr.Characters.getScoreModifier
 import io.github.ifropc.kotomo.util.Parameters
 import io.github.ifropc.kotomo.util.Parameters.Companion.instance
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import java.io.File
 
 /**
@@ -92,7 +93,7 @@ class ReferenceMatrixCacheLoader {
     }
 
     private fun deserializeStream(font: String, file: String) {
-        val list = KotomoConfig.serializer.readFromFile<ArrayList<ReferenceMatrix>>(file)
+        val list = Json.decodeFromString<List<ReferenceMatrix>>(File(file).readText())
         Companion.cache!!.put(font, list)
     }
 

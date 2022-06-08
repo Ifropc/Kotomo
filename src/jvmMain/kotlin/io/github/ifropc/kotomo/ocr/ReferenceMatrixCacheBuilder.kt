@@ -14,8 +14,6 @@
  */
 package io.github.ifropc.kotomo.ocr
 
-import com.esotericsoftware.kryo.io.Output
-import io.github.ifropc.kotomo.KotomoConfig
 import io.github.ifropc.kotomo.util.ImageUtil.buildMatrix32
 import io.github.ifropc.kotomo.util.ImageUtil.makeBlackAndWhite
 import io.github.ifropc.kotomo.util.ImageUtil.stretchCheckRatio
@@ -23,11 +21,12 @@ import io.github.ifropc.kotomo.util.Parameters
 import io.github.ifropc.kotomo.util.Parameters.Companion.instance
 import io.github.ifropc.kotomo.util.buildMatrixHalo
 import io.github.ifropc.kotomo.util.countBits
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import java.awt.Color
 import java.awt.Font
 import java.awt.GraphicsEnvironment
 import java.awt.image.BufferedImage
-import java.io.FileOutputStream
 
 /**
  * Builds the reference matrix cache.
@@ -226,7 +225,7 @@ class ReferenceMatrixCacheBuilder {
             font, Parameters.targetSize,
             Parameters.ocrHaloSize, Characters.all
         )
-        KotomoConfig.serializer.writeToFile(matrixList, file.path)
+        file.writeText(Json.encodeToString(matrixList))
     }
 
     /**

@@ -18,7 +18,7 @@ import io.github.ifropc.kotomo.util.Parameters.Companion.instance
 import io.github.ifropc.kotomo.util.addBits
 import io.github.ifropc.kotomo.util.countBits
 import io.github.ifropc.kotomo.util.debugPrintMatrix
-import java.awt.Rectangle
+import io.github.ifropc.kotomo.util.toAwt
 
 /**
  * Builds reference components from ReferenceMatrix.
@@ -91,7 +91,7 @@ class ComponentBuilder {
     private fun addToBaseLayer(component: Component?, baseLayer: IntArray): Boolean {
 
         // check if there are any pixels that belong to other components
-        if (countBits(baseLayer, component!!.bounds!!) > component.pixels) {
+        if (countBits(baseLayer, component!!.bounds!!.toAwt()) > component.pixels) {
             return false
         }
 
@@ -109,12 +109,12 @@ class ComponentBuilder {
     private fun addToLayer(component: Component?, layer: IntArray): Boolean {
 
         // check if the layer contains pixels from other components within bounds
-        if (countBits(layer, component!!.bounds!!) > 0) {
+        if (countBits(layer, component!!.bounds!!.toAwt()) > 0) {
             return false
         }
 
         // add to this layer
-        addBits(component.matrix, layer, component.bounds!!)
+        addBits(component.matrix, layer, component.bounds!!.toAwt())
         component.matrix = layer
         return true
     }
@@ -148,7 +148,7 @@ class ComponentBuilder {
                 for (component in components) {
                     println(component!!.bounds.toString() + " pixels:" + component.pixels)
                     val pixels = IntArray(32)
-                    addBits(component.matrix, pixels, component.bounds!!)
+                    addBits(component.matrix, pixels, component.bounds!!.toAwt())
                     debugPrintMatrix(pixels, component.matrix)
                 }
             } catch (e: Exception) {

@@ -14,10 +14,7 @@
  */
 package io.github.ifropc.kotomo.ocr
 
-import io.github.ifropc.kotomo.util.addBits
-import io.github.ifropc.kotomo.util.countBits
-import io.github.ifropc.kotomo.util.findBounds
-import java.awt.Rectangle
+import io.github.ifropc.kotomo.util.*
 
 /**
  * Splits large components into subcomponents along x and y axis.
@@ -81,19 +78,19 @@ class ComponentSplit {
         val left = Component()
         left.bounds = Rectangle(bounds!!.x, bounds.y, splitX - bounds.x + 1, bounds.height)
         left.matrix = IntArray(32)
-        addBits(component.matrix, left.matrix, left.bounds!!)
+        addBits(component.matrix, left.matrix, left.bounds!!.toAwt())
         left.pixels = countBits(left.matrix)
         val right = Component()
         right.bounds = Rectangle(splitX + 1, bounds.y, bounds.width - left.bounds!!.width, bounds.height)
         right.matrix = IntArray(32)
-        addBits(component.matrix, right.matrix, right.bounds!!)
+        addBits(component.matrix, right.matrix, right.bounds!!.toAwt())
         right.pixels = countBits(right.matrix)
         if (left.pixels > 0) {
-            left.bounds = findBounds(left.matrix)
+            left.bounds = findBounds(left.matrix)?.toKotomo()
             splitted.add(left)
         }
         if (right.pixels > 0) {
-            right.bounds = findBounds(right.matrix)
+            right.bounds = findBounds(right.matrix)?.toKotomo()
             splitted.add(right)
         }
         return splitted
@@ -114,19 +111,19 @@ class ComponentSplit {
         val up = Component()
         up.bounds = Rectangle(bounds!!.x, bounds.y, bounds.width, splitY - bounds.y + 1)
         up.matrix = IntArray(32)
-        addBits(component.matrix, up.matrix, up.bounds!!)
+        addBits(component.matrix, up.matrix, up.bounds!!.toAwt())
         up.pixels = countBits(up.matrix)
         val down = Component()
         down.bounds = Rectangle(bounds.x, splitY + 1, bounds.width, bounds.height - up.bounds!!.height)
         down.matrix = IntArray(32)
-        addBits(component.matrix, down.matrix, down.bounds!!)
+        addBits(component.matrix, down.matrix, down.bounds!!.toAwt())
         down.pixels = countBits(down.matrix)
         if (up.pixels > 0) {
-            up.bounds = findBounds(up.matrix)
+            up.bounds = findBounds(up.matrix)?.toKotomo()
             splitted.add(up)
         }
         if (down.pixels > 0) {
-            down.bounds = findBounds(down.matrix)
+            down.bounds = findBounds(down.matrix)?.toKotomo()
             splitted.add(down)
         }
         return splitted

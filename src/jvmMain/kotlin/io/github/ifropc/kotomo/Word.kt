@@ -16,16 +16,13 @@
 package io.github.ifropc.kotomo
 
 import io.github.ifropc.kotomo.util.CharacterUtil
-import java.io.Serializable
+import kotlinx.serialization.Serializable
 
 /**
  * Single Japanese word loaded from Jim Breen's EDICT dictionary.
  */
-class Word : Serializable {
-    constructor() {
-        // Kryo needs no-arg constructor
-    }
-
+@Serializable
+class Word  {
     /**
      * Word in kanji form (might also contain kana characters)
      */
@@ -99,9 +96,5 @@ class Word : Serializable {
 
     override fun toString(): String {
         return "$kanji $kana"
-    }
-
-    companion object {
-        private const val serialVersionUID = 1L
     }
 }

@@ -13,11 +13,9 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-package io.github.ifropc.kotomo
+package io.github.ifropc.kotomo.ocr
 
-import io.github.ifropc.kotomo.serialization.KryoSerializer
-import io.github.ifropc.kotomo.serialization.Serializer
+import kotlinx.serialization.Serializable
 
-object KotomoConfig {
-    val serializer: Serializer = KryoSerializer
-}
+@Serializable
+data class Rectangle(var x: Int, var y: Int, var width: Int, var height: Int)
