@@ -43,7 +43,6 @@ kotlin {
         }
         val jvmMain by getting {
             dependencies {
-                implementation("com.esotericsoftware:kryo:5.0.0")
                 implementation("org.imgscalr:imgscalr-lib:4.2")
             }
         }
