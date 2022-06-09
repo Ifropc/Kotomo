@@ -15,7 +15,7 @@
 
 package io.github.ifropc.kotomo
 
-import java.awt.Rectangle
+import io.github.ifropc.kotomo.ocr.Rectangle
 
 /**
  * OCR results for a single target character

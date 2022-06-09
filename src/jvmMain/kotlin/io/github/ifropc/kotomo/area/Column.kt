@@ -14,7 +14,9 @@
  */
 package io.github.ifropc.kotomo.area
 
-import java.awt.*
+import io.github.ifropc.kotomo.ocr.Rectangle
+import java.awt.Color
+import io.github.ifropc.kotomo.ocr.Point
 import java.util.*
 
 /**
@@ -168,17 +170,17 @@ class Column : HasRectangle {
      * @return true if column's rectangle contains col2's rectangle
      */
     operator fun contains(col2: Column?): Boolean {
-        return rectangle!!.contains(col2!!.rectangle)
+        return rectangle!!.contains(col2!!.rectangle!!)
     }
 
     /**
      * Calculates the ratio of common pixels to total area with argument column
      */
     fun getIntersectRatio(col2: Column?): Float {
-        if (!col2!!.rectangle!!.intersects(rectangle)) {
+        if (!col2!!.rectangle!!.intersects(rectangle!!)) {
             return 0f
         }
-        val intersect = col2.rectangle!!.intersection(rectangle)
+        val intersect = col2.rectangle!!.intersection(rectangle!!)
         val intersectSize = intersect.height * intersect.width
         val refSize = Math.min(size, col2.size)
         return 1.0f * intersectSize / refSize
@@ -207,7 +209,7 @@ class Column : HasRectangle {
      */
     fun merge(col2: Column?): Column {
         val mergedCol = Column()
-        mergedCol.rectangle = rectangle!!.union(col2!!.rectangle)
+        mergedCol.rectangle = rectangle!!.union(col2!!.rectangle!!)
         mergedCol.addAreas(areas)
         mergedCol.addAreas(col2.areas)
         mergedCol.isVertical = isVertical

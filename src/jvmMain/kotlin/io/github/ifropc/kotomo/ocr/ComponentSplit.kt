@@ -78,19 +78,19 @@ class ComponentSplit {
         val left = Component()
         left.bounds = Rectangle(bounds!!.x, bounds.y, splitX - bounds.x + 1, bounds.height)
         left.matrix = IntArray(32)
-        addBits(component.matrix, left.matrix, left.bounds!!.toAwt())
+        addBits(component.matrix, left.matrix, left.bounds!!)
         left.pixels = countBits(left.matrix)
         val right = Component()
         right.bounds = Rectangle(splitX + 1, bounds.y, bounds.width - left.bounds!!.width, bounds.height)
         right.matrix = IntArray(32)
-        addBits(component.matrix, right.matrix, right.bounds!!.toAwt())
+        addBits(component.matrix, right.matrix, right.bounds!!)
         right.pixels = countBits(right.matrix)
         if (left.pixels > 0) {
-            left.bounds = findBounds(left.matrix)?.toKotomo()
+            left.bounds = findBounds(left.matrix)
             splitted.add(left)
         }
         if (right.pixels > 0) {
-            right.bounds = findBounds(right.matrix)?.toKotomo()
+            right.bounds = findBounds(right.matrix)
             splitted.add(right)
         }
         return splitted
@@ -111,19 +111,19 @@ class ComponentSplit {
         val up = Component()
         up.bounds = Rectangle(bounds!!.x, bounds.y, bounds.width, splitY - bounds.y + 1)
         up.matrix = IntArray(32)
-        addBits(component.matrix, up.matrix, up.bounds!!.toAwt())
+        addBits(component.matrix, up.matrix, up.bounds!!)
         up.pixels = countBits(up.matrix)
         val down = Component()
         down.bounds = Rectangle(bounds.x, splitY + 1, bounds.width, bounds.height - up.bounds!!.height)
         down.matrix = IntArray(32)
-        addBits(component.matrix, down.matrix, down.bounds!!.toAwt())
+        addBits(component.matrix, down.matrix, down.bounds!!)
         down.pixels = countBits(down.matrix)
         if (up.pixels > 0) {
-            up.bounds = findBounds(up.matrix)?.toKotomo()
+            up.bounds = findBounds(up.matrix)
             splitted.add(up)
         }
         if (down.pixels > 0) {
-            down.bounds = findBounds(down.matrix)?.toKotomo()
+            down.bounds = findBounds(down.matrix)
             splitted.add(down)
         }
         return splitted

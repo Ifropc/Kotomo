@@ -17,7 +17,7 @@ package io.github.ifropc.kotomo.ocr
 import io.github.ifropc.kotomo.util.isBitSet
 import io.github.ifropc.kotomo.util.setBit
 import io.github.ifropc.kotomo.util.toAwt
-import java.awt.Rectangle
+
 import java.util.*
 
 /**
@@ -35,7 +35,7 @@ class ComponentFindUnconnected {
      */
     fun run(component: Component): List<Component> {
         matrix = component.matrix
-        bounds = component.bounds?.toAwt()
+        bounds = component.bounds
         visited = Array(32) { BooleanArray(32) }
         todo = Stack()
         pixels = ArrayList()

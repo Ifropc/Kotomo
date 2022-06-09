@@ -18,7 +18,7 @@ import io.github.ifropc.kotomo.util.ImageUtil.createWhiteImage
 import io.github.ifropc.kotomo.util.Util.scale
 import java.awt.Color
 import java.awt.Graphics2D
-import java.awt.Rectangle
+import io.github.ifropc.kotomo.ocr.Rectangle
 import java.awt.image.BufferedImage
 import java.util.*
 import java.util.concurrent.LinkedBlockingQueue

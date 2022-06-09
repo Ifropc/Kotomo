@@ -15,11 +15,11 @@
 
 package io.github.ifropc.kotomo
 
+import io.github.ifropc.kotomo.ocr.Point
+import io.github.ifropc.kotomo.ocr.Rectangle
 import io.github.ifropc.kotomo.ocr.ReferenceMatrixCacheBuilder
 import io.github.ifropc.kotomo.util.Parameters
 import org.junit.jupiter.api.Disabled
-import java.awt.Point
-import java.awt.Rectangle
 import javax.imageio.ImageIO
 import kotlin.test.BeforeTest
 import kotlin.test.Test

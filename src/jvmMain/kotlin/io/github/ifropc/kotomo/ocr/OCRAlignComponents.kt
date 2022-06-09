@@ -157,14 +157,14 @@ class OCRAlignComponents {
     private fun applyTransformation(reference: ReferenceMatrix, component: Component, transform: Transformation) {
         if (transform.horizontalStretch == 0 && transform.verticalStretch == 0) {
             copyBits(
-                component.matrix, reference.matrix, component.bounds!!.toAwt(),
+                component.matrix, reference.matrix, component.bounds!!,
                 transform.horizontalTranslate, transform.verticalTranslate, false
             )
         } else {
             val stretchedMatrix = IntArray(32)
             val newBounds = stretchBits(
                 component.matrix, stretchedMatrix,
-                component.bounds!!.toAwt(), transform.horizontalStretch, transform.verticalStretch
+                component.bounds!!, transform.horizontalStretch, transform.verticalStretch
             )
             copyBits(
                 stretchedMatrix, reference.matrix, newBounds!!,

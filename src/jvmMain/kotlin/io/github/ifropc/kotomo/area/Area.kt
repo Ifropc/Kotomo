@@ -15,8 +15,8 @@
 package io.github.ifropc.kotomo.area
 
 import java.awt.Color
-import java.awt.Point
-import java.awt.Rectangle
+import io.github.ifropc.kotomo.ocr.Point
+import io.github.ifropc.kotomo.ocr.Rectangle
 
 /**
  * Rectangle inside target image. Contains a single character after area detection

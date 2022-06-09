@@ -18,7 +18,7 @@ import io.github.ifropc.kotomo.CharacterColor
 import io.github.ifropc.kotomo.Orientation
 import io.github.ifropc.kotomo.util.Util.findFile
 import java.awt.Color
-import java.awt.Rectangle
+import io.github.ifropc.kotomo.ocr.Rectangle
 import java.io.File
 
 class Parameters private constructor() {

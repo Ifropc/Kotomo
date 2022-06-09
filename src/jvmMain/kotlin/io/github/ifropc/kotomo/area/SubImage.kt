@@ -14,7 +14,7 @@
  */
 package io.github.ifropc.kotomo.area
 
-import java.awt.Rectangle
+import io.github.ifropc.kotomo.ocr.Rectangle
 import java.awt.image.BufferedImage
 
 /**

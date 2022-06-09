@@ -16,7 +16,7 @@ package io.github.ifropc.kotomo.area
 
 import io.github.ifropc.kotomo.Orientation
 import io.github.ifropc.kotomo.util.Util.scale
-import java.awt.Rectangle
+import io.github.ifropc.kotomo.ocr.Rectangle
 import java.util.*
 
 /**
@@ -179,7 +179,7 @@ class OrientationMerge(task: AreaTask?) : AreaStep(task, "combined") {
 
             // check intersect size
             for (cand: Column? in candidates) {
-                val intersect = next.rectangle!!.intersection(cand!!.rectangle)
+                val intersect = next.rectangle!!.intersection(cand!!.rectangle!!)
                 val intSize = intersect.width * intersect.height
                 val refSize1 = Math.ceil(Math.pow(next.minorDim.toDouble(), 2.0) / 4).toInt()
                 val refSize2 = Math.ceil(Math.pow(cand.minorDim.toDouble(), 2.0) / 4).toInt()
@@ -188,7 +188,7 @@ class OrientationMerge(task: AreaTask?) : AreaStep(task, "combined") {
                 }
             }
             visited.add(next)
-            bounds = bounds!!.union(next.rectangle)
+            bounds = bounds!!.union(next.rectangle!!)
         }
 
         // score is calculated for the whole group of columns because this way

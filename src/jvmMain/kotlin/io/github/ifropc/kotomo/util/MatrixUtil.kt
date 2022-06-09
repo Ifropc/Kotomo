@@ -15,7 +15,7 @@
 
 package io.github.ifropc.kotomo.util
 
-import java.awt.Rectangle
+import io.github.ifropc.kotomo.ocr.Rectangle
 
 fun moveMatrix(matrix: IntArray, horizontal: Int, vertical: Int): IntArray? {
     val matrix2 = IntArray(32)

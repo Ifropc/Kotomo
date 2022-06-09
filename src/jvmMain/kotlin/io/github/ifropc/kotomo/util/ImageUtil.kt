@@ -16,13 +16,16 @@ package io.github.ifropc.kotomo.util
 
 import io.github.ifropc.kotomo.area.Area
 import io.github.ifropc.kotomo.area.Column
+import io.github.ifropc.kotomo.ocr.Rectangle
 import org.imgscalr.Scalr
-import java.awt.*
+import java.awt.Color
+import java.awt.Image
+import io.github.ifropc.kotomo.ocr.Point
+import java.awt.Toolkit
 import java.awt.datatransfer.DataFlavor
 import java.awt.datatransfer.Transferable
 import java.awt.datatransfer.UnsupportedFlavorException
 import java.awt.image.BufferedImage
-import java.io.IOException
 
 object ImageUtil {
     /**

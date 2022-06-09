@@ -14,12 +14,15 @@
  */
 package io.github.ifropc.kotomo.util
 
-import io.github.ifropc.kotomo.util.GaussianBlurFilter
-import java.awt.*
+import io.github.ifropc.kotomo.ocr.Rectangle
+import java.awt.Graphics2D
+import java.awt.GraphicsConfiguration
+import java.awt.GraphicsEnvironment
+import java.awt.RenderingHints
+import java.awt.Transparency
 import java.awt.geom.Point2D
 import java.awt.geom.Rectangle2D
 import java.awt.image.*
-import java.io.IOException
 import java.net.URL
 import javax.imageio.ImageIO
 
@@ -832,7 +835,7 @@ abstract class AbstractFilter : BufferedImageOp {
      * {@inheritDoc}
      */
     override fun getBounds2D(src: BufferedImage): Rectangle2D {
-        return Rectangle(0, 0, src.width, src.height)
+        return Rectangle(0, 0, src.width, src.height).toAwt()
     }
 
     /**

@@ -12,19 +12,17 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and limitations under the License.
  */
-package io.github.ifropc.kotomo.area
 
-import io.github.ifropc.kotomo.ocr.Point
-import io.github.ifropc.kotomo.ocr.Rectangle
+package io.github.ifropc.kotomo.ocr
 
-/**
- * Rectangle on target image
- */
-interface HasRectangle {
-    val rectangle: Rectangle?
+import kotlin.math.sqrt
 
-    /**
-     * Center of the rectangle
-     */
-    val midpoint: Point
+data class Point(var x: Int, var y: Int) {
+    constructor(): this(0, 0)
+
+    fun distance(pt: Point): Double {
+        val px: Double = (pt.x - this.x).toDouble()
+        val py: Double = (pt.y - this.y).toDouble()
+        return sqrt(px * px + py * py)
+    }
 }

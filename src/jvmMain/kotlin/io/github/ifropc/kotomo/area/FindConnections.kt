@@ -17,8 +17,8 @@ package io.github.ifropc.kotomo.area
 import io.github.ifropc.kotomo.util.ImageUtil.createRectangle
 import java.awt.Color
 import java.awt.Graphics2D
-import java.awt.Point
-import java.awt.Rectangle
+import io.github.ifropc.kotomo.ocr.Point
+import io.github.ifropc.kotomo.ocr.Rectangle
 
 /**
  * Finds columns that are connected to each other (continue text) in reading direction.

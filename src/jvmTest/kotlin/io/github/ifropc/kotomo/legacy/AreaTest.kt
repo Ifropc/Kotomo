@@ -14,7 +14,8 @@
  */
 package io.github.ifropc.kotomo.legacy
 
-import java.awt.Rectangle
+import io.github.ifropc.kotomo.ocr.Rectangle
+
 
 /**
  * Tests that represents correct area or column in the target image.

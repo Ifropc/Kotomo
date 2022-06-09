@@ -14,7 +14,8 @@
  */
 package io.github.ifropc.kotomo.legacy
 
-import java.awt.Point
+import io.github.ifropc.kotomo.ocr.Point
+
 
 class OCRTest : Test {
     var point: Point

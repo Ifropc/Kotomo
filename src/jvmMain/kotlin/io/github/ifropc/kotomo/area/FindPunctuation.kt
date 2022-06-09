@@ -14,8 +14,8 @@
  */
 package io.github.ifropc.kotomo.area
 
-import java.awt.Point
-import java.awt.Rectangle
+import io.github.ifropc.kotomo.ocr.Rectangle
+import io.github.ifropc.kotomo.ocr.Point
 
 /**
  * Finds and marks areas that represent punctuation.

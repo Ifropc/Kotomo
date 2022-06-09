@@ -14,8 +14,8 @@
  */
 package io.github.ifropc.kotomo.area
 
-import java.awt.Point
-import java.awt.Rectangle
+import io.github.ifropc.kotomo.ocr.Point
+import io.github.ifropc.kotomo.ocr.Rectangle
 import java.awt.image.BufferedImage
 
 /**
@@ -123,7 +123,7 @@ class RTree<T : HasRectangle> {
         } else {
             var target: RTree<T>? = null
             for (node in nodes!!) {
-                if (node.bounds.contains(value.rectangle)) {
+                if (node.bounds.contains(value.rectangle!!)) {
                     target = node
                     break
                 }
@@ -136,7 +136,7 @@ class RTree<T : HasRectangle> {
         coverage = if (coverage == null) {
             value.rectangle
         } else {
-            coverage!!.union(value.rectangle)
+            coverage!!.union(value.rectangle!!)
         }
     }
 
@@ -160,7 +160,7 @@ class RTree<T : HasRectangle> {
         } else {
             var target: RTree<T>? = null
             for (node in nodes!!) {
-                if (node.coverage != null && node.coverage!!.contains(value!!.rectangle)) {
+                if (node.coverage != null && node.coverage!!.contains(value!!.rectangle!!)) {
                     target = node
                     break
                 }
@@ -181,17 +181,17 @@ class RTree<T : HasRectangle> {
         val results: MutableList<T> = ArrayList()
         if (isLeaf) {
             for (rectangle in values!!) {
-                if (rectangle.rectangle!!.intersects(rect)) {
+                if (rectangle.rectangle!!.intersects(rect!!)) {
                     results.add(rectangle)
                 }
             }
         } else {
             for (node in nodes!!) {
-                if (node.coverage != null && node.coverage!!.intersects(rect)) {
+                if (node.coverage != null && node.coverage!!.intersects(rect!!)) {
                     results.addAll(node[rect])
                 }
             }
-            if (overflow!!.coverage != null && overflow!!.coverage!!.intersects(rect)) {
+            if (overflow!!.coverage != null && overflow!!.coverage!!.intersects(rect!!)) {
                 results.addAll(overflow!![rect])
             }
         }
@@ -260,7 +260,7 @@ class RTree<T : HasRectangle> {
         for (value in values!!) {
             var target: RTree<T>? = null
             for (node in nodes!!) {
-                if (node.bounds.contains(value.rectangle)) {
+                if (node.bounds.contains(value.rectangle!!)) {
                     target = node
                     break
                 }

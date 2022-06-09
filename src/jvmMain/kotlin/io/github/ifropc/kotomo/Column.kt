@@ -15,7 +15,7 @@
 
 package io.github.ifropc.kotomo
 
-import java.awt.Rectangle
+import io.github.ifropc.kotomo.ocr.Rectangle
 
 /**
  * List of areas inside a single column (or row in horizontal orientation)

@@ -15,7 +15,7 @@
 
 package io.github.ifropc.kotomo
 
-import java.awt.Point
+import io.github.ifropc.kotomo.ocr.Point
 import java.io.File
 import javax.imageio.ImageIO
 

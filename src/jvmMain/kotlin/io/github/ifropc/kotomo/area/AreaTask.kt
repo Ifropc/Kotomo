@@ -15,6 +15,8 @@
 package io.github.ifropc.kotomo.area
 
 import io.github.ifropc.kotomo.CharacterColor
+import io.github.ifropc.kotomo.ocr.Point
+import io.github.ifropc.kotomo.ocr.Rectangle
 import io.github.ifropc.kotomo.util.DebugImage
 import io.github.ifropc.kotomo.util.FixedParameters
 import io.github.ifropc.kotomo.util.ImageUtil.buildScaledImage
@@ -25,7 +27,7 @@ import io.github.ifropc.kotomo.util.ImageUtil.paintAreas
 import io.github.ifropc.kotomo.util.ImageUtil.paintColumn
 import io.github.ifropc.kotomo.util.ImageUtil.setClipboard
 import io.github.ifropc.kotomo.util.Parameters
-import java.awt.*
+import java.awt.Color
 import java.awt.image.BufferedImage
 import java.io.File
 import javax.imageio.ImageIO
@@ -142,7 +144,7 @@ class AreaTask(targetImage: BufferedImage) {
      *
      * @param point Mouse cursor location relative to target image
      */
-    fun getArea(point: Point?): Area? {
+    fun getArea(point: Point): Area? {
         var minDistance = 1000000
         var closestArea: Area? = null
         for (area in areas!!) {
@@ -341,7 +343,7 @@ class AreaTask(targetImage: BufferedImage) {
      *
      * @param point Mouse cursor location relative to target image
      */
-    fun getSubImages(point: Point?): List<SubImage> {
+    fun getSubImages(point: Point): List<SubImage> {
         val subImages: MutableList<SubImage> = ArrayList()
 
         // find closest area to the point

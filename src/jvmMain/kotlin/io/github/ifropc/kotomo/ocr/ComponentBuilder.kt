@@ -91,7 +91,7 @@ class ComponentBuilder {
     private fun addToBaseLayer(component: Component?, baseLayer: IntArray): Boolean {
 
         // check if there are any pixels that belong to other components
-        if (countBits(baseLayer, component!!.bounds!!.toAwt()) > component.pixels) {
+        if (countBits(baseLayer, component!!.bounds!!) > component.pixels) {
             return false
         }
 
@@ -109,12 +109,12 @@ class ComponentBuilder {
     private fun addToLayer(component: Component?, layer: IntArray): Boolean {
 
         // check if the layer contains pixels from other components within bounds
-        if (countBits(layer, component!!.bounds!!.toAwt()) > 0) {
+        if (countBits(layer, component!!.bounds!!) > 0) {
             return false
         }
 
         // add to this layer
-        addBits(component.matrix, layer, component.bounds!!.toAwt())
+        addBits(component.matrix, layer, component.bounds!!)
         component.matrix = layer
         return true
     }
@@ -148,7 +148,7 @@ class ComponentBuilder {
                 for (component in components) {
                     println(component!!.bounds.toString() + " pixels:" + component.pixels)
                     val pixels = IntArray(32)
-                    addBits(component.matrix, pixels, component.bounds!!.toAwt())
+                    addBits(component.matrix, pixels, component.bounds!!)
                     debugPrintMatrix(pixels, component.matrix)
                 }
             } catch (e: Exception) {

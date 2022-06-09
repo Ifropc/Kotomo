@@ -23,8 +23,8 @@ import io.github.ifropc.kotomo.ocr.OCRTask
 import io.github.ifropc.kotomo.ocr.ReferenceMatrixCacheLoader
 import io.github.ifropc.kotomo.util.Parameters
 import io.github.ifropc.kotomo.util.PrintLevel
-import java.awt.Point
-import java.awt.Rectangle
+import io.github.ifropc.kotomo.ocr.Point
+import io.github.ifropc.kotomo.ocr.Rectangle
 import java.awt.image.BufferedImage
 
 /**
@@ -106,7 +106,7 @@ class KanjiTomo {
             throw Exception("Target image not set")
         }
         if (par.isPrintOutput) {
-            println("Run OCR at point:" + point.getX().toInt() + "," + point.getY().toInt())
+            println("Run OCR at point:" + point.x + "," + point.y)
         }
 
         // select areas near point

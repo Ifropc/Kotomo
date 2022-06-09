@@ -17,7 +17,7 @@ package io.github.ifropc.kotomo.area
 import io.github.ifropc.kotomo.util.ImageUtil.paintRectangle
 import io.github.ifropc.kotomo.util.Util.scale
 import java.awt.Color
-import java.awt.Rectangle
+import io.github.ifropc.kotomo.ocr.Rectangle
 import java.util.*
 
 /**

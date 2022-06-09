@@ -19,7 +19,7 @@ import io.github.ifropc.kotomo.util.FixedParameters
 import io.github.ifropc.kotomo.util.ImageUtil.createCopy
 import java.awt.AlphaComposite
 import java.awt.Color
-import java.awt.Rectangle
+import io.github.ifropc.kotomo.ocr.Rectangle
 import java.util.*
 import java.util.concurrent.LinkedBlockingQueue
 
