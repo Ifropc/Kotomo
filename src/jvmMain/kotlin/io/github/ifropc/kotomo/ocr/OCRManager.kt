@@ -44,7 +44,7 @@ class OCRManager {
      * Loads reference matrices into memory. This should be called in background thread
      * before user interaction.
      */
-    @Throws(Exception::class)
+    
     fun loadReferenceData() {
         val cache = ReferenceMatrixCacheLoader()
         cache.load()
@@ -55,7 +55,7 @@ class OCRManager {
      * @param task
      * @throws InterruptedException
      */
-    @Throws(InterruptedException::class)
+    
     fun addTask(task: OCRTask) {
         tasks.put(task)
         ++taskCount
@@ -65,7 +65,7 @@ class OCRManager {
      * Waits until all pending tasks have been completed.
      * The results are written to each submitted task.
      */
-    @Throws(InterruptedException::class)
+    
     fun waitUntilDone() {
         while (taskCount > 0) {
             results.take()

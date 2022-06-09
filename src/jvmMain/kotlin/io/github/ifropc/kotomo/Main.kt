@@ -20,8 +20,6 @@ import java.io.File
 import javax.imageio.ImageIO
 
 object Main {
-    @Throws(Exception::class)
-    @JvmStatic
     fun main(args: Array<String>) {
         val tomo = io.github.ifropc.kotomo.KanjiTomo()
         tomo.loadData()

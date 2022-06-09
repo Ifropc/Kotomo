@@ -57,7 +57,7 @@ class Transform(private val task: OCRTask) {
      * @param maxStretch Maximum number of pixels image is scaled
      * @param maxSteps Maximum number of translate and stretch steps allowed in total
      */
-    @Throws(Exception::class)
+    
     fun run(maxTranslate: Int, maxStretch: Int, maxSteps: Int): List<TargetMatrix> {
         val targets: MutableList<TargetMatrix> = ArrayList()
         for (ht in -maxTranslate..maxTranslate) {
@@ -103,7 +103,7 @@ class Transform(private val task: OCRTask) {
     /**
      * Applies tranformations to the source image. Builds matrix representation.
      */
-    @Throws(Exception::class)
+    
     private fun transform(image: BufferedImage, parameters: Transformation): TargetMatrix {
         val target = TargetMatrix()
         target.matrix = buildMatrix(image, parameters)!!
@@ -164,7 +164,7 @@ class Transform(private val task: OCRTask) {
         )
     }
 
-    @Throws(Exception::class)
+    
     private fun writeDebugImage(target: TargetMatrix, parameters: Transformation) {
         val file = File(
             par.debugDir.absolutePath + "/" +

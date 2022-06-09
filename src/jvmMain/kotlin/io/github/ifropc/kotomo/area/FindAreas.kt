@@ -39,7 +39,7 @@ class FindAreas(task: AreaTask?) : AreaStep(task, "touching", "background", "are
     private var debugImage: BufferedImage? = null
     private var debugGraphics: Graphics2D? = null
     private val debug = false
-    @Throws(Exception::class)
+    
     override fun runImpl() {
         findAreas()
         removeDitherAreas1()
@@ -353,7 +353,7 @@ class FindAreas(task: AreaTask?) : AreaStep(task, "touching", "background", "are
             return Color(red, green, blue)
         }
 
-    @Throws(Exception::class)
+    
     override fun addDebugImages() {
         task!!.addDebugImage(debugImage, "touching")
         task!!.addDebugImage(task!!.backgroundImage, "background")

@@ -27,13 +27,13 @@ class Column {
      * Rectangles around characters in this column.
      * Ordered in reading direction (top-down or left-right).
      */
-	@JvmField
+
 	var areas: MutableList<Rectangle>? = null
 
     /**
      * Bounding box around areas
      */
-	@JvmField
+
 	var rect: Rectangle? = null
 
     /**
@@ -49,13 +49,13 @@ class Column {
     /**
      * If true, this column has vertical reading direction. If false, horizontal.
      */
-	@JvmField
+
 	var vertical = false
 
     /**
      * If true, this column contains furigana characters
      */
-	@JvmField
+
 	var furigana = false
 
     /**

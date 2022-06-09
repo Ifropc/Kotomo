@@ -60,7 +60,7 @@ class OrientationMerge(task: AreaTask?) : AreaStep(task, "combined") {
      *
      * Results are stored in task.columns list.
      */
-    @Throws(Exception::class)
+    
     override fun runImpl() {
         if (par.orientationTarget === Orientation.VERTICAL) {
             task!!.columns = task!!.verticalColumns
@@ -524,7 +524,7 @@ class OrientationMerge(task: AreaTask?) : AreaStep(task, "combined") {
         }
     }
 
-    @Throws(Exception::class)
+    
     override fun addDebugImages() {
         task!!.addDefaultDebugImage("combined")
     }

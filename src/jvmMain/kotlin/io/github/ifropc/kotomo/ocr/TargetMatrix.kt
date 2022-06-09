@@ -23,7 +23,7 @@ class TargetMatrix {
     lateinit var matrix: IntArray
 
     /** Number of pixels (set bits) in the matrix  */
-    @JvmField
+
     var pixels = 0
 
     /**
@@ -32,14 +32,14 @@ class TargetMatrix {
      * levels increase the distance. Last level includes all the remaining pixels.
      * Number of halo levels is determined by Parameters.ocrHaloSize.
      */
-    @JvmField
+
     var halo: List<IntArray>? = null
 
     /** Character index in source image (0 = character closest to mouse cursor)  */
-    @JvmField
+
     var charIndex: Int? = null
 
     /** Transformation used to modify the bitmap from original image  */
-    @JvmField
+
     var transform: Transformation? = null
 }

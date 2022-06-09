@@ -37,7 +37,7 @@ class OCRAlignComponents {
      *
      * @return Improved results in descending score order.
      */
-    @Throws(Exception::class)
+    
     fun run(results: List<OCRResult>?): List<OCRResult> {
         val started = System.currentTimeMillis()
         if (par.isPrintDebug) {
@@ -64,7 +64,7 @@ class OCRAlignComponents {
     /**
      * Improve result by applying transformations to reference character components.
      */
-    @Throws(Exception::class)
+    
     fun alignComponents(result: OCRResult): OCRResult {
         val maxDelta = 1
         val maxStretch = 4
@@ -173,7 +173,7 @@ class OCRAlignComponents {
         }
     }
 
-    @Throws(Exception::class)
+    
     private fun writeDebugImage(result: OCRResult, transform: Transformation) {
         val transformStr = transform.horizontalTranslate.toString() + "," + transform.verticalTranslate
         val file = File(

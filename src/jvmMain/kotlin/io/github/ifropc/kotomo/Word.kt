@@ -26,38 +26,38 @@ class Word  {
     /**
      * Word in kanji form (might also contain kana characters)
      */
-    @JvmField
+
     var kanji: String? = null
 
     /**
      * Word in kana form
      */
-    @JvmField
+
     var kana: String? = null
 
     /**
      * English description
      */
-    @JvmField
+
     var description: String? = null
 
     /**
      * If true, this is a common word.
      */
-    @JvmField
+
     var common = false
 
     /**
      * If true, this word is from names dictionary.
      * If false, this word is from default dictionary.
      */
-    @JvmField
+
     var name = false
 
     /**
      * Number of kanji characters in the kanji field
      */
-    @JvmField
+
     var kanjiCount = 0
 
     /**

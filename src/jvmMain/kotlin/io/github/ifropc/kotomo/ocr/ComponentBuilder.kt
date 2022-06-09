@@ -121,7 +121,7 @@ class ComponentBuilder {
 
     companion object {
         private val par = instance
-        @JvmStatic
+
         fun main(args: Array<String>) {
             try {
                 val testCharacter = 'り' // り人化新港無

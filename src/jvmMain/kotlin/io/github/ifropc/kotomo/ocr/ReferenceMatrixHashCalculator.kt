@@ -26,7 +26,7 @@ object ReferenceMatrixHashCalculator {
     /**
      * Gets filename that represents set of reference matrices
      */
-    @Throws(Exception::class)
+    
     fun getReferenceFileName(
         font: String, targetSize: Int, ocrHaloSize: Int,
         characters: String?
@@ -41,7 +41,7 @@ object ReferenceMatrixHashCalculator {
     /**
      * Gets file that represents set of reference matrices
      */
-    @Throws(Exception::class)
+    
     fun getReferenceFile(
         font: String, targetSize: Int, ocrHaloSize: Int,
         characters: String?

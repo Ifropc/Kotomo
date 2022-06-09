@@ -40,7 +40,7 @@ class OCRAlignCharacters(task: OCRTask?, private val transform: Transform) {
      * @param maxSteps Maximum number of translate and stretch steps allowed in total
      * @param topN Returns only the best N results
      */
-    @Throws(Exception::class)
+    
     fun run(
         characters: Set<Char?>?, refined: Boolean,
         maxTranslate: Int, maxStretch: Int, maxSteps: Int, topN: Int
@@ -80,7 +80,7 @@ class OCRAlignCharacters(task: OCRTask?, private val transform: Transform) {
      * @param refined Include pixels that are close to target image but not
      * an exact match. This is slower but produces more accurate results.
      */
-    @Throws(Exception::class)
+    
     private fun findBestAlignment(
         targets: List<TargetMatrix>,
         references: List<ReferenceMatrix>, refined: Boolean
@@ -130,7 +130,7 @@ class OCRAlignCharacters(task: OCRTask?, private val transform: Transform) {
      *
      * @param character Returns bitmaps only for these characters. If null, all characters.
      */
-    @Throws(Exception::class)
+    
     private fun loadReferences(font: String, characters: Set<Char?>?): List<ReferenceMatrix> {
         if (characters == null) {
             return loadReferences(font)
@@ -154,7 +154,7 @@ class OCRAlignCharacters(task: OCRTask?, private val transform: Transform) {
     /**
      * Loads reference bitmaps from cache file or from memory if called before.
      */
-    @Throws(Exception::class)
+    
     private fun loadReferences(font: String): List<ReferenceMatrix> {
         if (cache == null) {
             val loader = ReferenceMatrixCacheLoader()

@@ -20,12 +20,12 @@ import io.github.ifropc.kotomo.util.ImageUtil.sharpenImage
  * Runs unsharp mask to the original image
  */
 class SharpenImage(task: AreaTask?) : AreaStep(task, "original", "sharpened") {
-    @Throws(Exception::class)
+    
     override fun runImpl() {
         task!!.sharpenedImage = sharpenImage(task!!.originalImage, par)
     }
 
-    @Throws(Exception::class)
+    
     override fun addDebugImages() {
         task!!.addDebugImage(task!!.originalImage, "original")
         task!!.addDebugImage(task!!.sharpenedImage, "sharpened")

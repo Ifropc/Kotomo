@@ -26,7 +26,7 @@ import java.awt.Rectangle
 class FindConnections(task: AreaTask?) : AreaStep(task, "connections") {
     private val debug = false
     private var index: RTree<Column>? = null
-    @Throws(Exception::class)
+    
     override fun runImpl() {
 
         // initialize index
@@ -152,7 +152,7 @@ class FindConnections(task: AreaTask?) : AreaStep(task, "connections") {
         target.previousColumn = column
     }
 
-    @Throws(Exception::class)
+    
     override fun addDebugImages() {
         val image = task!!.createDefaultDebugImage()
         val g = image!!.createGraphics()

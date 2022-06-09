@@ -43,7 +43,6 @@ class KanjiTomo {
      * It's allowed to call this multiple times, results are cached and further calls
      * don't take any more time unless dictionary is changed.
      */
-    @Throws(Exception::class)
     fun loadData() {
         if (ocr == null) {
             ocr = OCRManager()
@@ -55,7 +54,6 @@ class KanjiTomo {
     /**
      * Sets the target image. This can be a screenshot around target characters or a whole page.
      */
-    @Throws(Exception::class)
     fun setTargetImage(image: BufferedImage) {
         if (ocr == null) {
             loadData()
@@ -102,7 +100,7 @@ class KanjiTomo {
      *
      * @return null if no characters found near point
      */
-    @Throws(Exception::class)
+    
     fun runOCR(point: Point): io.github.ifropc.kotomo.OCRResults? {
         if (areaTask == null) {
             throw Exception("Target image not set")
@@ -120,7 +118,7 @@ class KanjiTomo {
      * Runs OCR inside pre-defined areas where each rectangle contains single characters.
      * This can be used if area detection is done externally and KanjiTomo is only used for final OCR.
      */
-    @Throws(Exception::class)
+    
     fun runOCR(areas: List<Rectangle?>): io.github.ifropc.kotomo.OCRResults? {
         if (areaTask == null) {
             throw Exception("Target image not set")
@@ -137,7 +135,7 @@ class KanjiTomo {
     /**
      * Runs OCR for target areas (SubImages)
      */
-    @Throws(Exception::class)
+    
     private fun runOCR(): io.github.ifropc.kotomo.OCRResults? {
         val started = System.currentTimeMillis()
 
@@ -205,7 +203,7 @@ class KanjiTomo {
     /**
      * Analyzes the image and detects areas that might contain characters.
      */
-    @Throws(Exception::class)
+    
     private fun detectAreas(image: BufferedImage) {
         areaTask = AreaTask(image)
         AreaDetector().run(areaTask!!)

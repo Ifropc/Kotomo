@@ -55,13 +55,13 @@ class Parameters private constructor() {
      * First font is the primary font used for initial alignment. Other fonts
      * are used for refined alignments.
      */
-    @JvmField
+
     var referenceFonts = arrayOf("MS Gothic") // MS Gothic, SimSun, Meiryo UI, SimHei, SimSun bold
 
     /**
      * If true, font should be bold
      */
-    @JvmField
+
     var referenceFontsBold = booleanArrayOf(false, true)
 
     // image sharpening parameters
@@ -72,47 +72,47 @@ class Parameters private constructor() {
     /**
      * Minimum pixel RGB value
      */
-    @JvmField
+
     var pixelRGBThreshold = 140
 
     /**
      * Color used for OCR debug images. First halo color is the layer closes to matching pixels.
      * In-between colors are iterpolated
      */
-    @JvmField
+
     var ocrTargetHaloFirstColor = Color(255, 0, 0)
 
-    @JvmField
+
     var ocrTargetHaloLastColor = Color(255, 175, 175)
 
-    @JvmField
+
     var ocrReferenceHaloFirstColor = Color(100, 100, 100)
 
-    @JvmField
+
     var ocrReferenceHaloLastColor = Color(195, 195, 195)
 
     /**
      * Score for common pixel that is found in both target and reference images.
      */
-    @JvmField
+
     var ocrBlackPixelScore = 4f
 
     /**
      * Score for white pixels that are not part of target or reference images.
      */
-    @JvmField
+
     var ocrWhiteScore = 4f
 
     /**
      * Score for pixels in target but not in reference image. Indexed by halo layer.
      */
-    @JvmField
+
     var ocrTargetHaloScores = floatArrayOf(-1f, -5f, -12f)
 
     /**
      * Score for pixels in reference but not in target image. Indexed by halo layer.
      */
-    @JvmField
+
     var ocrReferenceHaloScores = floatArrayOf(-1f, -4f, -10f)
 
     /**
@@ -126,19 +126,19 @@ class Parameters private constructor() {
     /**
      * This is added to each score
      */
-    @JvmField
+
     var ocrBaseScore = 1000f
 
     /**
      * Number of best results that are returned from OCR stage 1
      */
-    @JvmField
+
     var ocrKeepResultsStage1 = 30
 
     /**
      * Number of best results that are returned from OCR stage 2
      */
-    @JvmField
+
     var ocrkeepResultsStage2 = 10
 
     /**
@@ -153,7 +153,7 @@ class Parameters private constructor() {
      * not be larger than user's CPU count and not larger than
      * ocrMaxCharacters
      */
-    @JvmField
+
     var ocrThreads = 4
 
     /**
@@ -251,7 +251,7 @@ class Parameters private constructor() {
     /**
      * OCR debug images are enlarged by this amount
      */
-    @JvmField
+
     var debugOCRImageScale = 5
 
     /**
@@ -263,7 +263,7 @@ class Parameters private constructor() {
      * If set, these characters are the expected (correct) OCR results in test image.
      * These are kept in the result queue even if bad score.
      */
-    @JvmField
+
     var expectedCharacters: String? = null
 
     /**
@@ -329,7 +329,7 @@ class Parameters private constructor() {
     companion object {
         private var par: Parameters? = null
 
-        @JvmStatic
+
         val instance: Parameters
             get() {
                 if (par == null) {

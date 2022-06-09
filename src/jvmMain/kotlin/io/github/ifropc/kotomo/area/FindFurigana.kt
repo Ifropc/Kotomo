@@ -21,7 +21,7 @@ import java.awt.Rectangle
  */
 class FindFurigana(task: AreaTask?) : AreaStep(task, "furigana") {
     private var index: RTree<Column>? = null
-    @Throws(Exception::class)
+    
     override fun runImpl() {
 
         // create column index
@@ -80,7 +80,7 @@ class FindFurigana(task: AreaTask?) : AreaStep(task, "furigana") {
         }
     }
 
-    @Throws(Exception::class)
+    
     override fun addDebugImages() {
         task!!.addDefaultDebugImage("furigana", par.vertical)
     }

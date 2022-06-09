@@ -46,7 +46,7 @@ class FindColumns(task: AreaTask?) : AreaStep(task, "columns") {
      */
     private val rgbMaxDelta = 100
     private var index: RTree<Column>? = null
-    @Throws(Exception::class)
+    
     override fun runImpl() {
         if (task!!.areas!!.size == 0) {
             task!!.columns = ArrayList()
@@ -99,7 +99,7 @@ class FindColumns(task: AreaTask?) : AreaStep(task, "columns") {
      * @param iteration Column length in expanded in stages. First by small amount
      * (iteration 1), then in larger increments.
      */
-    @Throws(Exception::class)
+    
     private fun mergeColumns(expandLength: Boolean, iteration: Int) {
         if (debugAll) System.err.println("mergeColumn expandLength:$expandLength iteration:$iteration")
 
@@ -589,7 +589,7 @@ class FindColumns(task: AreaTask?) : AreaStep(task, "columns") {
     /**
      * Generates debug image from the current algorithm state
      */
-    @Throws(Exception::class)
+    
     private fun addIntermediateDebugImage(col: Column, probe: Rectangle?) {
         col.isChanged = true
         val columns = index!!.all
@@ -607,7 +607,7 @@ class FindColumns(task: AreaTask?) : AreaStep(task, "columns") {
         col.isChanged = false
     }
 
-    @Throws(Exception::class)
+    
     override fun addDebugImages() {
         task!!.addDefaultDebugImage("columns", par.vertical)
     }

@@ -27,7 +27,7 @@ import java.util.concurrent.LinkedBlockingQueue
  * Inverts target image colors in regions with black background
  */
 class InvertImage(task: AreaTask?) : AreaStep(task, "invert") {
-    @Throws(Exception::class)
+    
     override fun runImpl() {
         if (FixedParameters.fixedBlackLevelEnabled || par.colorTarget === CharacterColor.BLACK_ON_WHITE) {
             // don't invert
@@ -450,7 +450,7 @@ class InvertImage(task: AreaTask?) : AreaStep(task, "invert") {
         invertRegion(rect, false, false, false, false)
     }
 
-    @Throws(Exception::class)
+    
     override fun addDebugImages() {
         val markInvertedRegions = true
         val image = createCopy(task!!.binaryImage)

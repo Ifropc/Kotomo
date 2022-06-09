@@ -27,7 +27,7 @@ import javax.imageio.ImageIO
  */
 class OCR {
     private val par = instance
-    @Throws(Exception::class)
+    
     fun run(task: OCRTask?) {
         val started = System.currentTimeMillis()
 
@@ -69,7 +69,7 @@ class OCR {
     /**
      * Prints debug information and saves debug images if needed
      */
-    @Throws(Exception::class)
+    
     private fun debug(task: OCRTask?, time: Long, stage: Int) {
         if (par.isPrintDebug) {
             println("OCR total $time ms")
@@ -103,7 +103,7 @@ class OCR {
      * If true, reference image is written to file
      */
     private val writeReference = true
-    @Throws(Exception::class)
+    
     private fun writeDebugImages(task: OCRTask?, stage: Int) {
         for (result in task!!.results!!) {
             if (writeTarget) {
@@ -116,7 +116,7 @@ class OCR {
         }
     }
 
-    @Throws(Exception::class)
+    
     private fun writeTargetImage(result: OCRResult, stage: Int) {
         val file = File(
             par.debugDir.absolutePath + "/" +
@@ -128,7 +128,7 @@ class OCR {
         ImageIO.write(scaledImage, "png", file)
     }
 
-    @Throws(Exception::class)
+    
     private fun writeReferenceImage(result: OCRResult, stage: Int) {
         val file = File(
             par.debugDir.absolutePath + "/" +
@@ -140,7 +140,7 @@ class OCR {
         ImageIO.write(scaledImage, "png", file)
     }
 
-    @Throws(Exception::class)
+    
     private fun writeDebugImage(result: OCRResult, stage: Int) {
         val file = File(
             par.debugDir.absolutePath + "/" +

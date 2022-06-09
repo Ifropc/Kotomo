@@ -77,7 +77,7 @@ object ImageUtil {
      * Builds a larger image, scaled by scale factor. Used for created
      * larger debug images.
      */
-	@JvmStatic
+
 	fun buildScaledImage(image: BufferedImage, scale: Int): BufferedImage {
         val target = BufferedImage(
             image.width * scale,
@@ -100,7 +100,7 @@ object ImageUtil {
     /**
      * Changes image's color (replaces black pixels)
      */
-	@JvmStatic
+
 	fun colorizeImage(image: BufferedImage, color: Color): BufferedImage {
         val target = BufferedImage(
             image.width,
@@ -244,7 +244,7 @@ object ImageUtil {
     /**
      * Creates empty white image of given size.
      */
-	@JvmStatic
+
 	fun createWhiteImage(width: Int, height: Int): BufferedImage {
         val newImage = BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)
         val g = newImage.createGraphics()
@@ -256,7 +256,7 @@ object ImageUtil {
     /**
      * Paints areas into argument image using default colors
      */
-    @Throws(Exception::class)
+    
     fun paintAreas(image: BufferedImage, areas: List<Area>): BufferedImage {
         val newImage = createCopy(image)
         for (area in areas) {
@@ -423,7 +423,7 @@ object ImageUtil {
      * Stretches or compresses image to target width and height.
      * Doesn't keep proportions.
      */
-	@JvmStatic
+
 	fun stretch(image: BufferedImage, width: Int, height: Int): BufferedImage {
         val scaledImage = Scalr.resize(image, quality, Scalr.Mode.FIT_EXACT, width, height)
         image.flush()
@@ -435,7 +435,7 @@ object ImageUtil {
      * This is used to prevent 一｜ー characters from filling the whole block. Extra space in final
      * image is filled with white and target image is positioned in the center.
      */
-	@JvmStatic
+
 	fun stretchCheckRatio(image: BufferedImage, targetSize: Int, finalSize: Int): BufferedImage {
 
         // calculate image minor/major dimension ratio
@@ -465,7 +465,7 @@ object ImageUtil {
      * Creates square image and positions sourceImage to center. Pixels may be cut
      * if sourceImage is larget than final image
      */
-	@JvmStatic
+
 	fun createSquareImage(sourceImage: BufferedImage, size: Int): BufferedImage {
         val sourceWidth = sourceImage.width
         val sourceHeight = sourceImage.height
@@ -516,7 +516,7 @@ object ImageUtil {
      * blackThreshold
      * @param blackThreshold If null, uses fixedBlackLevel values instead of single threshold
      */
-	@JvmStatic
+
 	fun makeBlackAndWhite(image: BufferedImage, blackThreshold: Int?): BufferedImage {
         val bwImage = createEmptyCopy(image)
         for (y in 0 until image.height) {
@@ -536,7 +536,7 @@ object ImageUtil {
     /**
      * Builds black and white image from 32x32 bit matrix
      */
-	@JvmStatic
+
 	fun buildImage(matrix: IntArray): BufferedImage {
         val image = BufferedImage(32, 32, BufferedImage.TYPE_INT_RGB)
         for (y in 0..31) {
@@ -572,7 +572,7 @@ object ImageUtil {
     /**
      * Builds 32x32 bit matrix from 32x32 image.
      */
-    @JvmStatic
+
     fun buildMatrix32(image: BufferedImage): IntArray {
         val matrix = IntArray(32)
         for (y in 0..31) {
@@ -635,7 +635,7 @@ object ImageUtil {
     /**
      * Sharpens the image
      */
-	@JvmStatic
+
 	fun sharpenImage(image: BufferedImage, par: Parameters): BufferedImage {
         if (FixedParameters.fixedBlackLevelEnabled) {
             return createCopy(image)
@@ -701,7 +701,7 @@ object ImageUtil {
         Toolkit.getDefaultToolkit().systemClipboard.setContents(imgSel, null)
     }
 
-    @JvmStatic
+
     fun main(args: Array<String>) {
         val matrix = IntArray(32)
         setBit(0, 0, matrix)
@@ -738,7 +738,7 @@ internal class ImageSelection(private val image: Image) : Transferable {
     }
 
     // Returns image
-    @Throws(UnsupportedFlavorException::class, IOException::class)
+    
     override fun getTransferData(flavor: DataFlavor): Any {
         if (!DataFlavor.imageFlavor.equals(flavor)) {
             throw UnsupportedFlavorException(flavor)

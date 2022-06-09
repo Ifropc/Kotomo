@@ -23,7 +23,7 @@ import io.github.ifropc.kotomo.util.Parameters
 class AreaDetector {
     private val par = Parameters.instance
     private var task: AreaTask? = null
-    @Throws(Exception::class)
+    
     fun run(task: AreaTask) {
         this.task = task
         val started = System.currentTimeMillis()
@@ -77,7 +77,7 @@ class AreaDetector {
      * @vertical If true, uses vertical orientation. If false, uses horizontal
      * orientation.
      */
-    @Throws(Exception::class)
+    
     private fun findColumns(vertical: Boolean) {
         task!!.columns = null
         par.vertical = vertical
@@ -105,7 +105,7 @@ class AreaDetector {
     /**
      * Saves debug images if needed
      */
-    @Throws(Exception::class)
+    
     private fun checkDebugImages() {
         if (par.isSaveAreaAll) {
             task!!.writeDebugImages()

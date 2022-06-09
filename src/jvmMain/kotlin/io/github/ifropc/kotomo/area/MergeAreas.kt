@@ -35,7 +35,7 @@ class MergeAreas(task: AreaTask?) : AreaStep(task, "mergeareas") {
      * Warning! This will create large amount of data, use only for small target images.
      */
     private val debugAll = false
-    @Throws(Exception::class)
+    
     override fun runImpl() {
         for (col in task!!.columns!!) {
             mergeAreas(col)
@@ -56,7 +56,7 @@ class MergeAreas(task: AreaTask?) : AreaStep(task, "mergeareas") {
     /**
      * Loop and merge adjacent areas inside column until no merges can be done
      */
-    @Throws(Exception::class)
+    
     private fun mergeAreas(col: Column) {
 
         // split areas into chunks delimited by punctuation and large areas that 
@@ -120,7 +120,7 @@ class MergeAreas(task: AreaTask?) : AreaStep(task, "mergeareas") {
      *
      * @return List of merged areas with best score
      */
-    @Throws(Exception::class)
+    
     private fun findBestMerge(col: Column, areas: List<Area>): List<Area> {
         if (areas.size == 1) {
             return areas
@@ -311,7 +311,7 @@ class MergeAreas(task: AreaTask?) : AreaStep(task, "mergeareas") {
      * @param chunkAreas Original areas in the current chunk
      * @param mergedAreas Merged areas in the current chunk
      */
-    @Throws(Exception::class)
+    
     private fun addIntermediateDebugImage(col: Column, chunkAreas: List<Area>, mergedAreas: List<Area>) {
         task!!.collectAreas()
 
@@ -344,7 +344,7 @@ class MergeAreas(task: AreaTask?) : AreaStep(task, "mergeareas") {
         task!!.addDebugImage(image, "mergeareas", col.isVertical)
     }
 
-    @Throws(Exception::class)
+    
     override fun addDebugImages() {
         task!!.addDefaultDebugImage("mergeareas", par.vertical)
     }

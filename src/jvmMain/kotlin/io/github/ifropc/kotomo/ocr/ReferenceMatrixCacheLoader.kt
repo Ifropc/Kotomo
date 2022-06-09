@@ -30,7 +30,7 @@ class ReferenceMatrixCacheLoader {
     /**
      * Loads the cache from serialized data file (unless already done)
      */
-    @Throws(Exception::class)
+    
     fun load() {
         if (Companion.cache != null) {
             return
@@ -50,7 +50,7 @@ class ReferenceMatrixCacheLoader {
     /**
      * Gets reference matrices for given font
      */
-    @Throws(Exception::class)
+    
     fun getReferences(font: String): List<ReferenceMatrix?>? {
         return Companion.cache!![font]
     }
@@ -61,7 +61,7 @@ class ReferenceMatrixCacheLoader {
      * https://github.com/EsotericSoftware/kryo
      * https://www.baeldung.com/kryo
      */
-    @Throws(Exception::class)
+    
     private fun deserialize() {
         Companion.cache = ReferenceMatrixCache()
         for (font in par.referenceFonts) {
@@ -80,7 +80,7 @@ class ReferenceMatrixCacheLoader {
         }
     }
 
-    @Throws(Exception::class)
+    
     private fun deserializeFile(font: String, file: File?): Boolean {
         if (!file!!.exists()) {
             return false

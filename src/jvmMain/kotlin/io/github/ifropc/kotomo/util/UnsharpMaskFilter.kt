@@ -28,7 +28,7 @@ import javax.imageio.ImageIO
  * @author Romain Guy <romain.guy></romain.guy>@mac.com>
  */
 class UnsharpMaskFilter //System.out.println("UnsharpMaskFilter amount:"+amount+" radius:"+radius+" threshold:"+threshold);
-@JvmOverloads constructor(val amount: Float = 0.7f, val radius: Int = 2, val threshold: Int = 2) : AbstractFilter() {
+constructor(val amount: Float = 0.7f, val radius: Int = 2, val threshold: Int = 2) : AbstractFilter() {
 
     /**
      * {@inheritDoc}
@@ -200,7 +200,6 @@ internal object GraphicsUtilities {
      * @return a new compatible `BufferedImage` with the same
      * dimension and transparency as `image`
      */
-    @JvmOverloads
     fun createCompatibleImage(
         image: BufferedImage,
         width: Int = image.width, height: Int = image.height
@@ -271,7 +270,7 @@ internal object GraphicsUtilities {
      * specified width and height
      * @throws java.io.IOException if the image cannot be read or loaded
      */
-    @Throws(IOException::class)
+    
     fun loadCompatibleImage(resource: URL?): BufferedImage {
         val image = ImageIO.read(resource)
         return toCompatibleImage(image)
@@ -683,7 +682,7 @@ internal object GraphicsUtilities {
     }
 }
 
-internal class GaussianBlurFilter @JvmOverloads constructor(radius: Int = 3) : AbstractFilter() {
+internal class GaussianBlurFilter constructor(radius: Int = 3) : AbstractFilter() {
     /**
      *
      * Returns the radius used by this filter, in pixels.

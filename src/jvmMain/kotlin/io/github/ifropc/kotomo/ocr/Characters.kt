@@ -41,7 +41,7 @@ object Characters {
         "几仄仇什曰叩伜卍吊吃牝佇呆吠囮妓屁巫彷扮肛杓杞牢禿乖侘卦咎呟呵呻姐姑妾怯拗沽泄狗狐狛炒爬軋剃叛咳咤垢姦姜屍屏峙徊恍拮洩洒狡茹茫扁胚枷柩歪炸砒袂虻酊酋俯冤唖埃埒屓悍捏涜涎涅浣狸狽拿胱脆烙逅疹疼疱眩罠祟舐蚤啖唸埠娼屠徘悴悸掻掟淘猜脛梱桿焉烹痔痒笥粕蛋蛆訛訝貶躯扈勒喘壺奢媚幇徨愕揶揄揉渾猥葱悶晰腋脾腑棍椒毯焙琲甦痙痣筍筏絨蛙蛭蛤覗詛跋靱韮黍嗜猾隕腿腱楡爺牌痰痺睨罫褌蛾蜃蛸裔詭誅跪辟酩雹飴鼠厭嘘嘔塵滲漉慇敲膀槃煽睾翡蝕誑銚儚噛嬌憔憮憫撓戮膣膵皺瞑磔磋褪蝿誹麹鋲鋤餃澱澹薔薇憑燐瞠瞞諜諫蹂踵躾錨閻餐頸頷髭髷鮒濤獰懃膿朦臀邂癌瞰糠糞縷謗賽鍾鍼鍍闊餞顆鮭鮫鮪鮨濾燻瞼謳謬贅贄魍魎檻蟻蠍贋躇轍騙鯵鯖鯱鯰鹸懺灌瀾朧礫躁饉饅鰐鰊囁爛贔躊饒魑鰤鶯聾贖轢驕鰻鱈攣讐躙鰹撻僻壜渕祓恃幟"
     const val kana = hiragana + katakana
     const val all = hiragana + katakana + grade1 + grade2 + grade3 + grade4 + grade5 + grade6 + grade7 + jinmei + others
-    @JvmStatic
+
     val characters: List<Char>
         get() {
             val list: MutableList<Char> = ArrayList()
@@ -55,7 +55,7 @@ object Characters {
      * Gets the character's score modifier. These are used to give a bonus to common
      * characters or penalty to uncommon characters.
      */
-    @JvmStatic
+
     fun getScoreModifier(character: Char): Float {
         var modifier = 1.0f
         val charStr = character.toString() + ""

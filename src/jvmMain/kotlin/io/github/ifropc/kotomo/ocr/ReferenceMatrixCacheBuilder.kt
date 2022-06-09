@@ -42,7 +42,7 @@ class ReferenceMatrixCacheBuilder {
         components = ComponentBuilder()
     }
 
-    @Throws(Exception::class)
+    
     fun buildCache() {
         println("Building reference cache")
         for (font in par.referenceFonts) {
@@ -53,7 +53,7 @@ class ReferenceMatrixCacheBuilder {
     /**
      * Generates characters for given font
      */
-    @Throws(Exception::class)
+    
     private fun generateCharacters(font: String) {
 
         // skip if already generated
@@ -93,7 +93,7 @@ class ReferenceMatrixCacheBuilder {
     /**
      * Builds a bitmap representation of the character
      */
-    @Throws(Exception::class)
+    
     private fun buildReferenceMatrix(character: Char, targetSize: Int, fontName: String): ReferenceMatrix {
         val image = paintCharacterBestFit(character, targetSize, fontName)
         val ref = ReferenceMatrix()
@@ -115,7 +115,7 @@ class ReferenceMatrixCacheBuilder {
      * Paints character to targetSize image. Tries multiple font sizes and selects one that
      * fits the target size best. Resized to fit targetSize exactly.
      */
-    @Throws(Exception::class)
+    
     private fun paintCharacterBestFit(character: Char, targetSize: Int, fontName: String): BufferedImage {
 
         // font size does not correspond to pixels,
@@ -145,7 +145,7 @@ class ReferenceMatrixCacheBuilder {
     /**
      * True if font should be bold
      */
-    @Throws(Exception::class)
+    
     private fun isFontBold(fontName: String): Boolean {
         for (i in par.referenceFonts.indices) {
             if (par.referenceFonts[i] == fontName) {
@@ -196,7 +196,7 @@ class ReferenceMatrixCacheBuilder {
     /**
      * Paints character to empty canvas
      */
-    @Throws(Exception::class)
+    
     private fun paintCharacter(character: Char, font: Font): BufferedImage {
         val image = BufferedImage(80, 80, BufferedImage.TYPE_INT_RGB)
         val graphics = image.createGraphics()
@@ -219,7 +219,7 @@ class ReferenceMatrixCacheBuilder {
      * https://github.com/EsotericSoftware/kryo
      * https://www.baeldung.com/kryo
      */
-    @Throws(Exception::class)
+    
     private fun serialize(font: String, matrixList: ArrayList<ReferenceMatrix>) {
         val file = ReferenceMatrixHashCalculator.getReferenceFile(
             font, Parameters.targetSize,
@@ -231,7 +231,7 @@ class ReferenceMatrixCacheBuilder {
     /**
      * Checks that font supports Japanese characters. Throws exception if not.
      */
-    @Throws(Exception::class)
+    
     private fun checkFont(fontName: String) {
         for (font in GraphicsEnvironment.getLocalGraphicsEnvironment().allFonts) {
             if (font.name == fontName) {
@@ -274,7 +274,7 @@ class ReferenceMatrixCacheBuilder {
             return image.getSubimage(xMin, yMin, width, height)
         }
 
-        @JvmStatic
+
         fun main(args: Array<String>) {
             try {
                 val cache = ReferenceMatrixCacheBuilder()

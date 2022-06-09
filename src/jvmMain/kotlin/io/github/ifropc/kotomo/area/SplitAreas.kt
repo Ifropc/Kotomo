@@ -29,7 +29,7 @@ class SplitAreas(task: AreaTask?) : AreaStep(task, "splitareas") {
 
     /** Split is possible in line with this many or less ratio of pixels  */
     private val maxPixelsPrct = 0.14f
-    @Throws(Exception::class)
+    
     override fun runImpl() {
         for (col in task!!.columns!!) {
             val minLength = Math.ceil((col.minDim * splitMinLength).toDouble()).toInt()
@@ -181,7 +181,7 @@ class SplitAreas(task: AreaTask?) : AreaStep(task, "splitareas") {
         }
     }
 
-    @Throws(Exception::class)
+    
     override fun addDebugImages() {
         task!!.addDefaultDebugImage("splitareas", par.vertical)
     }

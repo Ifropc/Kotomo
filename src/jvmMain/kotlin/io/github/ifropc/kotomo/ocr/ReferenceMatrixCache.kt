@@ -42,7 +42,7 @@ class ReferenceMatrixCache {
     /**
      * Gets reference matrices for given font
      */
-    @Throws(Exception::class)
+    
     operator fun get(font: String): List<ReferenceMatrix> {
         if (!cache.containsKey(font)) {
             throw Exception("Cache doesn't contain font:$font, regenerate cache")

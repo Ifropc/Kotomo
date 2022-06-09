@@ -22,16 +22,16 @@ import kotlinx.serialization.Serializable
 @Serializable
 class Transformation  {
     // positive translate moves image right or down by one pixel
-    @JvmField
+
     val horizontalTranslate // TODO rename to deltaX?
             : Int
-    @JvmField
+
     val verticalTranslate: Int
 
     // positive stretch makes image larger by one pixel
-    @JvmField
+
     val horizontalStretch: Int
-    @JvmField
+
     val verticalStretch: Int
 
     /**

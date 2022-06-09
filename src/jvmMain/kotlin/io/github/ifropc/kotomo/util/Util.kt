@@ -21,8 +21,8 @@ object Util {
     /**
      * Finds file reference
      */
-    @JvmStatic
-	@Throws(Exception::class)
+
+	
     fun findFile(fileName: String): File {
 
         // this is needed because location can be relative to class or jar file,
@@ -65,7 +65,7 @@ object Util {
     /**
      * Prints array as: [a,b,c,..]
      */
-	@JvmStatic
+
 	fun printArray(array: IntArray): String {
         var ret = "["
         for (i in array.indices) {

@@ -25,7 +25,7 @@ import java.awt.image.BufferedImage
  * Creates a binary (black and white) image from grayscale image.
  */
 class CreateBinaryImage constructor(task: AreaTask?) : AreaStep(task, "binary") {
-    @Throws(Exception::class)
+    
     override fun runImpl() {
 
         // TODO instead of static blackThreshold calculate a histogram?
@@ -36,7 +36,7 @@ class CreateBinaryImage constructor(task: AreaTask?) : AreaStep(task, "binary") 
         task!!.binaryImage = createMatrixFromImage(bwImage)
     }
 
-    @Throws(Exception::class)
+    
     override fun addDebugImages() {
         val image: BufferedImage = createImageFromMatrix(task!!.binaryImage)
         task!!.addDebugImage(image, "binary")

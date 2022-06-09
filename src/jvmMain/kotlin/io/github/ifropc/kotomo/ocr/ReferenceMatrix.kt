@@ -23,7 +23,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 class ReferenceMatrix {
     /** Character represented by this matrix  */
-    @JvmField
+
     var character = 0.toChar()
 
     /** Pixels of the reference image. 32x32 bitmap  */
@@ -31,7 +31,7 @@ class ReferenceMatrix {
     lateinit var matrix: IntArray
 
     /** Number of pixels (set bits) in the matrix  */
-    @JvmField
+
     var pixels = 0
 
     /**
@@ -40,31 +40,31 @@ class ReferenceMatrix {
      * levels increase the distance. Last level includes all the remaining pixels.
      * Number of halo levels is determined by Parameters.ocrHaloSize.
      */
-    @JvmField
+
     var halo: ArrayList<IntArray>? = null
 
     /**
      * Some characters are given a OCR score boost based on rarity
      */
-    @JvmField
+
     var scoreModifier = 1f
 
     /**
      * Font name used to generate the matrix
      */
-    @JvmField
+
     var fontName: String? = null
 
     /**
      * List of individual character components (radicals)
      */
-    @JvmField
+
     var components: ArrayList<Component>? = null
 
     /**
      * Transformations applied to individual components. Same order as components list.
      */
-    @JvmField
+
     var transformations: ArrayList<Transformation>? = null
 
     /**

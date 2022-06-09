@@ -29,7 +29,7 @@ class OCRResults(
     /**
      * String of best matches starting from OCR target point.
      */
-    @JvmField
+
     val bestMatchingCharacters: String
 
     /**

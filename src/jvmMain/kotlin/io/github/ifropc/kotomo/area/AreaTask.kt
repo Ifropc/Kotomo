@@ -500,7 +500,7 @@ class AreaTask(targetImage: BufferedImage) {
      *
      * @param vertical if set, orientation is displayed in debug file name
      */
-    @Throws(Exception::class)
+    
     fun addDefaultDebugImage(name: String?, vertical: Boolean?) {
         addDefaultDebugImage(name, areas, columns, vertical)
     }
@@ -516,8 +516,7 @@ class AreaTask(targetImage: BufferedImage) {
      *
      * @param vertical if set, orientation is displayed in debug file name
      */
-    @JvmOverloads
-    @Throws(Exception::class)
+    
     fun addDefaultDebugImage(
         name: String?, areas: List<Area>? = this.areas, columns: List<Column?>? = this.columns,
         vertical: Boolean? = null
@@ -531,8 +530,7 @@ class AreaTask(targetImage: BufferedImage) {
     /**
      * Paints a default debug image displaying columns and areas and gray background.
      */
-    @JvmOverloads
-    @Throws(Exception::class)
+    
     fun createDefaultDebugImage(
         areas: List<Area>? = this.areas,
         columns: List<Column?>? = this.columns
@@ -550,7 +548,7 @@ class AreaTask(targetImage: BufferedImage) {
     /**
      * Writes debug images to target directory. filenameBase is included in each file name.
      */
-    @Throws(Exception::class)
+    
     fun writeDebugImages() {
         if (!par.isSaveAreaFailed) {
             return
@@ -565,7 +563,7 @@ class AreaTask(targetImage: BufferedImage) {
      * Writes debug image to disk in par.debugDir directory. Files are
      * named as "test number.index number.algorithm step.png"
      */
-    @Throws(Exception::class)
+    
     private fun writeDebugImage(image: DebugImage?) {
         if (image == null) {
             return

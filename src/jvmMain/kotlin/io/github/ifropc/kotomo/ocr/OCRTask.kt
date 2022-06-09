@@ -33,14 +33,14 @@ open class OCRTask
     /**
      * Index of the target character (0 = character closest to mouse cursor)
      */
-	@JvmField
+
 	var charIndex: Int? = null
 
     /**
      * Best results (characters that are closest match to the target image)
      * sorted by score (best match first).
      */
-	@JvmField
+
 	var results: List<OCRResult>? = null
 
     /**

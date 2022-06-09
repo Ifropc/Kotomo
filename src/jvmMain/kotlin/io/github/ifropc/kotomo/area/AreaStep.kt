@@ -52,7 +52,7 @@ abstract class AreaStep(protected var task: AreaTask?, vararg debugImages: Strin
     /**
      * Runs the algorithm step and creates debug information if requested.
      */
-    @Throws(Exception::class)
+    
     fun run() {
         val started = System.currentTimeMillis()
         runImpl()
@@ -73,12 +73,12 @@ abstract class AreaStep(protected var task: AreaTask?, vararg debugImages: Strin
     /**
      * The actual implementation of the algorithm step.
      */
-    @Throws(Exception::class)
+    
     protected abstract fun runImpl()
 
     /**
      * Paints and adds debug images to task
      */
-    @Throws(Exception::class)
+    
     protected abstract fun addDebugImages()
 }

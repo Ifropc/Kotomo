@@ -22,7 +22,7 @@ import java.awt.Rectangle
  * These areas are not merged with other areas.
  */
 class FindPunctuation(task: AreaTask?) : AreaStep(task, "punctuation") {
-    @Throws(Exception::class)
+    
     override fun runImpl() {
         for (col in task!!.columns!!) {
             markBrackets(col)
@@ -273,7 +273,7 @@ class FindPunctuation(task: AreaTask?) : AreaStep(task, "punctuation") {
         }
     }
 
-    @Throws(Exception::class)
+    
     override fun addDebugImages() {
         task!!.addDefaultDebugImage("punctuation", par.vertical)
     }
