@@ -109,7 +109,7 @@ class TestCleanOCR {
         testPoint("10.png", "", 4f)
     }
 
-    private fun testPoint(filename: String, expected: String, accpetedMarginPercent: Float): MutableList<io.github.ifropc.kotomo.IdentifiedCharacter> {
+    private fun testPoint(filename: String, expected: String, accpetedMarginPercent: Float): MutableList<IdentifiedCharacter> {
         val image = ImageIO.read(this::class.java.classLoader.getResourceAsStream(filename))
         tomo.setTargetImage(image)
         val results = tomo.runOCR(Point(0, 0))

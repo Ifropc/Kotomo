@@ -16,7 +16,6 @@ package io.github.ifropc.kotomo.area
 
 import io.github.ifropc.kotomo.ocr.Point
 import io.github.ifropc.kotomo.ocr.Rectangle
-import java.awt.image.BufferedImage
 
 /**
  * R-tree index used for finding intersecting rectangles (columns or areas)
@@ -73,32 +72,12 @@ class RTree<T : HasRectangle> {
     }
 
     /**
-     * Creates a new node that can hold all rectangles inside image.
-     */
-    constructor(image: BufferedImage) {
-        bounds = Rectangle(
-            image.minX, image.minY, image.width,
-            image.height
-        )
-    }
-
-    /**
      * Creates a new node that can hold all rectangles inside image
      */
     constructor(image: Array<BooleanArray>) {
         val width = image!!.size
         val height = image[0]!!.size
         bounds = Rectangle(0, 0, width, height)
-    }
-
-    /**
-     * Creates a new index that can hold all rectangles inside image.
-     * Populates the index with argument rectangles.
-     */
-    constructor(image: BufferedImage, values: List<T>) : this(image) {
-        for (value in values) {
-            add(value)
-        }
     }
 
     /**

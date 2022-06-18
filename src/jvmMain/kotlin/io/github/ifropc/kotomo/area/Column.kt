@@ -583,16 +583,13 @@ class Column : HasRectangle {
         if (simpleColumn != null) {
             return simpleColumn!!
         }
-        simpleColumn = io.github.ifropc.kotomo.Column()
-        simpleColumn!!.areas = ArrayList()
-        for (area in areas) {
-            if (!area.isPunctuation) {
-                simpleColumn!!.areas!!.add(area.rectangle!!)
-            }
-        }
-        simpleColumn!!.rect = rectangle
-        simpleColumn!!.vertical = isVertical
-        simpleColumn!!.furigana = isFurigana
+        simpleColumn = io.github.ifropc.kotomo.Column(
+            areas.filter { !it.isPunctuation }.map { it.rectangle!! },
+            rectangle!!,
+            vertical = isVertical,
+            furigana = isFurigana
+        )
+
         return simpleColumn!!
     }
 }

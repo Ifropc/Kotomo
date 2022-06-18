@@ -20,49 +20,42 @@ import io.github.ifropc.kotomo.ocr.Rectangle
 /**
  * List of areas inside a single column (or row in horizontal orientation)
  */
-class Column {
-    // this is a simplified version of Column intended to be used
-    // as a result object from KanjiTomo class
+data class Column(
     /**
      * Rectangles around characters in this column.
      * Ordered in reading direction (top-down or left-right).
      */
-
-	var areas: MutableList<Rectangle>? = null
-
+    val areas: List<Rectangle>,
     /**
      * Bounding box around areas
      */
 
-	var rect: Rectangle? = null
-
-    /**
-     * Next column in reading direction
-     */
-    var nextColumn: io.github.ifropc.kotomo.Column? = null
-
-    /**
-     * Previous column in reading direction
-     */
-    var previousColumn: io.github.ifropc.kotomo.Column? = null
+    val rect: Rectangle,
 
     /**
      * If true, this column has vertical reading direction. If false, horizontal.
      */
 
-	var vertical = false
+    val vertical: Boolean = false,
 
     /**
      * If true, this column contains furigana characters
      */
 
-	var furigana = false
+    val furigana: Boolean = false,
+    /**
+     * Next column in reading direction
+     */
+    var nextColumn: Column? = null,
 
     /**
-     * Furigana columns next to this column
+     * Previous column in reading direction
      */
-    var furiganaColumns: List<io.github.ifropc.kotomo.Column> = ArrayList()
-    override fun toString(): String {
-        return "rect:" + rect + " areas:" + areas!!.size + " vertical:" + vertical + " furigana:" + furigana
-    }
+    var previousColumn: Column? = null
+
+) {
+    // this is a simplified version of Column intended to be used
+    // as a result object from KanjiTomo class
+
+
 }
