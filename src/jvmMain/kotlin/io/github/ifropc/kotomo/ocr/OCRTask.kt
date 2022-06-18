@@ -41,12 +41,14 @@ open class OCRTask
      * sorted by score (best match first).
      */
 
-	var results: List<OCRResult>? = null
+	@Deprecated("Replace with following pipeline submit task -> process -> transform into results")
+    var results: List<OCRResult>? = null
 
     /**
      * If true, this sub-image is from column that does not contain the original target point.
      * This is used to restrict dictionary search to characters within single column.
      */
+    @Deprecated("Not used anymore")
     var columnChanged = false
 
     /**

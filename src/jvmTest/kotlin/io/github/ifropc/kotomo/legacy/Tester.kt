@@ -20,6 +20,7 @@ import io.github.ifropc.kotomo.util.Parameters
 import io.github.ifropc.kotomo.util.PrintLevel
 import io.github.ifropc.kotomo.util.SaveAreaImages
 import io.github.ifropc.kotomo.util.SaveOCRImages
+import kotlinx.coroutines.runBlocking
 import java.io.File
 import java.util.regex.Pattern
 import javax.imageio.ImageIO
@@ -229,7 +230,7 @@ class Tester {
     private fun runOCRTest(test: OCRTest?): Boolean {
         par.ocrMaxCharacters = test!!.characters.length
         par.expectedCharacters = test.characters
-        val results = tomo!!.runOCR(test.point)
+        val results = runBlocking { tomo!!.runOCR(test.point) }
         if (results == null || results.bestMatchingCharacters.length == 0) {
             return false
         }
@@ -237,12 +238,6 @@ class Tester {
             true
         } else {
             false
-        }
-    }
-
-    fun close() {
-        if (tomo != null) {
-            tomo!!.close()
         }
     }
 
@@ -294,7 +289,6 @@ class Tester {
             if (OCR.totalOCRCount > 0) {
                 println("Average OCR time:" + Math.round(OCR.averageOCRTime) + " ms")
             }
-            tester.close()
             System.exit(0)
         }
     }

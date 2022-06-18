@@ -18,15 +18,16 @@ package io.github.ifropc.kotomo
 import io.github.ifropc.kotomo.area.AreaDetector
 import io.github.ifropc.kotomo.area.AreaTask
 import io.github.ifropc.kotomo.area.SubImage
-import io.github.ifropc.kotomo.ocr.OCRManager
+import io.github.ifropc.kotomo.ocr.OCR
 import io.github.ifropc.kotomo.ocr.OCRTask
-import io.github.ifropc.kotomo.ocr.ReferenceMatrixCacheLoader
 import io.github.ifropc.kotomo.util.Parameters
 import io.github.ifropc.kotomo.util.PrintLevel
 import io.github.ifropc.kotomo.ocr.Point
 import io.github.ifropc.kotomo.ocr.Rectangle
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import io.github.ifropc.kotomo.ocr.ReferenceMatrixCacheLoader
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import java.awt.image.BufferedImage
 
 /**
@@ -34,7 +35,6 @@ import java.awt.image.BufferedImage
  */
 class KanjiTomo {
     private val par = Parameters.instance
-    private lateinit var ocr: OCRManager
     private var areaTask: AreaTask? = null
     private var subImages: List<SubImage>? = null
     private var results: OCRResults? = null
@@ -46,10 +46,7 @@ class KanjiTomo {
      * don't take any more time unless dictionary is changed.
      */
     fun loadData() {
-        if (!::ocr.isInitialized) {
-            ocr = OCRManager()
-            ocr.loadReferenceData()
-        }
+        ReferenceMatrixCacheLoader.load()
     }
 
     /**
@@ -98,7 +95,7 @@ class KanjiTomo {
      *
      * @return null if no characters found near point
      */
-    fun runOCR(point: Point): OCRResults? {
+    suspend fun runOCR(point: Point): OCRResults? {
         if (areaTask == null) {
             throw Exception("Target image not set")
         }
@@ -115,7 +112,7 @@ class KanjiTomo {
      * Runs OCR inside pre-defined areas where each rectangle contains single characters.
      * This can be used if area detection is done externally and KanjiTomo is only used for final OCR.
      */
-    fun runOCR(areas: List<Rectangle?>): OCRResults? {
+    suspend fun runOCR(areas: List<Rectangle?>): OCRResults? {
         if (areaTask == null) {
             throw Exception("Target image not set")
         }
@@ -132,7 +129,7 @@ class KanjiTomo {
      * Runs OCR for target areas (SubImages)
      */
 
-    private fun runOCR(): OCRResults? {
+    private suspend fun runOCR(): OCRResults? {
         val started = System.currentTimeMillis()
 
         // get target locations
@@ -149,23 +146,31 @@ class KanjiTomo {
         }
 
         // run ocr for each character
-        val ocrTasks = mutableListOf<OCRTask>()
-        var charIndex = 0
-        var lastColumn: io.github.ifropc.kotomo.area.Column? = null
-        for (subImage in subImages!!) {
-            val ocrTask = OCRTask(subImage.image)
-            ocrTask.charIndex = charIndex++
-            ocrTasks.add(ocrTask)
-            if (lastColumn == null) {
-                lastColumn = subImage.column
-            } else {
-                if (lastColumn !== subImage.column) {
-                    ocrTask.columnChanged = true
+        val ocrTasks = coroutineScope {
+            val jobs = mutableListOf<Deferred<OCRTask>>()
+            var lastColumn: io.github.ifropc.kotomo.area.Column? = null
+
+            for ((charIndex, subImage) in subImages!!.withIndex()) {
+                val ocrTask = OCRTask(subImage.image)
+                ocrTask.charIndex = charIndex
+                if (lastColumn == null) {
+                    lastColumn = subImage.column
+                } else {
+                    if (lastColumn !== subImage.column) {
+                        ocrTask.columnChanged = true
+                    }
                 }
+
+                jobs.add(
+                    async {
+                        OCR().run(ocrTask)
+                        ocrTask
+                    }
+                )
             }
-            ocr!!.addTask(ocrTask)
+
+            jobs.map { it.await() }
         }
-        ocr!!.waitUntilDone()
 
         // collect identified characters
         val characters = mutableListOf<String>()
@@ -242,12 +247,5 @@ class KanjiTomo {
         } else {
             par.printLevel = PrintLevel.BASIC
         }
-    }
-
-    /**
-     * Stops all threads. This should be called before closing the program.
-     */
-    fun close() {
-        ocr!!.stopThreads()
     }
 }

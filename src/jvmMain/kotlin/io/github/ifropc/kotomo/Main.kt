@@ -16,6 +16,7 @@
 package io.github.ifropc.kotomo
 
 import io.github.ifropc.kotomo.ocr.Point
+import kotlinx.coroutines.runBlocking
 import java.io.File
 import javax.imageio.ImageIO
 
@@ -25,7 +26,7 @@ object Main {
         tomo.loadData()
         val image = ImageIO.read(File(args[0]))
         tomo.setTargetImage(image)
-        val results = tomo.runOCR(Point(args[1].toInt(), args[2].toInt()))
+        val results = runBlocking { tomo.runOCR(Point(args[1].toInt(), args[2].toInt())) }
         println(results)
     }
 }

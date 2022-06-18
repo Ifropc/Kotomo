@@ -19,6 +19,7 @@ import io.github.ifropc.kotomo.ocr.Point
 import io.github.ifropc.kotomo.ocr.Rectangle
 import io.github.ifropc.kotomo.ocr.ReferenceMatrixCacheBuilder
 import io.github.ifropc.kotomo.util.Parameters
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Disabled
 import javax.imageio.ImageIO
 import kotlin.test.BeforeTest
@@ -112,7 +113,7 @@ class TestCleanOCR {
     private fun testPoint(filename: String, expected: String, accpetedMarginPercent: Float): MutableList<IdentifiedCharacter> {
         val image = ImageIO.read(this::class.java.classLoader.getResourceAsStream(filename))
         tomo.setTargetImage(image)
-        val results = tomo.runOCR(Point(0, 0))
+        val results = runBlocking { tomo.runOCR(Point(0, 0)) }
 
         assertEquals(expected, results!!.bestMatchingCharacters)
         results!!.characters.map { it.referenceCharacters.toCharArray().zip(it.scores.normalized()).drop(1).first() }
@@ -124,7 +125,7 @@ class TestCleanOCR {
     private fun testArea(filename: String, width: Int, height: Int, expected: String,  accpetedMarginPercent: Float) {
         val image = ImageIO.read(this::class.java.classLoader.getResourceAsStream(filename))
         tomo.setTargetImage(image)
-        val results = tomo.runOCR(listOf(Rectangle(0, 0, width, height)))
+        val results = runBlocking { tomo.runOCR(listOf(Rectangle(0, 0, width, height))) }
 
         assertEquals(expected, results!!.bestMatchingCharacters)
         results!!.characters.map { it.referenceCharacters.toCharArray().zip(it.scores.normalized()).drop(1).first() }
