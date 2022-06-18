@@ -25,6 +25,8 @@ import io.github.ifropc.kotomo.util.Parameters
 import io.github.ifropc.kotomo.util.PrintLevel
 import io.github.ifropc.kotomo.ocr.Point
 import io.github.ifropc.kotomo.ocr.Rectangle
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.awt.image.BufferedImage
 
 /**
@@ -32,7 +34,7 @@ import java.awt.image.BufferedImage
  */
 class KanjiTomo {
     private val par = Parameters.instance
-    private var ocr: OCRManager? = null
+    private lateinit var ocr: OCRManager
     private var areaTask: AreaTask? = null
     private var subImages: List<SubImage>? = null
     private var results: OCRResults? = null
@@ -44,10 +46,9 @@ class KanjiTomo {
      * don't take any more time unless dictionary is changed.
      */
     fun loadData() {
-        if (ocr == null) {
+        if (!::ocr.isInitialized) {
             ocr = OCRManager()
-            ocr!!.loadReferenceData()
-            ReferenceMatrixCacheLoader().load()
+            ocr.loadReferenceData()
         }
     }
 
@@ -55,9 +56,6 @@ class KanjiTomo {
      * Sets the target image. This can be a screenshot around target characters or a whole page.
      */
     fun setTargetImage(image: BufferedImage) {
-        if (ocr == null) {
-            loadData()
-        }
         val started = System.currentTimeMillis()
         detectAreas(image)
         val time = System.currentTimeMillis() - started
@@ -100,7 +98,6 @@ class KanjiTomo {
      *
      * @return null if no characters found near point
      */
-    
     fun runOCR(point: Point): OCRResults? {
         if (areaTask == null) {
             throw Exception("Target image not set")
@@ -118,7 +115,6 @@ class KanjiTomo {
      * Runs OCR inside pre-defined areas where each rectangle contains single characters.
      * This can be used if area detection is done externally and KanjiTomo is only used for final OCR.
      */
-    
     fun runOCR(areas: List<Rectangle?>): OCRResults? {
         if (areaTask == null) {
             throw Exception("Target image not set")
@@ -135,7 +131,7 @@ class KanjiTomo {
     /**
      * Runs OCR for target areas (SubImages)
      */
-    
+
     private fun runOCR(): OCRResults? {
         val started = System.currentTimeMillis()
 
@@ -203,7 +199,7 @@ class KanjiTomo {
     /**
      * Analyzes the image and detects areas that might contain characters.
      */
-    
+
     private fun detectAreas(image: BufferedImage) {
         areaTask = AreaTask(image)
         AreaDetector().run(areaTask!!)

@@ -46,7 +46,7 @@ class OCRManager {
      */
     
     fun loadReferenceData() {
-        val cache = ReferenceMatrixCacheLoader()
+        val cache = ReferenceMatrixCacheLoader
         cache.load()
     }
 

@@ -157,7 +157,7 @@ class OCRAlignCharacters(task: OCRTask?, private val transform: Transform) {
     
     private fun loadReferences(font: String): List<ReferenceMatrix> {
         if (cache == null) {
-            val loader = ReferenceMatrixCacheLoader()
+            val loader = ReferenceMatrixCacheLoader
             loader.load()
             cache = loader.cache
         }

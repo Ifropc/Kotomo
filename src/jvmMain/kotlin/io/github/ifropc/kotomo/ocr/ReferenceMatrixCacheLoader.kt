@@ -24,7 +24,9 @@ import java.io.File
 /**
  * Loads the cache of reference matrices
  */
-class ReferenceMatrixCacheLoader {
+object ReferenceMatrixCacheLoader {
+    lateinit var cache: ReferenceMatrixCache
+        private set
     private val par = instance
 
     /**
@@ -32,7 +34,7 @@ class ReferenceMatrixCacheLoader {
      */
     
     fun load() {
-        if (Companion.cache != null) {
+        if (::cache.isInitialized) {
             return
         }
         val started = System.currentTimeMillis()
@@ -44,15 +46,12 @@ class ReferenceMatrixCacheLoader {
         }
     }
 
-    val cache: ReferenceMatrixCache?
-        get() = Companion.cache
-
     /**
      * Gets reference matrices for given font
      */
     
-    fun getReferences(font: String): List<ReferenceMatrix?>? {
-        return Companion.cache!![font]
+    fun getReferences(font: String): List<ReferenceMatrix> {
+        return cache[font]
     }
 
     /**
@@ -63,7 +62,7 @@ class ReferenceMatrixCacheLoader {
      */
     
     private fun deserialize() {
-        Companion.cache = ReferenceMatrixCache()
+        cache = ReferenceMatrixCache()
         for (font in par.referenceFonts) {
             val fileName = ReferenceMatrixHashCalculator.getReferenceFileName(
                 font, Parameters.targetSize,
@@ -76,13 +75,13 @@ class ReferenceMatrixCacheLoader {
             if (deserializeFile(font, file)) {
                 continue
             }
-            throw Exception(file!!.name + " not found, rebuild cache")
+            throw Exception(file.name + " not found, rebuild cache")
         }
     }
 
     
-    private fun deserializeFile(font: String, file: File?): Boolean {
-        if (!file!!.exists()) {
+    private fun deserializeFile(font: String, file: File): Boolean {
+        if (!file.exists()) {
             return false
         }
         if (par.isPrintOutput) {
@@ -94,16 +93,12 @@ class ReferenceMatrixCacheLoader {
 
     private fun deserializeStream(font: String, file: String) {
         val list = Json.decodeFromString<List<ReferenceMatrix>>(File(file).readText())
-        Companion.cache!!.put(font, list)
+        cache.put(font, list)
     }
 
     private fun applyScoreModifiers() {
-        for (matrix in Companion.cache!!.all) {
-            matrix!!.scoreModifier = getScoreModifier(matrix!!.character)
+        for (matrix in cache.all) {
+            matrix.scoreModifier = getScoreModifier(matrix.character)
         }
-    }
-
-    companion object {
-        private var cache: ReferenceMatrixCache? = null
     }
 }

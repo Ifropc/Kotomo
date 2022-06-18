@@ -118,42 +118,4 @@ class ComponentBuilder {
         component.matrix = layer
         return true
     }
-
-    companion object {
-        private val par = instance
-
-        fun main(args: Array<String>) {
-            try {
-                val testCharacter = 'り' // り人化新港無
-
-                // select reference matrix
-                val loader = ReferenceMatrixCacheLoader()
-                loader.load()
-                val cache = loader.cache
-                var reference: ReferenceMatrix? = null
-                for (matrix in cache!!["MS Gothic"]) {
-                    if (matrix.character == testCharacter) {
-                        reference = matrix
-                    }
-                }
-                println("Reference")
-                debugPrintMatrix(reference!!.matrix)
-
-                // build components
-                val builder = ComponentBuilder()
-                val components: List<Component?> = builder.buildComponents(reference)
-
-                // print components
-                println(components.size.toString() + " components")
-                for (component in components) {
-                    println(component!!.bounds.toString() + " pixels:" + component.pixels)
-                    val pixels = IntArray(32)
-                    addBits(component.matrix, pixels, component.bounds!!)
-                    debugPrintMatrix(pixels, component.matrix)
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-    }
 }
