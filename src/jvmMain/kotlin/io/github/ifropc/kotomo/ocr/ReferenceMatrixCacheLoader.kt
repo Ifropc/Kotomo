@@ -18,7 +18,10 @@ import io.github.ifropc.kotomo.ocr.Characters.getScoreModifier
 import io.github.ifropc.kotomo.util.Parameters
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
+import mu.KotlinLogging
 import java.io.File
+
+private val log = KotlinLogging.logger { }
 
 /**
  * Loads the cache of reference matrices
@@ -26,12 +29,12 @@ import java.io.File
 object ReferenceMatrixCacheLoader {
     lateinit var cache: ReferenceMatrixCache
         private set
-    
+
 
     /**
      * Loads the cache from serialized data file (unless already done)
      */
-    
+
     fun load() {
         if (::cache.isInitialized) {
             return
@@ -40,15 +43,13 @@ object ReferenceMatrixCacheLoader {
         deserialize()
         applyScoreModifiers()
         val done = System.currentTimeMillis()
-        if (Parameters.isPrintDebug) {
-            println("ReferenceMatrixCache " + (done - started) + " ms")
-        }
+        log.debug { "ReferenceMatrixCache " + (done - started) + " ms" }
     }
 
     /**
      * Gets reference matrices for given font
      */
-    
+
     fun getReferences(font: String): List<ReferenceMatrix> {
         return cache[font]
     }
@@ -59,7 +60,7 @@ object ReferenceMatrixCacheLoader {
      * https://github.com/EsotericSoftware/kryo
      * https://www.baeldung.com/kryo
      */
-    
+
     private fun deserialize() {
         cache = ReferenceMatrixCache()
         for (font in Parameters.referenceFonts) {
@@ -78,14 +79,12 @@ object ReferenceMatrixCacheLoader {
         }
     }
 
-    
+
     private fun deserializeFile(font: String, file: File): Boolean {
         if (!file.exists()) {
             return false
         }
-        if (Parameters.isPrintOutput) {
-            println("Deserializing references from file:$file")
-        }
+        log.info { ("Deserializing references from file:$file") }
         deserializeStream(font, file.path)
         return true
     }

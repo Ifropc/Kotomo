@@ -20,16 +20,19 @@ import io.github.ifropc.kotomo.util.buildMatrixHalo
 import io.github.ifropc.kotomo.util.copyBits
 import io.github.ifropc.kotomo.util.countBits
 import io.github.ifropc.kotomo.util.stretchBits
+import mu.KotlinLogging
 import java.io.File
 import java.util.*
 import javax.imageio.ImageIO
+
+private val log = KotlinLogging.logger { }
 
 /**
  * Compares character components (radicals) against target bitmap. Iterates through
  * different component transformations and selects best matches.
  */
 class OCRAlignComponents {
-    
+
     private val calculator = OCRScoreCalculator()
 
     /** Extra debug images are saved for this character  */
@@ -40,12 +43,10 @@ class OCRAlignComponents {
      *
      * @return Improved results in descending score order.
      */
-    
+
     fun run(results: List<OCRResult>?): List<OCRResult> {
         val started = System.currentTimeMillis()
-        if (Parameters.isPrintDebug) {
-            print("Component alignment ")
-        }
+        log.debug("Component alignment ")
         val newResults: MutableList<OCRResult> = ArrayList()
         for (result in results!!) {
             newResults.add(alignComponents(result))
@@ -57,17 +58,14 @@ class OCRAlignComponents {
             val score2 = o2.score
             -1 * score1.compareTo(score2)
         }
-        val done = System.currentTimeMillis()
-        if (Parameters.isPrintDebug) {
-            println((done - started).toString() + " ms")
-        }
+        log.debug { ((System.currentTimeMillis() - started).toString() + " ms") }
         return newResults
     }
 
     /**
      * Improve result by applying transformations to reference character components.
      */
-    
+
     fun alignComponents(result: OCRResult): OCRResult {
         val maxDelta = 1
         val maxStretch = 4
@@ -176,7 +174,7 @@ class OCRAlignComponents {
         }
     }
 
-    
+
     private fun writeDebugImage(result: OCRResult, transform: Transformation) {
         val transformStr = transform.horizontalTranslate.toString() + "," + transform.verticalTranslate
         val file = File(

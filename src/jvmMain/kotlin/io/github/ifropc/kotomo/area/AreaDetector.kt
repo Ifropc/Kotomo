@@ -16,6 +16,9 @@ package io.github.ifropc.kotomo.area
 
 import io.github.ifropc.kotomo.Orientation
 import io.github.ifropc.kotomo.util.Parameters
+import mu.KotlinLogging
+
+private val log = KotlinLogging.logger {  }
 
 /**
  * Area detection coordinator.
@@ -64,10 +67,7 @@ class AreaDetector {
         // filter columns by score so that each area in target image corresponds to only 
         // one column in one orientation.
         OrientationMerge(task).run()
-        if (Parameters.isPrintDebug) {
-            val done = System.currentTimeMillis()
-            println("AreaDetector total " + (done - started) + " ms")
-        }
+        log.debug { "AreaDetector total " + (System.currentTimeMillis() - started) + " ms" }
         checkDebugImages()
     }
 

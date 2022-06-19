@@ -18,7 +18,10 @@ import io.github.ifropc.kotomo.Orientation
 import io.github.ifropc.kotomo.ocr.Rectangle
 import io.github.ifropc.kotomo.util.Parameters
 import io.github.ifropc.kotomo.util.Util.scale
+import mu.KotlinLogging
 import java.util.*
+
+private val log = KotlinLogging.logger { }
 
 /**
  * Finds columns that overlap with other columns in the same area but with different
@@ -220,11 +223,11 @@ class OrientationMerge(task: AreaTask?) : AreaStep(task, "combined") {
         }
         if (isDebug(cols)) {
             if (cols[0].isVertical) {
-                System.err.println("vertical")
+                log.debug { "vertical" } 
             } else {
-                System.err.println("horizontal")
+                log.debug { "horizontal" } 
             }
-            System.err.println("bounds:$bounds")
+            log.debug { "bounds:$bounds" } 
         }
 
         // calculate score based on average distance between areas
@@ -245,7 +248,7 @@ class OrientationMerge(task: AreaTask?) : AreaStep(task, "combined") {
         if ((areaDistanceScore != null) && (areaConnectionsScore != null) && (nullColsScore != null)) {
             score = areaDistanceScore * areaConnectionsScore * nullColsScore
         }
-        if (isDebug(cols)) System.err.println("  score:$score")
+        if (isDebug(cols)) log.debug { "  score:$score" } 
         return score
     }
 
@@ -269,13 +272,13 @@ class OrientationMerge(task: AreaTask?) : AreaStep(task, "combined") {
             }
             distanceSum += areaDistance * weight
             weightSum += weight
-            if (isDebug(cols)) System.err.println("  col:$col dist:$areaDistance weight:$weight")
+            if (isDebug(cols)) log.debug { "  col:$col dist:$areaDistance weight:$weight" } 
         }
         var areaDistanceScore: Float? = null
         if (weightSum > 0) {
             areaDistanceScore = distanceSum / weightSum
         }
-        if (isDebug(cols)) System.err.println("  areaDistanceScore:$areaDistanceScore")
+        if (isDebug(cols)) log.debug { "  areaDistanceScore:$areaDistanceScore" } 
         return areaDistanceScore
     }
 
@@ -377,7 +380,7 @@ class OrientationMerge(task: AreaTask?) : AreaStep(task, "combined") {
         } else {
             nullColsScore = scale(nullRatio, 0.5f, 1.0f, 1.1f, 10.0f)
         }
-        if (isDebug(cols)) System.err.println("  nullColsScore:$nullColsScore")
+        if (isDebug(cols)) log.debug { "  nullColsScore:$nullColsScore" } 
         return nullColsScore
     }
 
@@ -413,7 +416,7 @@ class OrientationMerge(task: AreaTask?) : AreaStep(task, "combined") {
                 }
             }
         }
-        if (isDebug(cols)) System.err.println("  areaConnectionsScore:$bestScore")
+        if (isDebug(cols)) log.debug { "  areaConnectionsScore:$bestScore" } 
         return bestScore
     }
 

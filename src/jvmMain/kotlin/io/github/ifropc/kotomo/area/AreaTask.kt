@@ -27,11 +27,13 @@ import io.github.ifropc.kotomo.util.ImageUtil.paintAreas
 import io.github.ifropc.kotomo.util.ImageUtil.paintColumn
 import io.github.ifropc.kotomo.util.ImageUtil.setClipboard
 import io.github.ifropc.kotomo.util.Parameters
+import mu.KotlinLogging
 import java.awt.Color
 import java.awt.image.BufferedImage
 import java.io.File
 import javax.imageio.ImageIO
 
+private val log = KotlinLogging.logger { }
 /**
  * Area detection algorithm input and output values.
  */
@@ -442,7 +444,7 @@ class AreaTask(targetImage: BufferedImage) {
             subImage.location = Rectangle(minX, minY, maxX - minX + 1, maxY - minY + 1)
             subImage.image = crop(binaryImage, subImage.location!!)
         } catch (e: Exception) {
-            e.printStackTrace()
+            log.error(e) {}
         }
     }
 
@@ -492,7 +494,7 @@ class AreaTask(targetImage: BufferedImage) {
         if (debugImages.size < Parameters.maxDebugImages) {
             debugImages.add(image)
         } else {
-            System.err.println("maxDebugImages reached")
+            log.error { ("maxDebugImages reached") }
         }
     }
 
@@ -555,7 +557,7 @@ class AreaTask(targetImage: BufferedImage) {
         if (!Parameters.isSaveAreaFailed) {
             return
         }
-        println("Writing area debug images")
+        log.info { "Writing area debug images" }
         for (image in debugImages) {
             writeDebugImage(image)
         }

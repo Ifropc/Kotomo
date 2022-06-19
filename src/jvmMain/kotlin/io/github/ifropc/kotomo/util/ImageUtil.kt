@@ -18,6 +18,7 @@ import io.github.ifropc.kotomo.area.Area
 import io.github.ifropc.kotomo.area.Column
 import io.github.ifropc.kotomo.ocr.Point
 import io.github.ifropc.kotomo.ocr.Rectangle
+import mu.KotlinLogging
 import org.imgscalr.Scalr
 import java.awt.Color
 import java.awt.Image
@@ -26,6 +27,8 @@ import java.awt.datatransfer.DataFlavor
 import java.awt.datatransfer.Transferable
 import java.awt.datatransfer.UnsupportedFlavorException
 import java.awt.image.BufferedImage
+
+private val log = KotlinLogging.logger { }
 
 object ImageUtil {
     /**
@@ -624,14 +627,15 @@ object ImageUtil {
      */
     fun debugPrintMatrix(matrix: Array<BooleanArray>) {
         for (y in 0..31) {
+            var s =""
             for (x in 0..31) {
-                if (matrix[x][y]) {
-                    print("x")
+                s += if (matrix[x][y]) {
+                    ("x")
                 } else {
-                    print(".")
+                    (".")
                 }
             }
-            println()
+            log.debug { s }
         }
     }
 
@@ -715,15 +719,15 @@ object ImageUtil {
         setBit(25, 26, matrix)
         setBit(26, 25, matrix)
         setBit(26, 26, matrix)
-        println("before:")
+        log.debug { "before:" } 
         debugPrintMatrix(matrix)
         val source = IntArray(32)
         setBit(29, 28, source)
         setBit(29, 29, source)
-        println("source:")
+        log.debug { "source:" } 
         debugPrintMatrix(source)
         addBits(source, matrix)
-        println("after:")
+        log.debug { "after:" } 
         debugPrintMatrix(matrix)
     }
 } //This class is used to hold an image while on the clipboard.

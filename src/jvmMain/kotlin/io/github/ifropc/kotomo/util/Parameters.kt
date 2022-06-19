@@ -169,21 +169,8 @@ object Parameters {
         get() = File(findFile(dataDirName).toString() + "/" + cacheDirName)
 
     // debug-related parameters
-    var printLevel = PrintLevel.DEBUG
     var saveAreaImages = SaveAreaImages.OFF
     var saveOCRImages = SaveOCRImages.OFF
-
-    /**
-     * printLevel >= PRINT_OUTPUT
-     */
-    val isPrintOutput: Boolean
-        get() = printLevel.isGE(PrintLevel.BASIC)
-
-    /**
-     * printLevel >= PRINT_DEBUG
-     */
-    val isPrintDebug: Boolean
-        get() = printLevel.isGE(PrintLevel.DEBUG)
 
     /**
      * saveAreaImages >= SAVE_FAILED

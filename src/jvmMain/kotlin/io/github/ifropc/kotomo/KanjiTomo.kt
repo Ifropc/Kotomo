@@ -24,11 +24,13 @@ import io.github.ifropc.kotomo.ocr.Point
 import io.github.ifropc.kotomo.ocr.Rectangle
 import io.github.ifropc.kotomo.ocr.ReferenceMatrixCacheLoader
 import io.github.ifropc.kotomo.util.Parameters
-import io.github.ifropc.kotomo.util.PrintLevel
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import mu.KotlinLogging
 import java.awt.image.BufferedImage
+
+private val log = KotlinLogging.logger { }
 
 /**
  * Main class of the KanjiTomo OCR library
@@ -56,12 +58,9 @@ class KanjiTomo {
         val started = System.currentTimeMillis()
         detectAreas(image)
         val time = System.currentTimeMillis() - started
-        if (Parameters.isPrintDebug) {
-            println("Target image processed, $time ms\n")
-        }
-        if (Parameters.isPrintOutput && !Parameters.isPrintDebug) {
-            println("Target image processed\n")
-        }
+        log.debug { ("Target image processed, $time ms") }
+
+        log.info { "Target image processed" }
     }
 
     /**
@@ -99,9 +98,7 @@ class KanjiTomo {
         if (areaTask == null) {
             throw Exception("Target image not set")
         }
-        if (Parameters.isPrintOutput) {
-            println("Run OCR at point:" + point.x + "," + point.y)
-        }
+        log.info { "Run OCR at point:" + point.x + "," + point.y }
 
         // select areas near point
         subImages = areaTask!!.getSubImages(point)
@@ -116,9 +113,7 @@ class KanjiTomo {
         if (areaTask == null) {
             throw Exception("Target image not set")
         }
-        if (Parameters.isPrintOutput) {
-            println("Run OCR rectangle list")
-        }
+        log.info { "Run OCR rectangle list" }
 
         // build subimages from argument areas
         subImages = areaTask!!.getSubImages(areas)
@@ -139,9 +134,7 @@ class KanjiTomo {
             verticalOrientation = subImage.isVertical
         }
         if (subImages!!.size == 0) {
-            if (Parameters.isPrintOutput) {
-                println("No characters identified")
-            }
+            log.info { "No characters identified" }
             return null
         }
 
@@ -187,17 +180,8 @@ class KanjiTomo {
         results = OCRResults(characters, locations, ocrScores, verticalOrientation)
 
         val time = System.currentTimeMillis() - started
-        if (Parameters.isPrintOutput) {
-            println(
-                """
-    ${results.toString()}
-    
-    """.trimIndent()
-            )
-        }
-        if (Parameters.isPrintDebug) {
-            println("OCR runtime $time ms\n")
-        }
+        log.info { results }
+        log.debug { "OCR runtime $time ms\n" }
         return results
     }
 
@@ -234,18 +218,5 @@ class KanjiTomo {
      */
     fun setCharacterColor(color: CharacterColor) {
         Parameters.colorTarget = color
-    }
-
-    /**
-     * If true, OCR results are printed to stdout.
-     * If false, nothing is printed.
-     * Default: false
-     */
-    fun setPrintOutput(printOutput: Boolean) {
-        if (printOutput == false) {
-            Parameters.printLevel = PrintLevel.OFF
-        } else {
-            Parameters.printLevel = PrintLevel.BASIC
-        }
     }
 }

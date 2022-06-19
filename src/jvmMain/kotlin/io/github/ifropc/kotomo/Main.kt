@@ -17,16 +17,19 @@ package io.github.ifropc.kotomo
 
 import io.github.ifropc.kotomo.ocr.Point
 import kotlinx.coroutines.runBlocking
+import mu.KotlinLogging
 import java.io.File
 import javax.imageio.ImageIO
 
+private val log = KotlinLogging.logger { }
+
 object Main {
     fun main(args: Array<String>) {
-        val tomo = io.github.ifropc.kotomo.KanjiTomo()
+        val tomo = KanjiTomo()
         tomo.loadData()
         val image = ImageIO.read(File(args[0]))
         tomo.setTargetImage(image)
         val results = runBlocking { tomo.runOCR(Point(args[1].toInt(), args[2].toInt())) }
-        println(results)
+        log.info { results }
     }
 }

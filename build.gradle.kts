@@ -35,6 +35,7 @@ kotlin {
             dependencies {
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.2")
+                implementation("io.github.microutils:kotlin-logging:2.1.23")
             }
         }
         val commonTest by getting {
@@ -45,6 +46,7 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation("org.imgscalr:imgscalr-lib:4.2")
+                implementation("ch.qos.logback:logback-classic:1.0.13")
             }
         }
         val jvmTest by getting

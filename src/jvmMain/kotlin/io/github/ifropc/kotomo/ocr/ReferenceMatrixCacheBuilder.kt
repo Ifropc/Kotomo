@@ -22,10 +22,13 @@ import io.github.ifropc.kotomo.util.buildMatrixHalo
 import io.github.ifropc.kotomo.util.countBits
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import mu.KotlinLogging
 import java.awt.Color
 import java.awt.Font
 import java.awt.GraphicsEnvironment
 import java.awt.image.BufferedImage
+
+private val log = KotlinLogging.logger { }
 
 /**
  * Builds the reference matrix cache.
@@ -43,7 +46,7 @@ class ReferenceMatrixCacheBuilder {
 
     
     fun buildCache() {
-        println("Building reference cache")
+        log.debug { "Building reference cache" } 
         for (font in Parameters.referenceFonts) {
             generateCharacters(font)
         }
@@ -61,14 +64,14 @@ class ReferenceMatrixCacheBuilder {
             Parameters.ocrHaloSize, Characters.all
         )
         if (file!!.exists() && SKIP_EXISTS) {
-            println("$font already generated\nfile:$file")
+            log.debug { "$font already generated\nfile:$file" } 
             return
         }
 
         // generate characters
         checkFont(font)
         characters = HashSet()
-        println("Generating characters for $font\nfile:$file")
+        log.debug { "Generating characters for $font\nfile:$file" } 
         var index = 0
         // using Arraylist type because List doesn't implement serializable
         val matrixList = ArrayList<ReferenceMatrix>()
@@ -80,10 +83,10 @@ class ReferenceMatrixCacheBuilder {
             matrixList.add(matrix)
             characters!!.add(c)
             if (++index % 100 == 0) {
-                println("Progress:$index")
+                log.debug { "Progress:$index" } 
             }
         }
-        println("$index characters done")
+        log.debug { "$index characters done" } 
 
         // save to disk
         serialize(font, matrixList)
@@ -275,12 +278,8 @@ class ReferenceMatrixCacheBuilder {
 
 
         fun main(args: Array<String>) {
-            try {
                 val cache = ReferenceMatrixCacheBuilder()
                 cache.buildCache()
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
         }
     }
 }

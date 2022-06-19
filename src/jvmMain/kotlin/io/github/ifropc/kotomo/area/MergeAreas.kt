@@ -17,8 +17,11 @@ package io.github.ifropc.kotomo.area
 import io.github.ifropc.kotomo.ocr.Rectangle
 import io.github.ifropc.kotomo.util.ImageUtil.paintRectangle
 import io.github.ifropc.kotomo.util.Parameters
+import mu.KotlinLogging
 import java.awt.Color
 import java.util.*
+
+private val log = KotlinLogging.logger { }
 
 /**
  * Merges thin neighbour areas in up/down direction (vertical orientation) or
@@ -127,9 +130,9 @@ class MergeAreas(task: AreaTask?) : AreaStep(task, "mergeareas") {
             return areas
         }
         if (isDebug(areas)) {
-            System.err.println("findBestMerge")
-            System.err.println("col:$col")
-            System.err.println("areas:" + toString(areas))
+            log.debug { "findBestMerge" } 
+            log.debug { "col:$col" } 
+            log.debug {  "areas:" + toString(areas) }
         }
         val combination = BooleanArray(areas.size)
         var bestScore = 0f
@@ -140,8 +143,8 @@ class MergeAreas(task: AreaTask?) : AreaStep(task, "mergeareas") {
             if (mergedAreas != null) {
                 if (debug) {
                     addIntermediateDebugImage(col, areas, mergedAreas)
-                    System.err.println(task!!.debugImages[task!!.debugImages.size - 1]!!.filename)
-                    System.err.println("  combination:" + toString(combination))
+                    log.debug (task!!.debugImages[task!!.debugImages.size - 1]!!.filename)
+                    log.debug("  combination:" + toString(combination))
                 }
                 val score = calcScore(mergedAreas)
                 if (score != null && score > bestScore) {
@@ -149,14 +152,14 @@ class MergeAreas(task: AreaTask?) : AreaStep(task, "mergeareas") {
                     bestAreas = mergedAreas
                     if (debug) bestCombination = toString(combination)
                 }
-                if (debug) System.err.println("  score:$score")
+                if (debug) log.debug { "  score:$score" } 
             }
             nextCombination(combination)
         } while (!combination[combination.size - 1]) // last boolean must be false
         if (debug) {
-            System.err.println("best:$bestCombination")
-            System.err.println("score:$bestScore")
-            System.err.println("areas:" + toString(bestAreas))
+            log.debug { "best:$bestCombination" } 
+            log.debug { "score:$bestScore" } 
+            log.debug { "areas:" + toString(bestAreas) }
         }
         return bestAreas
     }
@@ -242,7 +245,7 @@ class MergeAreas(task: AreaTask?) : AreaStep(task, "mergeareas") {
         var scale = width.toFloat() / reference
         if (scale > 0.8f) scale = 1.0f
         if (scale < 0.6f) scale = 0.6f
-        if (debug && scale != 1.0f) System.err.println("col:$col scale:$scale")
+        if (debug && scale != 1.0f) log.debug { "col:$col scale:$scale" } 
         return scale
     }
 
@@ -255,7 +258,7 @@ class MergeAreas(task: AreaTask?) : AreaStep(task, "mergeareas") {
     }
 
     private fun calcScore(areas: List<Area>): Float {
-        if (debug) System.err.println("  targetSize:$targetSize maxSize:$maxSize")
+        if (debug) log.debug { "  targetSize:$targetSize maxSize:$maxSize" } 
         var scoreSum = 0f
         for (i in areas.indices) {
             val area = areas[i]
@@ -275,7 +278,7 @@ class MergeAreas(task: AreaTask?) : AreaStep(task, "mergeareas") {
             score *= Math.pow((1f - distanceRatio).toDouble(), 1.0).toFloat()
 
             //if (debug) System.err.println("  area:"+area+" size:"+size+" score:"+score);
-            if (debug) System.err.println("  area:$area size:$size distance:$distance score:$score")
+            if (debug) log.debug { "  area:$area size:$size distance:$distance score:$score" } 
             scoreSum += score
         }
         return scoreSum / areas.size

@@ -18,14 +18,16 @@ import io.github.ifropc.kotomo.ocr.Point
 import io.github.ifropc.kotomo.ocr.Rectangle
 import io.github.ifropc.kotomo.util.ImageUtil.createRectangle
 import io.github.ifropc.kotomo.util.Parameters
+import mu.KotlinLogging
 import java.awt.Color
 import java.awt.Graphics2D
+
+private val log = KotlinLogging.logger { }
 
 /**
  * Finds columns that are connected to each other (continue text) in reading direction.
  */
 class FindConnections(task: AreaTask?) : AreaStep(task, "connections") {
-    private val debug = false
     private var index: RTree<Column>? = null
     
     override fun runImpl() {
@@ -44,7 +46,7 @@ class FindConnections(task: AreaTask?) : AreaStep(task, "connections") {
      * Normally this is only one column.
      */
     private fun findNextColumn(column: Column) {
-        if (debug) System.err.println("column:$column")
+        log.debug { "column:$column" }
 
         // find closest column in reading direction
         val probeSizeFactor = 1.75f
@@ -62,7 +64,7 @@ class FindConnections(task: AreaTask?) : AreaStep(task, "connections") {
                 probeSize, probeSize
             )
         }
-        if (debug) System.err.println("  probe:$probe")
+        log.debug { "  probe:$probe" }
         val targetColumns = index!![probe]
 
         // find closest column
@@ -93,14 +95,14 @@ class FindConnections(task: AreaTask?) : AreaStep(task, "connections") {
             }
         }
         if (target == null) {
-            if (debug) System.err.println("  no target found")
+            log.debug { "  no target found" }
             return
         }
-        if (debug) System.err.println("  target:$target distance:$distance")
+        log.debug { "  target:$target distance:$distance" }
 
         // connected columns should not form a tree
         if (target.previousColumn != null) {
-            if (debug) System.err.println("  already connected")
+            log.debug { "  already connected" }
             return
         }
 
@@ -112,7 +114,7 @@ class FindConnections(task: AreaTask?) : AreaStep(task, "connections") {
         )
         var backgroundPixels = task!!.countPixels(testBackground, true, true)
         if (backgroundPixels >= 2) {
-            if (debug) System.err.println("  rejected from endpoint")
+            log.debug { "  rejected from endpoint" }
             return
         }
         // test from midpoint
@@ -122,7 +124,7 @@ class FindConnections(task: AreaTask?) : AreaStep(task, "connections") {
         )
         backgroundPixels = task!!.countPixels(testBackground, true, true)
         if (backgroundPixels >= 2) {
-            if (debug) System.err.println("  rejected from midpoint")
+            log.debug { "  rejected from midpoint" }
             return
         }
 
@@ -131,7 +133,7 @@ class FindConnections(task: AreaTask?) : AreaStep(task, "connections") {
         val targetWidth = target.minorDim
         val limit = 0.75f
         if (columnWidth < targetWidth * limit || targetWidth < columnWidth * limit) {
-            if (debug) System.err.println("  rejected from width")
+            log.debug { "  rejected from width" }
             return
         }
 
@@ -144,7 +146,7 @@ class FindConnections(task: AreaTask?) : AreaStep(task, "connections") {
             if (col === column || col === target) {
                 continue
             }
-            if (debug) System.err.println("  rejected from crossing another column")
+            log.debug { "  rejected from crossing another column" }
             return
         }
 

@@ -16,6 +16,9 @@
 package io.github.ifropc.kotomo.util
 
 import io.github.ifropc.kotomo.ocr.Rectangle
+import mu.KotlinLogging
+
+private val log = KotlinLogging.logger { }
 
 fun moveMatrix(matrix: IntArray, horizontal: Int, vertical: Int): IntArray? {
     val matrix2 = IntArray(32)
@@ -147,14 +150,15 @@ fun countBits(matrix: IntArray, bounds: Rectangle): Int {
  */
 fun debugPrintMatrix(matrix: IntArray?) {
     for (y in 0..31) {
+        var s =""
         for (x in 0..31) {
-            if (isBitSet(x, y, matrix!!)) {
-                print("x")
+            s += if (isBitSet(x, y, matrix!!)) {
+                "x"
             } else {
-                print(".")
+                "."
             }
         }
-        println()
+        log.debug { s }
     }
 }
 
@@ -177,7 +181,7 @@ fun debugPrintMatrix(matrix1: IntArray?, matrix2: IntArray?) {
                 "."
             }
         }
-        println("$matrix1Line $matrix2Line")
+        log.debug { "$matrix1Line $matrix2Line" } 
     }
 }
 
@@ -422,14 +426,15 @@ fun removeBits(source: IntArray, target: IntArray, bounds: Rectangle) {
  * Debug prints bits in value;
  */
 fun printBits(value: Int) {
+    var b = ""
     for (x in 0..31) {
         if ((value and (1 shl (31 - x))) != 0) {
-            print("1")
+            b += ("1")
         } else {
-            print("0")
+            b += ("0")
         }
     }
-    println()
+    log.debug{ b }
 }
 
 /**

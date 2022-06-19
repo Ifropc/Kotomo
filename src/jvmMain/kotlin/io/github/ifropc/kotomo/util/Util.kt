@@ -15,7 +15,10 @@
 package io.github.ifropc.kotomo.util
 
 import io.github.ifropc.kotomo.ocr.Rectangle
+import mu.KotlinLogging
 import java.io.File
+
+private val log = KotlinLogging.logger { }
 
 object Util {
     /**
@@ -105,11 +108,11 @@ object Util {
         val heapMaxSize = Runtime.getRuntime().maxMemory()
         val heapFreeSize = Runtime.getRuntime().freeMemory()
         val heapUsedSize = heapSize - heapFreeSize
-        println("\nMemory usage:")
-        println("heapSize    :$heapSize")
-        println("heapMaxSize :$heapMaxSize")
-        println("heapFreeSize:$heapFreeSize")
-        println("heapUsedSize:$heapUsedSize")
+        log.debug { "\nMemory usage:" } 
+        log.debug { "heapSize    :$heapSize" } 
+        log.debug { "heapMaxSize :$heapMaxSize" } 
+        log.debug { "heapFreeSize:$heapFreeSize" } 
+        log.debug { "heapUsedSize:$heapUsedSize" } 
     }
 }
 

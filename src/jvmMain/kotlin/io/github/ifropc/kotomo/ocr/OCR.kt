@@ -18,8 +18,11 @@ import io.github.ifropc.kotomo.util.ImageUtil.buildImage
 import io.github.ifropc.kotomo.util.ImageUtil.buildScaledImage
 import io.github.ifropc.kotomo.util.ImageUtil.colorizeImage
 import io.github.ifropc.kotomo.util.Parameters
+import mu.KotlinLogging
 import java.io.File
 import javax.imageio.ImageIO
+
+private val log = KotlinLogging.logger {  }
 
 /**
  * Runs all OCR algorithm stages. Each stage is more accurate but slower than last, only a
@@ -71,17 +74,16 @@ class OCR {
      */
     
     private fun debug(task: OCRTask?, time: Long, stage: Int) {
-        if (Parameters.isPrintDebug) {
-            println("OCR total $time ms")
+            log.debug {  "OCR total $time ms" }
             if (task!!.results!!.size == 0) {
-                System.err.println("No results")
+                log.error("No results")
                 return
             }
-            println("\nOCR results stage $stage")
+            log.debug { "OCR results stage $stage" }
             for (result in task.results!!) {
-                println(result)
+                log.debug { result }
             }
-        }
+
         if (Parameters.isSaveOCRFailed) {
             val bestMatch = task!!.results!![0].character
             var expectedCharacter: Char? = null

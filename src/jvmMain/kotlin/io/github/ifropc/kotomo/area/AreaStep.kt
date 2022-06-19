@@ -15,7 +15,9 @@
 package io.github.ifropc.kotomo.area
 
 import io.github.ifropc.kotomo.util.Parameters
+import mu.KotlinLogging
 
+private val log = KotlinLogging.logger { }
 
 /**
  * Single algorithm step in area detector. Each step should do only one job such
@@ -52,7 +54,7 @@ abstract class AreaStep(protected var task: AreaTask?, vararg debugImages: Strin
     /**
      * Runs the algorithm step and creates debug information if requested.
      */
-    
+
     fun run() {
         val started = System.currentTimeMillis()
         runImpl()
@@ -60,10 +62,7 @@ abstract class AreaStep(protected var task: AreaTask?, vararg debugImages: Strin
             task!!.collectAreas()
         }
         val done = System.currentTimeMillis()
-        if (Parameters.isPrintDebug) {
-            val subclassName = this.javaClass.name
-            println(subclassName + " " + (done - started) + " ms")
-        }
+        log.trace { this::class.simpleName + " " + (done - started) + " ms" }
         if (addDebugImages) {
             addDebugImages()
         }
@@ -73,12 +72,12 @@ abstract class AreaStep(protected var task: AreaTask?, vararg debugImages: Strin
     /**
      * The actual implementation of the algorithm step.
      */
-    
+
     protected abstract fun runImpl()
 
     /**
      * Paints and adds debug images to task
      */
-    
+
     protected abstract fun addDebugImages()
 }

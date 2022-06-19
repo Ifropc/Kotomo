@@ -18,11 +18,14 @@ import io.github.ifropc.kotomo.ocr.Rectangle
 import io.github.ifropc.kotomo.util.ImageUtil.createWhiteImage
 import io.github.ifropc.kotomo.util.Parameters
 import io.github.ifropc.kotomo.util.Util.scale
+import mu.KotlinLogging
 import java.awt.Color
 import java.awt.Graphics2D
 import java.awt.image.BufferedImage
 import java.util.*
 import java.util.concurrent.LinkedBlockingQueue
+
+private val log = KotlinLogging.logger {  }
 
 /**
  * Finds areas by scanning the image for groups of touching pixels
@@ -39,8 +42,7 @@ class FindAreas(task: AreaTask?) : AreaStep(task, "touching", "background", "are
     private var areaMaxY = 0
     private var debugImage: BufferedImage? = null
     private var debugGraphics: Graphics2D? = null
-    private val debug = false
-    
+
     override fun runImpl() {
         findAreas()
         removeDitherAreas1()
@@ -177,9 +179,7 @@ class FindAreas(task: AreaTask?) : AreaStep(task, "touching", "background", "are
             background[p.x]!![p.y] = false
         }
         task!!.areas!!.add(area)
-        if (debug) {
-            System.err.println("area:" + area + " rgb:" + area.minRGB)
-        }
+        log.debug { "area:" + area + " rgb:" + area.minRGB }
     }
 
     private inner class Pixel(var x: Int, var y: Int)
@@ -284,8 +284,8 @@ class FindAreas(task: AreaTask?) : AreaStep(task, "touching", "background", "are
 //				System.err.println("1         :"+neighbourCounts[1]);
 //				System.err.println("score     :"+score);
 //				System.err.println("minRGB    :"+area.getMinRGB());
-//				System.err.println("rgbQuality:"+rgbQuality+"\t("+rgbFactor+")");
-//				System.err.println("pixels    :"+area.pixels+"\t("+pixelsFactor+")");
+//				log.debug { "rgbQuality:"+rgbQuality+"\t("+rgbFactor+")" } ;
+//				log.debug { "pixels    :"+area.pixels+"\t("+pixelsFactor+")" } ;
 //				System.err.println("threshold :"+threshold);
 //			}
             if (score >= threshold) {

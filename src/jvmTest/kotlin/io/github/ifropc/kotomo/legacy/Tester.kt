@@ -17,7 +17,6 @@ package io.github.ifropc.kotomo.legacy
 import io.github.ifropc.kotomo.KanjiTomo
 import io.github.ifropc.kotomo.ocr.OCR
 import io.github.ifropc.kotomo.util.Parameters
-import io.github.ifropc.kotomo.util.PrintLevel
 import io.github.ifropc.kotomo.util.SaveAreaImages
 import io.github.ifropc.kotomo.util.SaveOCRImages
 import kotlinx.coroutines.runBlocking
@@ -269,7 +268,6 @@ class Tester {
         @JvmStatic
         fun main(args: Array<String>) {
             val par = Parameters
-            par.printLevel = PrintLevel.DEBUG
             par.saveAreaImages = SaveAreaImages.OFF
             par.saveOCRImages = SaveOCRImages.OFF
             par.ocrThreads = 1

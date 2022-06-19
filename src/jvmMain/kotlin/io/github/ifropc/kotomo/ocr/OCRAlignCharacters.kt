@@ -15,14 +15,17 @@
 package io.github.ifropc.kotomo.ocr
 
 import io.github.ifropc.kotomo.util.Parameters
+import mu.KotlinLogging
 import java.util.*
+
+private val log = KotlinLogging.logger { }
 
 /**
  * Compares reference characters against target bitmap. Iterates through different alignments
  * and selects best matches.
  */
 class OCRAlignCharacters(task: OCRTask?, private val transform: Transform) {
-    
+
     private val scoreCalculator: OCRScoreCalculator
     private var topN = 0
     private var expectedCharacter: Char? = null
@@ -40,7 +43,7 @@ class OCRAlignCharacters(task: OCRTask?, private val transform: Transform) {
      * @param maxSteps Maximum number of translate and stretch steps allowed in total
      * @param topN Returns only the best N results
      */
-    
+
     fun run(
         characters: Set<Char?>?, refined: Boolean,
         maxTranslate: Int, maxStretch: Int, maxSteps: Int, topN: Int
@@ -48,13 +51,7 @@ class OCRAlignCharacters(task: OCRTask?, private val transform: Transform) {
         var bestResults: List<OCRResult>? = null
         this.topN = topN
         val started = System.currentTimeMillis()
-        if (Parameters.isPrintDebug) {
-            if (!refined) {
-                print("\nBasic alignment ")
-            } else {
-                print("Refined alignment ")
-            }
-        }
+        log.debug { "${if (!refined) "Basic" else "Refined"} alignment" }
 
         // generate OCR targets by applying offset and stretch transformations to target bitmap
         val targets = transform.run(maxTranslate, maxStretch, maxSteps)
@@ -66,10 +63,7 @@ class OCRAlignCharacters(task: OCRTask?, private val transform: Transform) {
             val results = findBestAlignment(targets, references, refined)
             bestResults = combineResults(bestResults, results, topN)
         }
-        val done = System.currentTimeMillis()
-        if (Parameters.isPrintDebug) {
-            println((done - started).toString() + " ms")
-        }
+        log.debug { ((System.currentTimeMillis() - started).toString() + " ms") }
         return bestResults
     }
 
@@ -80,7 +74,7 @@ class OCRAlignCharacters(task: OCRTask?, private val transform: Transform) {
      * @param refined Include pixels that are close to target image but not
      * an exact match. This is slower but produces more accurate results.
      */
-    
+
     private fun findBestAlignment(
         targets: List<TargetMatrix>,
         references: List<ReferenceMatrix>, refined: Boolean
@@ -130,7 +124,7 @@ class OCRAlignCharacters(task: OCRTask?, private val transform: Transform) {
      *
      * @param character Returns bitmaps only for these characters. If null, all characters.
      */
-    
+
     private fun loadReferences(font: String, characters: Set<Char?>?): List<ReferenceMatrix> {
         if (characters == null) {
             return loadReferences(font)
@@ -154,7 +148,7 @@ class OCRAlignCharacters(task: OCRTask?, private val transform: Transform) {
     /**
      * Loads reference bitmaps from cache file or from memory if called before.
      */
-    
+
     private fun loadReferences(font: String): List<ReferenceMatrix> {
         if (cache == null) {
             val loader = ReferenceMatrixCacheLoader
