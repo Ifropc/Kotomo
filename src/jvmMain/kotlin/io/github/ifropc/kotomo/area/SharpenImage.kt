@@ -15,6 +15,8 @@
 package io.github.ifropc.kotomo.area
 
 import io.github.ifropc.kotomo.util.ImageUtil.sharpenImage
+import io.github.ifropc.kotomo.util.Util.toBufferedImage
+import io.github.ifropc.kotomo.util.Util.toKotomoImage
 
 /**
  * Runs unsharp mask to the original image
@@ -22,12 +24,12 @@ import io.github.ifropc.kotomo.util.ImageUtil.sharpenImage
 class SharpenImage(task: AreaTask?) : AreaStep(task, "original", "sharpened") {
     
     override fun runImpl() {
-        task!!.sharpenedImage = sharpenImage(task!!.originalImage)
+        task!!.sharpenedImage = sharpenImage(task!!.originalImage.toBufferedImage()).toKotomoImage()
     }
 
     
     override fun addDebugImages() {
-        task!!.addDebugImage(task!!.originalImage, "original")
-        task!!.addDebugImage(task!!.sharpenedImage, "sharpened")
+        task!!.addDebugImage(task!!.originalImage.toBufferedImage(), "original")
+        task!!.addDebugImage(task!!.sharpenedImage?.toBufferedImage(), "sharpened")
     }
 }

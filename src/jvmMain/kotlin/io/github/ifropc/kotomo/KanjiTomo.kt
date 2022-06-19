@@ -18,16 +18,17 @@ package io.github.ifropc.kotomo
 import io.github.ifropc.kotomo.area.AreaDetector
 import io.github.ifropc.kotomo.area.AreaTask
 import io.github.ifropc.kotomo.area.SubImage
+import io.github.ifropc.kotomo.ocr.KotomoImage
 import io.github.ifropc.kotomo.ocr.OCR
 import io.github.ifropc.kotomo.ocr.OCRTask
 import io.github.ifropc.kotomo.ocr.Point
 import io.github.ifropc.kotomo.ocr.Rectangle
 import io.github.ifropc.kotomo.ocr.ReferenceMatrixCacheLoader
+import io.github.ifropc.kotomo.util.Util.toBufferedImage
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import mu.KotlinLogging
-import java.awt.image.BufferedImage
 
 private val log = KotlinLogging.logger { }
 
@@ -53,7 +54,7 @@ class KanjiTomo {
     /**
      * Sets the target image. This can be a screenshot around target characters or a whole page.
      */
-    fun setTargetImage(image: BufferedImage) {
+    fun setTargetImage(image: KotomoImage) {
         val started = System.currentTimeMillis()
         detectAreas(image)
         val time = System.currentTimeMillis() - started
@@ -188,7 +189,7 @@ class KanjiTomo {
      * Analyzes the image and detects areas that might contain characters.
      */
 
-    private fun detectAreas(image: BufferedImage) {
+    private fun detectAreas(image: KotomoImage) {
         areaTask = AreaTask(image)
         AreaDetector().run(areaTask!!)
     }

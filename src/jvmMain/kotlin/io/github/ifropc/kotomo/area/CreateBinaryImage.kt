@@ -19,6 +19,7 @@ import io.github.ifropc.kotomo.util.ImageUtil.createImageFromMatrix
 import io.github.ifropc.kotomo.util.ImageUtil.createMatrixFromImage
 import io.github.ifropc.kotomo.util.ImageUtil.makeBlackAndWhite
 import io.github.ifropc.kotomo.util.Parameters
+import io.github.ifropc.kotomo.util.Util.toBufferedImage
 import java.awt.image.BufferedImage
 
 /**
@@ -30,7 +31,7 @@ class CreateBinaryImage constructor(task: AreaTask?) : AreaStep(task, "binary") 
 
         // TODO instead of static blackThreshold calculate a histogram?
         val bwImage: BufferedImage = makeBlackAndWhite(
-            (task!!.sharpenedImage)!!,
+            (task!!.sharpenedImage?.toBufferedImage())!!,
             if (FixedParameters.fixedBlackLevelEnabled) null else Parameters.pixelRGBThreshold
         )
         task!!.binaryImage = createMatrixFromImage(bwImage)

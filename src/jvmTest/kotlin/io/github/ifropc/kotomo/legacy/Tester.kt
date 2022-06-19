@@ -19,6 +19,7 @@ import io.github.ifropc.kotomo.ocr.OCR
 import io.github.ifropc.kotomo.util.Parameters
 import io.github.ifropc.kotomo.util.SaveAreaImages
 import io.github.ifropc.kotomo.util.SaveOCRImages
+import io.github.ifropc.kotomo.util.Util.toKotomoImage
 import kotlinx.coroutines.runBlocking
 import java.io.File
 import java.util.regex.Pattern
@@ -129,7 +130,7 @@ class Tester {
             if (!file.name.endsWith(suffix!!)) {
                 continue
             }
-            val image = ImageIO.read(file)
+            val image = ImageIO.read(file).toKotomoImage()
             tomo!!.setTargetImage(image)
         }
     }
@@ -158,7 +159,7 @@ class Tester {
         }
 
         // find areas 
-        tomo!!.setTargetImage(ImageIO.read(testImage.file))
+        tomo!!.setTargetImage(ImageIO.read(testImage.file).toKotomoImage())
 
         // run test
         for (test in testImage.tests!!) {

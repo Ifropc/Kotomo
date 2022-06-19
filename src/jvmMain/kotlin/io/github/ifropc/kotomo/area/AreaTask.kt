@@ -15,6 +15,7 @@
 package io.github.ifropc.kotomo.area
 
 import io.github.ifropc.kotomo.CharacterColor
+import io.github.ifropc.kotomo.ocr.KotomoImage
 import io.github.ifropc.kotomo.ocr.Point
 import io.github.ifropc.kotomo.ocr.Rectangle
 import io.github.ifropc.kotomo.util.DebugImage
@@ -39,7 +40,7 @@ private val log = KotlinLogging.logger { }
 /**
  * Area detection algorithm input and output values.
  */
-class AreaTask(targetImage: BufferedImage) {
+class AreaTask(targetImage: KotomoImage) {
     
 
     /**
@@ -55,12 +56,12 @@ class AreaTask(targetImage: BufferedImage) {
     /**
      * Original image (read from file or captured from screen).
      */
-    var originalImage: BufferedImage
+    var originalImage: KotomoImage
 
     /**
      * Target image after unsharp mask filter. Used to increase contranst.
      */
-    var sharpenedImage: BufferedImage? = null
+    var sharpenedImage: KotomoImage? = null
 
     /**
      * Image is divided into InvertImage.BLOCK_SIZE^2 blocks. Colors in each block can be inverted
@@ -435,6 +436,8 @@ class AreaTask(targetImage: BufferedImage) {
             log.error(e) {}
         }
     }
+
+    // TODO: think of a better way of using DEBUG images. Should not be ported to common library
 
     /**
      * Adds image to list of debug images

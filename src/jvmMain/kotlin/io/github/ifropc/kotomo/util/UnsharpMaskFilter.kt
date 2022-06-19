@@ -15,6 +15,7 @@
 package io.github.ifropc.kotomo.util
 
 import io.github.ifropc.kotomo.ocr.Rectangle
+import io.github.ifropc.kotomo.util.Util.toAwt
 import java.awt.GraphicsConfiguration
 import java.awt.GraphicsEnvironment
 import java.awt.RenderingHints
