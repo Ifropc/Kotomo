@@ -24,6 +24,7 @@ import java.awt.Graphics2D
 import java.awt.image.BufferedImage
 import java.util.*
 import java.util.concurrent.LinkedBlockingQueue
+import kotlin.math.pow
 
 private val log = KotlinLogging.logger {  }
 
@@ -66,10 +67,10 @@ class FindAreas(task: AreaTask?) : AreaStep(task, "touching", "background", "are
         }
         for (y in 0 until height) {
             for (x in 0 until width) {
-                if (image.get(x)[y]) {
+                if (image[x][y]) {
                     // mark all black pixels as belonging to background by default,
                     // pixels that belong to areas are removed from background in findArea
-                    background[x]!![y] = true
+                    background[x][y] = true
                 } else {
                     // mark all white pixels as done
                     visited[x][y] = true
@@ -176,7 +177,7 @@ class FindAreas(task: AreaTask?) : AreaStep(task, "touching", "background", "are
 
         // remove area's pixels from background
         for (p in pixels) {
-            background[p.x]!![p.y] = false
+            background[p.x][p.y] = false
         }
         task!!.areas!!.add(area)
         log.debug { "area:" + area + " rgb:" + area.minRGB }
@@ -199,8 +200,8 @@ class FindAreas(task: AreaTask?) : AreaStep(task, "touching", "background", "are
 
         // ellipse parameters
         val size = 0.88f
-        val a2 = Math.pow((1.0f * area.width / 2 * size).toDouble(), 2.0).toFloat()
-        val b2 = Math.pow((1.0f * area.height / 2 * size).toDouble(), 2.0).toFloat()
+        val a2 = (1.0f * area.width / 2 * size).toDouble().pow(2.0).toFloat()
+        val b2 = (1.0f * area.height / 2 * size).toDouble().pow(2.0).toFloat()
         val centerX = area.midpoint.x
         val centerY = area.midpoint.y
 
@@ -208,13 +209,13 @@ class FindAreas(task: AreaTask?) : AreaStep(task, "touching", "background", "are
         var pixels = 0
         for (y in area.y..area.maxY) {
             for (x in area.x..area.maxX) {
-                val value = (1.0f * Math.pow((x - centerX).toDouble(), 2.0) / a2 +
-                        1.0f * Math.pow((y - centerY).toDouble(), 2.0) / b2).toFloat()
+                val value = (1.0f * (x - centerX).toDouble().pow(2.0) / a2 +
+                        1.0f * (y - centerY).toDouble().pow(2.0) / b2).toFloat()
                 if (value <= 1) {
                     // inside ellipse
                     continue
                 }
-                if (image!![x]!![y]) {
+                if (image[x][y]) {
                     ++pixels
                 }
             }
@@ -222,11 +223,7 @@ class FindAreas(task: AreaTask?) : AreaStep(task, "touching", "background", "are
 
         // reject area if most of the pixels are located outside the ellipse
         val ratio = 1.0f * pixels / area.pixels
-        return if (ratio > 0.92f) {
-            true
-        } else {
-            false
-        }
+        return ratio > 0.92f
     }
 
     /**
@@ -239,7 +236,7 @@ class FindAreas(task: AreaTask?) : AreaStep(task, "touching", "background", "are
         val i = task!!.areas!!.iterator()
         while (i.hasNext()) {
             val area = i.next()
-            if (area!!.pixels < MIN_PIXELS_AREA) {
+            if (area.pixels < MIN_PIXELS_AREA) {
                 i.remove()
                 // actual pixels should not be removed since they often contains 
                 // radical fragments in small resolution images
@@ -269,7 +266,7 @@ class FindAreas(task: AreaTask?) : AreaStep(task, "touching", "background", "are
                 }
             }
             if (neighbourCounts[0] > area.pixels / 2) {
-                area!!.remove = true
+                area.remove = true
                 continue
             }
             val score = (neighbourCounts[0] * 2f + neighbourCounts[1]) / area.pixels
@@ -290,14 +287,14 @@ class FindAreas(task: AreaTask?) : AreaStep(task, "touching", "background", "are
 //			}
             if (score >= threshold) {
                 //markedAreas.add(area);
-                area!!.remove = true
+                area.remove = true
                 continue
             }
         }
         val i = task!!.areas!!.iterator()
         while (i.hasNext()) {
             val area = i.next()
-            if (area!!.remove) {
+            if (area.remove) {
                 i.remove()
             }
         }
@@ -323,7 +320,7 @@ class FindAreas(task: AreaTask?) : AreaStep(task, "touching", "background", "are
                 val smallAreas: MutableList<Area?> = ArrayList()
                 for (area in index[probe]) {
                     // TODO scale with resolution
-                    if (area!!.pixels <= 6 && area.ratio > 0.6f) {
+                    if (area.pixels <= 6 && area.ratio > 0.6f) {
                         smallAreas.add(area)
                     }
                 }
@@ -339,7 +336,7 @@ class FindAreas(task: AreaTask?) : AreaStep(task, "touching", "background", "are
         val i = task!!.areas!!.iterator()
         while (i.hasNext()) {
             val area = i.next()
-            if (area!!.remove) {
+            if (area.remove) {
                 i.remove()
             }
         }

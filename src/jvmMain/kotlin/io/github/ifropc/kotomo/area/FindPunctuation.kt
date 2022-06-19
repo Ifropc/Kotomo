@@ -17,6 +17,8 @@ package io.github.ifropc.kotomo.area
 import io.github.ifropc.kotomo.ocr.Point
 import io.github.ifropc.kotomo.ocr.Rectangle
 import io.github.ifropc.kotomo.util.Parameters
+import kotlin.math.ceil
+import kotlin.math.floor
 
 /**
  * Finds and marks areas that represent punctuation.
@@ -58,10 +60,10 @@ class FindPunctuation(task: AreaTask?) : AreaStep(task, "punctuation") {
     private var maxY = 0
 
     // area corner squares (true -> square has at least one pixel)
-    var ne = false
-    var nw = false
-    var se = false
-    var sw = false
+    private var ne = false
+    private var nw = false
+    private var se = false
+    private var sw = false
 
     /**
      * Tests if area contains a bracket:｢［【〈｛(   or rotational equivalent
@@ -76,11 +78,11 @@ class FindPunctuation(task: AreaTask?) : AreaStep(task, "punctuation") {
         }
 
         // calculate test polygon sizes
-        squareSize = Math.ceil((area.minDim * TEST_SQUARE_SIZE).toDouble()).toInt()
+        squareSize = ceil((area.minDim * TEST_SQUARE_SIZE).toDouble()).toInt()
         square.width = squareSize
         square.height = squareSize
-        triangleWidth = Math.floor((area.width * TEST_TRIANGLE_SIZE).toDouble()).toInt()
-        triangleHeight = Math.floor((area.height * TEST_TRIANGLE_SIZE).toDouble()).toInt()
+        triangleWidth = floor((area.width * TEST_TRIANGLE_SIZE).toDouble()).toInt()
+        triangleHeight = floor((area.height * TEST_TRIANGLE_SIZE).toDouble()).toInt()
 
         // mark area extremes for easy reference
         minX = area.x
@@ -247,7 +249,7 @@ class FindPunctuation(task: AreaTask?) : AreaStep(task, "punctuation") {
             var location: Boolean
             var distance: Boolean
             if (Parameters.vertical) {
-                size = area.maxDim <= Math.ceil((0.35f * col.width).toDouble())
+                size = area.maxDim <= ceil((0.35f * col.width).toDouble())
                 location = col.maxX - area.maxX < col.width * 0.25f
                 distance = if (next == null) {
                     true
@@ -257,7 +259,7 @@ class FindPunctuation(task: AreaTask?) : AreaStep(task, "punctuation") {
                     prevDist < nextDist
                 }
             } else {
-                size = area.maxDim <= Math.ceil((0.35f * col.height).toDouble())
+                size = area.maxDim <= ceil((0.35f * col.height).toDouble())
                 location = col.maxY - area.maxY < col.height * 0.25f
                 distance = if (next == null) {
                     true

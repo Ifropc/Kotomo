@@ -47,14 +47,6 @@ object ReferenceMatrixCacheLoader {
     }
 
     /**
-     * Gets reference matrices for given font
-     */
-
-    fun getReferences(font: String): List<ReferenceMatrix> {
-        return cache[font]
-    }
-
-    /**
      * Reads serialized matrices from disk using Kryo library
      *
      * https://github.com/EsotericSoftware/kryo

@@ -25,12 +25,12 @@ object Parameters {
     /**
      * Directory relative to package root that contains the data files
      */
-    var dataDirName = "data"
+    private var dataDirName = "data"
 
     /**
      * Directory inside data dir that contains cache files
      */
-    var cacheDirName = "cache"
+    private var cacheDirName = "cache"
 
     /**
      * Current orientation.
@@ -116,14 +116,6 @@ object Parameters {
     var ocrReferenceHaloScores = floatArrayOf(-1f, -4f, -10f)
 
     /**
-     * Score for halo pixels that span two black regions. These are often brush strokes in
-     * wrong place at invalid reference character.
-     *
-     * TODO remove if not used
-     */
-    var ocrConnectedHaloPixelsScore = -5f // -10f
-
-    /**
      * This is added to each score
      */
 
@@ -155,15 +147,6 @@ object Parameters {
      */
 
     var ocrThreads = 4
-
-    /**
-     * How large NGram indexes are created. Larger value might make
-     * search faster but takes more memory
-     */
-    var indexMaxCharacters = 4
-
-    val dataDir: File
-        get() = findFile(dataDirName)
 
     val cacheDir: File
         get() = File(findFile(dataDirName).toString() + "/" + cacheDirName)
@@ -259,7 +242,7 @@ object Parameters {
     /**
      * Directory relative to package root where debug images are stored
      */
-    var debugDirName = "test results"
+    private var debugDirName = "test results"
 
     /**
      * Directory relative to package root where debug images are stored
@@ -270,7 +253,7 @@ object Parameters {
     /**
      * Directory relative to package root where test set specifications are stored
      */
-    var testDirName = "test"
+    private var testDirName = "test"
 
     /**
      * Directory relative to package root where test set specifications are stored
@@ -280,7 +263,7 @@ object Parameters {
 
     // rest of the parameters are for internal use and should not be edited
     var tempDebugFilePrefix: String? = null
-    var tempDebugFileIndex = 1
+    private var tempDebugFileIndex = 1
 
     /**
      * String added in front of debug file names. Contains test reference and image sequence number
@@ -300,13 +283,6 @@ object Parameters {
         } else {
             tempDebugFilePrefix + "." + tempDebugFileIndex++
         }
-    }
-
-    /**
-     * Gets the next debug file index but does not increment it.
-     */
-    fun peekDebugFileIndex(): Int {
-        return tempDebugFileIndex
     }
 
     /**

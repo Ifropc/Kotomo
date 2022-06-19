@@ -45,10 +45,6 @@ enum class SaveAreaImages {
      * @return true if this debug level is greater or equal than argument level
      */
     fun isGE(arg: SaveAreaImages): Boolean {
-        return if (level >= arg.level) {
-            true
-        } else {
-            false
-        }
+        return level >= arg.level
     }
 }

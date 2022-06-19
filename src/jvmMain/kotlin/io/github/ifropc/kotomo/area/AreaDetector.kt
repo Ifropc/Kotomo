@@ -116,8 +116,8 @@ class AreaDetector {
                     if (col.rectangle == rect) {
                         continue@rect
                     }
-                    for (area in col!!.areas) {
-                        if (area!!.rect == rect) {
+                    for (area in col.areas) {
+                        if (area.rect == rect) {
                             continue@rect
                         }
                     }

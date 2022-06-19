@@ -45,10 +45,6 @@ enum class SaveOCRImages {
      * @return true if this debug level is greater or equal than argument level
      */
     fun isGE(arg: SaveOCRImages): Boolean {
-        return if (level >= arg.level) {
-            true
-        } else {
-            false
-        }
+        return level >= arg.level
     }
 }

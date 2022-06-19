@@ -43,7 +43,7 @@ class ComponentBuilder {
 
         // split large components into smaller sub-components
         val componentsSplitted = ArrayList<Component>()
-        for (component in components!!) {
+        for (component in components) {
             componentsSplitted.addAll(split.run(component))
         }
         return componentsSplitted

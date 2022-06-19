@@ -15,23 +15,22 @@
 package io.github.ifropc.kotomo.util
 
 import io.github.ifropc.kotomo.ocr.Rectangle
-import java.awt.Graphics2D
 import java.awt.GraphicsConfiguration
 import java.awt.GraphicsEnvironment
 import java.awt.RenderingHints
-import java.awt.Transparency
 import java.awt.geom.Point2D
 import java.awt.geom.Rectangle2D
 import java.awt.image.*
-import java.net.URL
-import javax.imageio.ImageIO
+import kotlin.math.abs
+import kotlin.math.exp
+import kotlin.math.sqrt
 
 /**
  * http://www.java2s.com/Code/Java/Advanced-Graphics/UnsharpMaskDemo.htm
  * @author Romain Guy <romain.guy></romain.guy>@mac.com>
  */
 class UnsharpMaskFilter //System.out.println("UnsharpMaskFilter amount:"+amount+" radius:"+radius+" threshold:"+threshold);
-constructor(val amount: Float = 0.7f, val radius: Int = 2, val threshold: Int = 2) : AbstractFilter() {
+constructor(private val amount: Float = 0.7f, private val radius: Int = 2, private val threshold: Int = 2) : AbstractFilter() {
 
     /**
      * {@inheritDoc}
@@ -87,15 +86,15 @@ constructor(val amount: Float = 0.7f, val radius: Int = 2, val threshold: Int = 
                     dstR = dstColor shr 16 and 0xFF
                     dstG = dstColor shr 8 and 0xFF
                     dstB = dstColor and 0xFF
-                    if (Math.abs(srcR - dstR) >= threshold) {
+                    if (abs(srcR - dstR) >= threshold) {
                         srcR = (amount * (srcR - dstR) + srcR).toInt()
                         srcR = if (srcR > 255) 255 else if (srcR < 0) 0 else srcR
                     }
-                    if (Math.abs(srcG - dstG) >= threshold) {
+                    if (abs(srcG - dstG) >= threshold) {
                         srcG = (amount * (srcG - dstG) + srcG).toInt()
                         srcG = if (srcG > 255) 255 else if (srcG < 0) 0 else srcG
                     }
-                    if (Math.abs(srcB - dstB) >= threshold) {
+                    if (abs(srcB - dstB) >= threshold) {
                         srcB = (amount * (srcB - dstB) + srcB).toInt()
                         srcB = if (srcB > 255) 255 else if (srcB < 0) 0 else srcB
                     }
@@ -146,29 +145,6 @@ internal object GraphicsUtilities {
 
     /**
      *
-     * Returns a new `BufferedImage` using the same color model
-     * as the image passed as a parameter. The returned image is only compatible
-     * with the image passed as a parameter. This does not mean the returned
-     * image is compatible with the hardware.
-     *
-     * @param image the reference image from which the color model of the new
-     * image is obtained
-     * @return a new `BufferedImage`, compatible with the color model
-     * of `image`
-     */
-    fun createColorModelCompatibleImage(image: BufferedImage): BufferedImage {
-        val cm = image.colorModel
-        return BufferedImage(
-            cm,
-            cm.createCompatibleWritableRaster(
-                image.width,
-                image.height
-            ),
-            cm.isAlphaPremultiplied, null
-        )
-    }
-    /**
-     *
      * Returns a new compatible image of the specified width and height, and
      * the same transparency setting as the image specified as a parameter.
      *
@@ -186,420 +162,6 @@ internal object GraphicsUtilities {
      * @return a new compatible `BufferedImage` with the same
      * transparency as `image` and the specified dimension
      */
-    /**
-     *
-     * Returns a new compatible image with the same width, height and
-     * transparency as the image specified as a parameter.
-     *
-     * @see java.awt.Transparency
-     *
-     * @see .createCompatibleImage
-     * @see .createCompatibleImage
-     * @see .createCompatibleTranslucentImage
-     * @see .loadCompatibleImage
-     * @see .toCompatibleImage
-     * @param image the reference image from which the dimension and the
-     * transparency of the new image are obtained
-     * @return a new compatible `BufferedImage` with the same
-     * dimension and transparency as `image`
-     */
-    fun createCompatibleImage(
-        image: BufferedImage,
-        width: Int = image.width, height: Int = image.height
-    ): BufferedImage {
-        return graphicsConfiguration.createCompatibleImage(
-            width, height,
-            image.transparency
-        )
-    }
-
-    /**
-     *
-     * Returns a new opaque compatible image of the specified width and
-     * height.
-     *
-     * @see .createCompatibleImage
-     * @see .createCompatibleImage
-     * @see .createCompatibleTranslucentImage
-     * @see .loadCompatibleImage
-     * @see .toCompatibleImage
-     * @param width the width of the new image
-     * @param height the height of the new image
-     * @return a new opaque compatible `BufferedImage` of the
-     * specified width and height
-     */
-    fun createCompatibleImage(width: Int, height: Int): BufferedImage {
-        return graphicsConfiguration.createCompatibleImage(width, height)
-    }
-
-    /**
-     *
-     * Returns a new translucent compatible image of the specified width
-     * and height.
-     *
-     * @see .createCompatibleImage
-     * @see .createCompatibleImage
-     * @see .createCompatibleImage
-     * @see .loadCompatibleImage
-     * @see .toCompatibleImage
-     * @param width the width of the new image
-     * @param height the height of the new image
-     * @return a new translucent compatible `BufferedImage` of the
-     * specified width and height
-     */
-    fun createCompatibleTranslucentImage(
-        width: Int,
-        height: Int
-    ): BufferedImage {
-        return graphicsConfiguration.createCompatibleImage(
-            width, height,
-            Transparency.TRANSLUCENT
-        )
-    }
-
-    /**
-     *
-     * Returns a new compatible image from a URL. The image is loaded from the
-     * specified location and then turned, if necessary into a compatible
-     * image.
-     *
-     * @see .createCompatibleImage
-     * @see .createCompatibleImage
-     * @see .createCompatibleImage
-     * @see .createCompatibleTranslucentImage
-     * @see .toCompatibleImage
-     * @param resource the URL of the picture to load as a compatible image
-     * @return a new translucent compatible `BufferedImage` of the
-     * specified width and height
-     * @throws java.io.IOException if the image cannot be read or loaded
-     */
-    
-    fun loadCompatibleImage(resource: URL?): BufferedImage {
-        val image = ImageIO.read(resource)
-        return toCompatibleImage(image)
-    }
-
-    /**
-     *
-     * Return a new compatible image that contains a copy of the specified
-     * image. This method ensures an image is compatible with the hardware,
-     * and therefore optimized for fast blitting operations.
-     *
-     * @see .createCompatibleImage
-     * @see .createCompatibleImage
-     * @see .createCompatibleImage
-     * @see .createCompatibleTranslucentImage
-     * @see .loadCompatibleImage
-     * @param image the image to copy into a new compatible image
-     * @return a new compatible copy, with the
-     * same width and height and transparency and content, of `image`
-     */
-    fun toCompatibleImage(image: BufferedImage): BufferedImage {
-        if (image.colorModel ==
-            graphicsConfiguration.colorModel
-        ) {
-            return image
-        }
-        val compatibleImage = graphicsConfiguration.createCompatibleImage(
-            image.width, image.height,
-            image.transparency
-        )
-        val g = compatibleImage.graphics
-        g.drawImage(image, 0, 0, null)
-        g.dispose()
-        return compatibleImage
-    }
-
-    /**
-     *
-     * Returns a thumbnail of a source image. `newSize` defines
-     * the length of the longest dimension of the thumbnail. The other
-     * dimension is then computed according to the dimensions ratio of the
-     * original picture.
-     *
-     * This method favors speed over quality. When the new size is less than
-     * half the longest dimension of the source image,
-     * [.createThumbnail] or
-     * [.createThumbnail] should be used instead
-     * to ensure the quality of the result without sacrificing too much
-     * performance.
-     *
-     * @see .createThumbnailFast
-     * @see .createThumbnail
-     * @see .createThumbnail
-     * @param image the source image
-     * @param newSize the length of the largest dimension of the thumbnail
-     * @return a new compatible `BufferedImage` containing a
-     * thumbnail of `image`
-     * @throws IllegalArgumentException if `newSize` is larger than
-     * the largest dimension of `image` or &lt;= 0
-     */
-    fun createThumbnailFast(
-        image: BufferedImage,
-        newSize: Int
-    ): BufferedImage {
-        val ratio: Float
-        var width = image.width
-        var height = image.height
-        if (width > height) {
-            require(newSize < width) {
-                "newSize must be lower than" +
-                        " the image width"
-            }
-            require(newSize > 0) {
-                "newSize must" +
-                        " be greater than 0"
-            }
-            ratio = width.toFloat() / height.toFloat()
-            width = newSize
-            height = (newSize / ratio).toInt()
-        } else {
-            require(newSize < height) {
-                "newSize must be lower than" +
-                        " the image height"
-            }
-            require(newSize > 0) {
-                "newSize must" +
-                        " be greater than 0"
-            }
-            ratio = height.toFloat() / width.toFloat()
-            height = newSize
-            width = (newSize / ratio).toInt()
-        }
-        val temp = createCompatibleImage(image, width, height)
-        val g2 = temp.createGraphics()
-        g2.setRenderingHint(
-            RenderingHints.KEY_INTERPOLATION,
-            RenderingHints.VALUE_INTERPOLATION_BILINEAR
-        )
-        g2.drawImage(image, 0, 0, temp.width, temp.height, null)
-        g2.dispose()
-        return temp
-    }
-
-    /**
-     *
-     * Returns a thumbnail of a source image.
-     *
-     * This method favors speed over quality. When the new size is less than
-     * half the longest dimension of the source image,
-     * [.createThumbnail] or
-     * [.createThumbnail] should be used instead
-     * to ensure the quality of the result without sacrificing too much
-     * performance.
-     *
-     * @see .createThumbnailFast
-     * @see .createThumbnail
-     * @see .createThumbnail
-     * @param image the source image
-     * @param newWidth the width of the thumbnail
-     * @param newHeight the height of the thumbnail
-     * @return a new compatible `BufferedImage` containing a
-     * thumbnail of `image`
-     * @throws IllegalArgumentException if `newWidth` is larger than
-     * the width of `image` or if code>newHeight is larger
-     * than the height of `image` or if one of the dimensions
-     * is &lt;= 0
-     */
-    fun createThumbnailFast(
-        image: BufferedImage,
-        newWidth: Int, newHeight: Int
-    ): BufferedImage {
-        require(
-            !(newWidth >= image.width ||
-                    newHeight >= image.height)
-        ) {
-            "newWidth and newHeight cannot" +
-                    " be greater than the image" +
-                    " dimensions"
-        }
-        require(!(newWidth <= 0 || newHeight <= 0)) {
-            "newWidth and newHeight must" +
-                    " be greater than 0"
-        }
-        val temp = createCompatibleImage(image, newWidth, newHeight)
-        val g2 = temp.createGraphics()
-        g2.setRenderingHint(
-            RenderingHints.KEY_INTERPOLATION,
-            RenderingHints.VALUE_INTERPOLATION_BILINEAR
-        )
-        g2.drawImage(image, 0, 0, temp.width, temp.height, null)
-        g2.dispose()
-        return temp
-    }
-
-    /**
-     *
-     * Returns a thumbnail of a source image. `newSize` defines
-     * the length of the longest dimension of the thumbnail. The other
-     * dimension is then computed according to the dimensions ratio of the
-     * original picture.
-     *
-     * This method offers a good trade-off between speed and quality.
-     * The result looks better than
-     * [.createThumbnailFast] when
-     * the new size is less than half the longest dimension of the source
-     * image, yet the rendering speed is almost similar.
-     *
-     * @see .createThumbnailFast
-     * @see .createThumbnailFast
-     * @see .createThumbnail
-     * @param image the source image
-     * @param newSize the length of the largest dimension of the thumbnail
-     * @return a new compatible `BufferedImage` containing a
-     * thumbnail of `image`
-     * @throws IllegalArgumentException if `newSize` is larger than
-     * the largest dimension of `image` or &lt;= 0
-     */
-    fun createThumbnail(
-        image: BufferedImage,
-        newSize: Int
-    ): BufferedImage? {
-        var width = image.width
-        var height = image.height
-        val isWidthGreater = width > height
-        if (isWidthGreater) {
-            require(newSize < width) {
-                "newSize must be lower than" +
-                        " the image width"
-            }
-        } else require(newSize < height) {
-            "newSize must be lower than" +
-                    " the image height"
-        }
-        require(newSize > 0) {
-            "newSize must" +
-                    " be greater than 0"
-        }
-        val ratioWH = width.toFloat() / height.toFloat()
-        val ratioHW = height.toFloat() / width.toFloat()
-        var thumb: BufferedImage? = image
-        var temp: BufferedImage? = null
-        var g2: Graphics2D? = null
-        var previousWidth = width
-        var previousHeight = height
-        do {
-            if (isWidthGreater) {
-                width /= 2
-                if (width < newSize) {
-                    width = newSize
-                }
-                height = (width / ratioWH).toInt()
-            } else {
-                height /= 2
-                if (height < newSize) {
-                    height = newSize
-                }
-                width = (height / ratioHW).toInt()
-            }
-            if (temp == null) {
-                temp = createCompatibleImage(image, width, height)
-                g2 = temp.createGraphics()
-                g2.setRenderingHint(
-                    RenderingHints.KEY_INTERPOLATION,
-                    RenderingHints.VALUE_INTERPOLATION_BILINEAR
-                )
-            }
-            g2!!.drawImage(
-                thumb, 0, 0, width, height,
-                0, 0, previousWidth, previousHeight, null
-            )
-            previousWidth = width
-            previousHeight = height
-            thumb = temp
-        } while (newSize != if (isWidthGreater) width else height)
-        g2!!.dispose()
-        if (width != thumb!!.width || height != thumb.height) {
-            temp = createCompatibleImage(image, width, height)
-            g2 = temp.createGraphics()
-            g2.drawImage(thumb, 0, 0, null)
-            g2.dispose()
-            thumb = temp
-        }
-        return thumb
-    }
-
-    /**
-     *
-     * Returns a thumbnail of a source image.
-     *
-     * This method offers a good trade-off between speed and quality.
-     * The result looks better than
-     * [.createThumbnailFast] when
-     * the new size is less than half the longest dimension of the source
-     * image, yet the rendering speed is almost similar.
-     *
-     * @see .createThumbnailFast
-     * @see .createThumbnailFast
-     * @see .createThumbnail
-     * @param image the source image
-     * @param newWidth the width of the thumbnail
-     * @param newHeight the height of the thumbnail
-     * @return a new compatible `BufferedImage` containing a
-     * thumbnail of `image`
-     * @throws IllegalArgumentException if `newWidth` is larger than
-     * the width of `image` or if code>newHeight is larger
-     * than the height of `image or if one the dimensions is not > 0`
-     */
-    fun createThumbnail(
-        image: BufferedImage,
-        newWidth: Int, newHeight: Int
-    ): BufferedImage? {
-        var width = image.width
-        var height = image.height
-        require(!(newWidth >= width || newHeight >= height)) {
-            "newWidth and newHeight cannot" +
-                    " be greater than the image" +
-                    " dimensions"
-        }
-        require(!(newWidth <= 0 || newHeight <= 0)) {
-            "newWidth and newHeight must" +
-                    " be greater than 0"
-        }
-        var thumb: BufferedImage? = image
-        var temp: BufferedImage? = null
-        var g2: Graphics2D? = null
-        var previousWidth = width
-        var previousHeight = height
-        do {
-            if (width > newWidth) {
-                width /= 2
-                if (width < newWidth) {
-                    width = newWidth
-                }
-            }
-            if (height > newHeight) {
-                height /= 2
-                if (height < newHeight) {
-                    height = newHeight
-                }
-            }
-            if (temp == null) {
-                temp = createCompatibleImage(image, width, height)
-                g2 = temp.createGraphics()
-                g2.setRenderingHint(
-                    RenderingHints.KEY_INTERPOLATION,
-                    RenderingHints.VALUE_INTERPOLATION_BILINEAR
-                )
-            }
-            g2!!.drawImage(
-                thumb, 0, 0, width, height,
-                0, 0, previousWidth, previousHeight, null
-            )
-            previousWidth = width
-            previousHeight = height
-            thumb = temp
-        } while (width != newWidth || height != newHeight)
-        g2!!.dispose()
-        if (width != thumb!!.width || height != thumb.height) {
-            temp = createCompatibleImage(image, width, height)
-            g2 = temp.createGraphics()
-            g2.drawImage(thumb, 0, 0, null)
-            g2.dispose()
-            thumb = temp
-        }
-        return thumb
-    }
 
     /**
      *
@@ -692,7 +254,7 @@ internal class GaussianBlurFilter constructor(radius: Int = 3) : AbstractFilter(
      *
      * @return the radius of the blur
      */
-    val radius: Int
+    private val radius: Int
     /**
      *
      * Creates a new blur filter with the specified radius. If the radius
@@ -804,12 +366,12 @@ internal class GaussianBlurFilter constructor(radius: Int = 3) : AbstractFilter(
             val data = FloatArray(radius * 2 + 1)
             val sigma = radius / 3.0f
             val twoSigmaSquare = 2.0f * sigma * sigma
-            val sigmaRoot = Math.sqrt(twoSigmaSquare * Math.PI).toFloat()
+            val sigmaRoot = sqrt(twoSigmaSquare * Math.PI).toFloat()
             var total = 0.0f
             for (i in -radius..radius) {
                 val distance = (i * i).toFloat()
                 val index = i + radius
-                data[index] = Math.exp((-distance / twoSigmaSquare).toDouble()).toFloat() / sigmaRoot
+                data[index] = exp((-distance / twoSigmaSquare).toDouble()).toFloat() / sigmaRoot
                 total += data[index]
             }
             for (i in data.indices) {

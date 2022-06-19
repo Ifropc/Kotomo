@@ -25,7 +25,6 @@ private val log = KotlinLogging.logger { }
  * each step.
  */
 abstract class AreaStep(protected var task: AreaTask?, vararg debugImages: String) {
-    protected var par = Parameters
 
     /**
      * If true, debug images are generated after this step.

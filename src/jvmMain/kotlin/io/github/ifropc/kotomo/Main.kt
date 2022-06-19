@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
+@file:Suppress("unused")
+
 package io.github.ifropc.kotomo
 
 import io.github.ifropc.kotomo.ocr.Point

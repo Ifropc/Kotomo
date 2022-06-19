@@ -20,6 +20,9 @@ import io.github.ifropc.kotomo.util.Parameters
 import mu.KotlinLogging
 import java.awt.Color
 import java.util.*
+import kotlin.math.ceil
+import kotlin.math.floor
+import kotlin.math.pow
 
 private val log = KotlinLogging.logger { }
 
@@ -67,14 +70,14 @@ class MergeAreas(task: AreaTask?) : AreaStep(task, "mergeareas") {
         // can't be merged. for areas inside each chunk, try all merge combinations
         // and selected the best
         val scale = calcScale(col)
-        targetSize = Math.ceil((col.minorDim * scale).toDouble()).toInt()
-        maxSize = Math.ceil((col.minorDim * MAX_AREA_SIZE * scale).toDouble()).toInt()
+        targetSize = ceil((col.minorDim * scale).toDouble()).toInt()
+        maxSize = ceil((col.minorDim * MAX_AREA_SIZE * scale).toDouble()).toInt()
         val chunk: MutableList<Area> = ArrayList()
         var chunkStart = -1
         var i = 0
-        while (i < col!!.areas.size) {
+        while (i < col.areas.size) {
             val area = col.areas[i]
-            val punctuation = area!!.isPunctuation
+            val punctuation = area.isPunctuation
             val lastAreaInCol = i == col.areas.size - 1
             var lastAreaInChunk = punctuation || lastAreaInCol
             if (!punctuation) {
@@ -186,7 +189,7 @@ class MergeAreas(task: AreaTask?) : AreaStep(task, "mergeareas") {
             var area = areas[i]
             if (prev != null) {
                 var distance: Int
-                distance = if (area!!.column!!.isVertical) {
+                distance = if (area.column!!.isVertical) {
                     area.y - prev.maxY
                 } else {
                     area.x - prev.maxX
@@ -221,7 +224,7 @@ class MergeAreas(task: AreaTask?) : AreaStep(task, "mergeareas") {
             // it seems that only horizontal title columns have compressed fonts
             return 1.0f
         }
-        if (col!!.areas.size < 15) {
+        if (col.areas.size < 15) {
             // scale detection is not reliable for small columns, use the default
             return 1.0f
         }
@@ -229,13 +232,13 @@ class MergeAreas(task: AreaTask?) : AreaStep(task, "mergeareas") {
         // calculate upper quartile width
         val sortedAreas: MutableList<Area> = ArrayList()
         sortedAreas.addAll(col.areas)
-        Collections.sort(sortedAreas) { o1, o2 ->
+        sortedAreas.sortWith(Comparator { o1, o2 ->
             val i1 = o1.width
             val i2 = o2.width
             i1.compareTo(i2)
-        }
-        val floor = Math.floor((col.areas.size * 0.75f).toDouble()).toInt()
-        val ceil = Math.ceil((col.areas.size * 0.75f).toDouble()).toInt()
+        })
+        val floor = floor((col.areas.size * 0.75f).toDouble()).toInt()
+        val ceil = ceil((col.areas.size * 0.75f).toDouble()).toInt()
         val width1 = sortedAreas[floor].width
         val width2 = sortedAreas[ceil].width
         val width = (width1 + width2) / 2
@@ -267,15 +270,15 @@ class MergeAreas(task: AreaTask?) : AreaStep(task, "mergeareas") {
             score = if (size <= targetSize) {
                 val ratio = size.toFloat() / targetSize
                 //if (ratio < 0.1f) ratio = 0.1f;
-                Math.pow(ratio.toDouble(), 1.0).toFloat()
+                ratio.toDouble().pow(1.0).toFloat()
             } else {
                 val ratio = 1 - (size - targetSize).toFloat() / (maxSize - targetSize)
-                Math.pow(ratio.toDouble(), 1.5).toFloat()
+                ratio.toDouble().pow(1.5).toFloat()
             }
             var distance = mergeDistances!![area]!!
             if (distance > maxSize) distance = maxSize
             val distanceRatio = 1.0f * distance / maxSize
-            score *= Math.pow((1f - distanceRatio).toDouble(), 1.0).toFloat()
+            score *= (1f - distanceRatio).toDouble().pow(1.0).toFloat()
 
             //if (debug) System.err.println("  area:"+area+" size:"+size+" score:"+score);
             if (debug) log.debug { "  area:$area size:$size distance:$distance score:$score" } 
@@ -344,7 +347,7 @@ class MergeAreas(task: AreaTask?) : AreaStep(task, "mergeareas") {
                 lastArea.maxX - firstArea.x + 1, col.height + 2
             )
         }
-        paintRectangle(image!!, chunkRect, Color.GREEN)
+        paintRectangle(image, chunkRect, Color.GREEN)
         task!!.addDebugImage(image, "mergeareas", col.isVertical)
     }
 

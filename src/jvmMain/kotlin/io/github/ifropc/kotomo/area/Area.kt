@@ -17,6 +17,7 @@ package io.github.ifropc.kotomo.area
 import java.awt.Color
 import io.github.ifropc.kotomo.ocr.Point
 import io.github.ifropc.kotomo.ocr.Rectangle
+import kotlin.math.min
 
 /**
  * Rectangle inside target image. Contains a single character after area detection
@@ -63,7 +64,7 @@ class Area(
     /**
      * Column that contains this area
      */
-    public var column: Column? = null
+    var column: Column? = null
 
     /**
      * If true, this area has been removed from the image
@@ -74,7 +75,7 @@ class Area(
      * Initial areas created during FindAreas but later merged into this area
      */
     var sourceAreas: MutableList<Area?> = mutableListOf()
-    override val rectangle: Rectangle?
+    override val rectangle: Rectangle
         get() = rect
 
     /**
@@ -128,18 +129,10 @@ class Area(
                 widthHeightRatio
             }
         }
-    val minorMajorRatio: Float
-        get() = 1 / majorMinorRatio
-    val widthHeightRatio: Float
+    private val widthHeightRatio: Float
         get() = 1.0f * rect.width / rect.height
-    val heightWidthRatio: Float
+    private val heightWidthRatio: Float
         get() = 1.0f * rect.height / rect.width
-
-    /**
-     * Gets ratio of pixels to total area
-     */
-    val pixelDensity: Float
-        get() = 1.0f * pixels / size
 
     /**
      * Midpoint of this area's rectangle.
@@ -151,22 +144,6 @@ class Area(
     val maxDim: Int
         get() = if (rect.width >= rect.height) rect.width else rect.height// called before columns have been detected
     // TODO add orientation information to areas
-    /**
-     * @return vertical -> width, horizontal -> height
-     */
-    val minorDim: Int
-        get() {
-            if (column == null) {
-                throw Error("Not implemented")
-                // called before columns have been detected
-                // TODO add orientation information to areas
-            }
-            return if (column!!.isVertical) {
-                rect.width
-            } else {
-                rect.height
-            }
-        }
 
     /**
      * @return vertical -> height, horizontal -> width
@@ -182,8 +159,6 @@ class Area(
                 rect.width
             }
         }
-    val avgDim: Int
-        get() = (rect.width + rect.height) / 2
 
     /**
      * @return true fn area contains Point(x,y)
@@ -199,11 +174,7 @@ class Area(
         if (point == null) {
             return false
         }
-        return if (rect.contains(point)) {
-            true
-        } else {
-            false
-        }
+        return rect.contains(point)
     }
 
     /**
@@ -215,7 +186,7 @@ class Area(
         newArea.column = column
         newArea.sourceAreas.addAll(sourceAreas)
         newArea.sourceAreas.addAll(area2.sourceAreas)
-        newArea.minRGB = Math.min(minRGB, area2.minRGB)
+        newArea.minRGB = min(minRGB, area2.minRGB)
         return newArea
     }
 

@@ -15,6 +15,7 @@
 package io.github.ifropc.kotomo.ocr
 
 import io.github.ifropc.kotomo.util.Parameters
+import kotlin.math.floor
 
 /**
  * Calculates OCR score by comparing target and reference matrices for a given alignment
@@ -101,13 +102,13 @@ class OCRScoreCalculator {
      */
     private fun calcScore() {
         score =
-            Math.floor((Parameters.ocrBaseScore + blackPixels * Parameters.ocrBlackPixelScore + whitePixels * Parameters.ocrWhiteScore).toDouble())
+            floor((Parameters.ocrBaseScore + blackPixels * Parameters.ocrBlackPixelScore + whitePixels * Parameters.ocrWhiteScore).toDouble())
                 .toInt()
         for (i in targetHaloPixels.indices) {
-            score += Math.floor((targetHaloPixels[i] * Parameters.ocrTargetHaloScores[i]).toDouble()).toInt()
+            score += floor((targetHaloPixels[i] * Parameters.ocrTargetHaloScores[i]).toDouble()).toInt()
         }
         for (i in referenceHaloPixels.indices) {
-            score += Math.floor((referenceHaloPixels[i] * Parameters.ocrReferenceHaloScores[i]).toDouble()).toInt()
+            score += floor((referenceHaloPixels[i] * Parameters.ocrReferenceHaloScores[i]).toDouble()).toInt()
         }
         if (score > 1f) {
             score = (reference!!.scoreModifier * score).toInt()

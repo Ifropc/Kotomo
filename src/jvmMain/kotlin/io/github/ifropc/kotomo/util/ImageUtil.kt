@@ -27,6 +27,10 @@ import java.awt.datatransfer.DataFlavor
 import java.awt.datatransfer.Transferable
 import java.awt.datatransfer.UnsupportedFlavorException
 import java.awt.image.BufferedImage
+import kotlin.math.max
+import kotlin.math.min
+import kotlin.math.roundToInt
+import kotlin.math.roundToLong
 
 private val log = KotlinLogging.logger { }
 
@@ -37,7 +41,7 @@ object ImageUtil {
      * @param blackThreshold If null, uses fixedBlackLevel values instead of single threshold
      * @return
      */
-    fun containsPixel(rgb: Int, blackThreshold: Int?): Boolean {
+    private fun containsPixel(rgb: Int, blackThreshold: Int?): Boolean {
         if (blackThreshold == null) {
             return containsPixelFixedBlackLevel(rgb)
         }
@@ -51,7 +55,7 @@ object ImageUtil {
      * Returns true if pixel is determined to be black.
      * Uses fixed black level specified in Parameters.fixedBlackLevel*
      */
-    fun containsPixelFixedBlackLevel(rgb: Int): Boolean {
+    private fun containsPixelFixedBlackLevel(rgb: Int): Boolean {
         val red = rgb and 0x00ff0000 shr 16
         val green = rgb and 0x0000ff00 shr 8
         val blue = rgb and 0x000000ff
@@ -74,9 +78,7 @@ object ImageUtil {
         if (blue < FixedParameters.fixedBlackLevelBlue - FixedParameters.fixedBlackLevelRange) {
             return false
         }
-        return if (blue > FixedParameters.fixedBlackLevelBlue + FixedParameters.fixedBlackLevelRange) {
-            false
-        } else true
+        return blue <= FixedParameters.fixedBlackLevelBlue + FixedParameters.fixedBlackLevelRange
     }
 
     /**
@@ -130,7 +132,7 @@ object ImageUtil {
     /**
      * Creates empty copy of argument image with same dimensions and type
      */
-    fun createEmptyCopy(image: BufferedImage): BufferedImage {
+    private fun createEmptyCopy(image: BufferedImage): BufferedImage {
         var type = image.type
         if (type == 0) {
             type = BufferedImage.TYPE_INT_BGR
@@ -227,27 +229,6 @@ object ImageUtil {
     }
 
     /**
-     * Creates empty copy of argument image with same dimensions and type.
-     * Fill with white.
-     */
-    fun createWhiteCopy(image: BufferedImage): BufferedImage {
-        val newImage = BufferedImage(image.width, image.height, image.type)
-        val g = newImage.createGraphics()
-        g.paint = Color.WHITE
-        g.fillRect(0, 0, newImage.width, newImage.height)
-        return newImage
-    }
-
-    /**
-     * Creates empty white image of same size as argument image
-     */
-    fun createWhiteImage(image: Array<BooleanArray>): BufferedImage {
-        val width = image.size
-        val height = image[0].size
-        return createWhiteImage(width, height)
-    }
-
-    /**
      * Creates empty white image of given size.
      */
 
@@ -303,12 +284,6 @@ object ImageUtil {
         }
     }
 
-    fun paintColumns(image: BufferedImage, columns: List<Column>) {
-        for (column in columns) {
-            paintColumn(image, column)
-        }
-    }
-
     /**
      * Paints a rectangle to image.
      */
@@ -342,36 +317,13 @@ object ImageUtil {
     }
 
     /**
-     * Counts the number of pixels in rectangle
-     *
-     * @param inside If true, checks also pixels inside the rectangle. If false, only
-     * checks the border pixels
-     */
-    fun countPixels(rect: Rectangle, image: BufferedImage, inside: Boolean): Int {
-        var pixels = 0
-        for (y in rect.y..rect.y + rect.height - 1) {
-            for (x in rect.x..rect.x + rect.width - 1) {
-                if (inside || y == rect.y || y == rect.y + rect.height - 1 || x == rect.x || x == rect.x + rect.width - 1) {
-                    if (x < 0 || x >= image.width || y < 0 || y >= image.height) {
-                        continue
-                    }
-                    if (image.getRGB(x, y) == Color.BLACK.rgb) {
-                        ++pixels
-                    }
-                }
-            }
-        }
-        return pixels
-    }
-
-    /**
      * Creates a rectangle that spans argument points. Order doesn't matter.
      */
     fun createRectangle(p1: Point, p2: Point): Rectangle {
-        val minX = Math.min(p1.x, p2.x)
-        val maxX = Math.max(p1.x, p2.x)
-        val minY = Math.min(p1.y, p2.y)
-        val maxY = Math.max(p1.y, p2.y)
+        val minX = min(p1.x, p2.x)
+        val maxX = max(p1.x, p2.x)
+        val minY = min(p1.y, p2.y)
+        val maxY = max(p1.y, p2.y)
         val width = maxX - minX + 1
         val height = maxY - minY + 1
         return Rectangle(minX, minY, width, height)
@@ -453,7 +405,7 @@ object ImageUtil {
         // calculate target size, targetSize*targetSize unless ratio is below 0.4f
         var targetHeight = targetSize
         var targetWidth = targetSize
-        val targetMinDim = Math.round(Util.scale(ratio, 0.1f, 0.4f, 8f, targetSize.toFloat()))
+        val targetMinDim = Util.scale(ratio, 0.1f, 0.4f, 8f, targetSize.toFloat()).roundToInt()
         if (image.width > image.height) {
             targetHeight = targetMinDim
         } else {
@@ -493,13 +445,6 @@ object ImageUtil {
             }
         }
         return blockImage
-    }
-
-    /**
-     * Creates a sub-image defined by rectangle.
-     */
-    fun crop(image: BufferedImage, rect: Rectangle): BufferedImage {
-        return image.getSubimage(rect.x, rect.y, rect.width, rect.height)
     }
 
     /**
@@ -558,24 +503,6 @@ object ImageUtil {
     }
 
     /**
-     * Builds 32x32 bit matrix from image. Centers and crops image if necessary.
-     */
-    fun buildMatrix(image: BufferedImage): IntArray {
-        val height = image.height
-        val width = image.width
-        val matrix = IntArray(height)
-        for (y in 0 until height) {
-            for (x in 0 until width) {
-                if (image.getRGB(x, y) == Color.BLACK.rgb) {
-                    matrix[y] = matrix[y] or 1
-                }
-                if (x < width - 1) matrix[y] = matrix[y] shl 1
-            }
-        }
-        return matrix
-    }
-
-    /**
      * Builds 32x32 bit matrix from 32x32 image.
      */
 
@@ -591,58 +518,11 @@ object ImageUtil {
         }
         return matrix
     }
-    // TODO "create" or "build" not consistent
-    /**
-     * Builds 32x32 bit matrix from 32x32 boolean matrix.
-     */
-    fun buildMatrix32(image: Array<BooleanArray>): IntArray {
-        val matrix = IntArray(32)
-        for (y in 0..31) {
-            for (x in 0..31) {
-                if (image[x][y]) {
-                    matrix[y] = matrix[y] or 1
-                }
-                if (x < 31) matrix[y] = matrix[y] shl 1
-            }
-        }
-        return matrix
-    }
 
-    /**
-     * Checks that the image contains only black and white pixels
-     */
-    fun checkImageBW(image: BufferedImage) {
-        for (y in 0..31) {
-            for (x in 0..31) {
-                val rgb = image.getRGB(x, y)
-                if (rgb != Color.BLACK.rgb && rgb != Color.WHITE.rgb) {
-                    throw Error("Image must be black and white")
-                }
-            }
-        }
-    }
-
-    /**
-     * Prints boolean matrix to stdout
-     */
-    fun debugPrintMatrix(matrix: Array<BooleanArray>) {
-        for (y in 0..31) {
-            var s =""
-            for (x in 0..31) {
-                s += if (matrix[x][y]) {
-                    ("x")
-                } else {
-                    (".")
-                }
-            }
-            log.debug { s }
-        }
-    }
 
     /**
      * Sharpens the image
      */
-
 	fun sharpenImage(image: BufferedImage): BufferedImage {
         if (FixedParameters.fixedBlackLevelEnabled) {
             return createCopy(image)
@@ -652,50 +532,6 @@ object ImageUtil {
             Parameters.unsharpAmount, Parameters.unsharpRadius, Parameters.unsharpThreshold
         )
         return filter.filter(image, sharpened)
-    }
-
-    /**
-     * Inverts black and white imagea
-     * @return
-     */
-    fun invertImage(image: BufferedImage): BufferedImage {
-        val inverted = BufferedImage(image.width, image.height, image.type)
-        for (y in 0 until image.height) {
-            for (x in 0 until image.width) {
-                if (image.getRGB(x, y) == Color.BLACK.rgb) {
-                    inverted.setRGB(x, y, Color.WHITE.rgb)
-                } else {
-                    inverted.setRGB(x, y, Color.BLACK.rgb)
-                }
-            }
-        }
-        return inverted
-    }
-
-    /**
-     * Splits 32x32 rectangle into smaller rectangles.
-     *
-     * @param divisor Per dimension (3 -> 3x3)
-     */
-    fun split32Cube(divisor: Int): List<Rectangle> {
-        val parts: MutableList<Rectangle> = ArrayList()
-        val size = 32 / divisor
-        val remainder = 32 - size * divisor
-        for (x in 0 until divisor) {
-            for (y in 0 until divisor) {
-                var width = size
-                var height = size
-                if (x == divisor - 1) {
-                    width += remainder
-                }
-                if (y == divisor - 1) {
-                    height += remainder
-                }
-                val rect = Rectangle(x * size, y * size, width, height)
-                parts.add(rect)
-            }
-        }
-        return parts
     }
 
     /**

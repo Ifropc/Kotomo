@@ -51,13 +51,13 @@ class OCRAlignComponents {
         for (result in results!!) {
             newResults.add(alignComponents(result))
         }
-        Collections.sort(newResults) { o1, o2 ->
+        newResults.sortWith(Comparator { o1, o2 ->
 
             // TODO define comparator in OCRResult object and re-use
             val score1 = o1.score
             val score2 = o2.score
             -1 * score1.compareTo(score2)
-        }
+        })
         log.debug { ((System.currentTimeMillis() - started).toString() + " ms") }
         return newResults
     }
@@ -66,7 +66,7 @@ class OCRAlignComponents {
      * Improve result by applying transformations to reference character components.
      */
 
-    fun alignComponents(result: OCRResult): OCRResult {
+    private fun alignComponents(result: OCRResult): OCRResult {
         val maxDelta = 1
         val maxStretch = 4
 

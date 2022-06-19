@@ -19,10 +19,15 @@ import io.github.ifropc.kotomo.ocr.Rectangle
 import io.github.ifropc.kotomo.util.FixedParameters
 import io.github.ifropc.kotomo.util.ImageUtil.createCopy
 import io.github.ifropc.kotomo.util.Parameters
+import mu.KotlinLogging
 import java.awt.AlphaComposite
 import java.awt.Color
 import java.util.*
 import java.util.concurrent.LinkedBlockingQueue
+import kotlin.math.ceil
+import kotlin.math.pow
+
+private val log = KotlinLogging.logger { }
 
 /**
  * Inverts target image colors in regions with black background
@@ -77,12 +82,12 @@ class InvertImage(task: AreaTask?) : AreaStep(task, "invert") {
 
         // divide image into blocks and count the number of black pixels in each block
         // if pixel count is high enough, invert pixels 
-        width = Math.ceil((1.0f * task!!.width / BLOCK_SIZE).toDouble()).toInt()
-        height = Math.ceil((1.0f * task!!.height / BLOCK_SIZE).toDouble()).toInt()
+        width = ceil((1.0f * task!!.width / BLOCK_SIZE).toDouble()).toInt()
+        height = ceil((1.0f * task!!.height / BLOCK_SIZE).toDouble()).toInt()
         visited = Array(width) { BooleanArray(height) }
         invert = Array(width) { BooleanArray(height) }
         neighboursInverted = Array(width) { IntArray(height) }
-        task!!.borderPixels = Array<BooleanArray>(task!!.width) { BooleanArray(task!!.height) }
+        task!!.borderPixels = Array(task!!.width) { BooleanArray(task!!.height) }
 
         // mark image blocks that needs to be inverted
         for (x in 0 until width) {
@@ -94,7 +99,7 @@ class InvertImage(task: AreaTask?) : AreaStep(task, "invert") {
         // invert marked blocks
         for (x in 0 until width) {
             for (y in 0 until height) {
-                if (invert[x]!![y]) {
+                if (invert[x][y]) {
                     invertBlock(x, y)
                 }
             }
@@ -143,8 +148,8 @@ class InvertImage(task: AreaTask?) : AreaStep(task, "invert") {
         val height = maxY - minY + 1
         val pWidth = width * BLOCK_SIZE
         val pHeight = height * BLOCK_SIZE
-        val a2 = Math.pow((1.0f * pWidth / 2 * size).toDouble(), 2.0).toFloat()
-        val b2 = Math.pow((1.0f * pHeight / 2 * size).toDouble(), 2.0).toFloat()
+        val a2 = (1.0f * pWidth / 2 * size).toDouble().pow(2.0).toFloat()
+        val b2 = (1.0f * pHeight / 2 * size).toDouble().pow(2.0).toFloat()
         val pxMin = minX * BLOCK_SIZE
         val pxMax = (maxX + 1) * BLOCK_SIZE - 1
         val pyMin = minY * BLOCK_SIZE
@@ -157,8 +162,8 @@ class InvertImage(task: AreaTask?) : AreaStep(task, "invert") {
         while (px <= pxMax && px < task!!.width) {
             var py = pyMin
             while (py <= pyMax && py < task!!.height) {
-                val value = (1.0f * Math.pow((px - pxCenter).toDouble(), 2.0) / a2 +
-                        1.0f * Math.pow((py - pyCenter).toDouble(), 2.0) / b2).toFloat()
+                val value = (1.0f * (px - pxCenter).toDouble().pow(2.0) / a2 +
+                        1.0f * (py - pyCenter).toDouble().pow(2.0) / b2).toFloat()
                 if (value > 1) {
                     // outside the ellipse
                     py++
@@ -226,14 +231,16 @@ class InvertImage(task: AreaTask?) : AreaStep(task, "invert") {
         var quadBlocks = 0
         for (block in marked) {
             try {
-                if (invert[block.x + 1]!![block.y] &&
-                    invert[block.x]!![block.y + 1] &&
-                    invert[block.x + 1]!![block.y + 1]
+                if (invert[block.x + 1][block.y] &&
+                    invert[block.x][block.y + 1] &&
+                    invert[block.x + 1][block.y + 1]
                 ) {
                     ++quadBlocks
                     // quads might overlap but that's fine, this is not a packing problem
                 }
             } catch (e: Exception) {
+                // TODO: check this WARN. tst3BlackBG
+                log.warn(e) {}
             }
         }
 
@@ -241,7 +248,7 @@ class InvertImage(task: AreaTask?) : AreaStep(task, "invert") {
         // this is done to prevent inversion of strokes inside large thick characters
         if (quadBlocks < 4 || blackBlocks < 4) {
             for (block in marked) {
-                invert[block.x]!![block.y] = false
+                invert[block.x][block.y] = false
             }
             return
         }
@@ -259,7 +266,7 @@ class InvertImage(task: AreaTask?) : AreaStep(task, "invert") {
         val y = block.y
 
         // invert block
-        invert[x]!![y] = true
+        invert[x][y] = true
 
         // check neighbors
         if (x > 0) {
@@ -298,7 +305,7 @@ class InvertImage(task: AreaTask?) : AreaStep(task, "invert") {
         // find gaps that are enclosed in inverted blocks
         for (x in internal.x until internal.x + internal.width) {
             for (y in internal.y until internal.y + internal.height) {
-                if (invert[x]!![y] || visited[x][y]) {
+                if (invert[x][y] || visited[x][y]) {
                     continue
                 }
 
@@ -315,7 +322,7 @@ class InvertImage(task: AreaTask?) : AreaStep(task, "invert") {
                 todo.add(Block(x, y))
                 while (!todo.isEmpty()) {
                     val block = todo.remove()
-                    if (invert[block.x]!![block.y] || visited[block.x][block.y]) {
+                    if (invert[block.x][block.y] || visited[block.x][block.y]) {
                         continue
                     }
                     if (!internal.contains(block.x, block.y)) {
@@ -359,7 +366,7 @@ class InvertImage(task: AreaTask?) : AreaStep(task, "invert") {
 
                 // invert blocks inside the gap
                 for (block in marked) {
-                    invert[block.x]!![block.y] = true
+                    invert[block.x][block.y] = true
                 }
             }
         }
@@ -375,19 +382,19 @@ class InvertImage(task: AreaTask?) : AreaStep(task, "invert") {
         // in the background and doesn't confuse column detector
         var top = false
         if (y > 0) {
-            if (!invert[x]!![y - 1]) top = true
+            if (!invert[x][y - 1]) top = true
         }
         var bottom = false
         if (y < height - 1) {
-            if (!invert[x]!![y + 1]) bottom = true
+            if (!invert[x][y + 1]) bottom = true
         }
         var left = false
         if (x > 0) {
-            if (!invert[x - 1]!![y]) left = true
+            if (!invert[x - 1][y]) left = true
         }
         var right = false
         if (x < width - 1) {
-            if (!invert[x + 1]!![y]) right = true
+            if (!invert[x + 1][y]) right = true
         }
         val rect = Rectangle(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE)
         invertRegion(rect, top, bottom, left, right)
@@ -401,9 +408,9 @@ class InvertImage(task: AreaTask?) : AreaStep(task, "invert") {
         left: Boolean, right: Boolean
     ) {
         val minX = rect.x
-        val maxX = rect.x + rect.width.toInt() - 1
+        val maxX = rect.x + rect.width - 1
         val minY = rect.y
-        val maxY = rect.y + rect.height.toInt() - 1
+        val maxY = rect.y + rect.height - 1
 
         // invert pixels
         var x = minX
@@ -461,7 +468,7 @@ class InvertImage(task: AreaTask?) : AreaStep(task, "invert") {
             g.composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.2f)
             for (y in 0 until height) {
                 for (x in 0 until width) {
-                    if (invert[x]!![y]) {
+                    if (invert[x][y]) {
                         g.fillRect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE)
                     }
                 }

@@ -18,6 +18,8 @@ import io.github.ifropc.kotomo.ocr.Rectangle
 import java.awt.Color
 import io.github.ifropc.kotomo.ocr.Point
 import java.util.*
+import kotlin.math.max
+import kotlin.math.min
 
 /**
  * List of areas inside a single column (or row in horizontal orientation).
@@ -94,12 +96,6 @@ class Column : HasRectangle {
     var remove = false
 
     /**
-     * Is this column connected to any other columns
-     */
-    val isConnected: Boolean
-        get() = previousColumn != null || nextColumn != null
-
-    /**
      * Surface area of the column
      */
     val size: Int
@@ -115,16 +111,6 @@ class Column : HasRectangle {
                 sum += area.size
             }
             return sum
-        }
-
-    /**
-     * max(width, heighrt)
-     */
-    val maxDim: Int
-        get() = if (rectangle!!.width > rectangle!!.height) {
-            rectangle!!.width
-        } else {
-            rectangle!!.height
         }
 
     /**
@@ -182,7 +168,7 @@ class Column : HasRectangle {
         }
         val intersect = col2.rectangle!!.intersection(rectangle!!)
         val intersectSize = intersect.height * intersect.width
-        val refSize = Math.min(size, col2.size)
+        val refSize = min(size, col2.size)
         return 1.0f * intersectSize / refSize
     }
 
@@ -193,10 +179,10 @@ class Column : HasRectangle {
         if (col2!!.x > maxX || col2.maxX < x) {
             return 0f
         }
-        val intersectMinX = Math.max(x, col2.x)
-        val intersectMaxX = Math.min(maxX, col2.maxX)
+        val intersectMinX = max(x, col2.x)
+        val intersectMaxX = min(maxX, col2.maxX)
         val commonWidth = intersectMaxX - intersectMinX + 1
-        val refWidth = Math.min(rectangle!!.width, col2.rectangle!!.width)
+        val refWidth = min(rectangle!!.width, col2.rectangle!!.width)
         return 1.0f * commonWidth / refWidth
     }
 
@@ -213,24 +199,22 @@ class Column : HasRectangle {
         mergedCol.addAreas(areas)
         mergedCol.addAreas(col2.areas)
         mergedCol.isVertical = isVertical
-        Collections.sort(mergedCol.areas, object : Comparator<Area> {
-            override fun compare(o1: Area, o2: Area): Int {
-                return if (isVertical) {
-                    val y1 = o1.midpoint.y
-                    val y2 = o2.midpoint.y
-                    y1.compareTo(y2)
-                } else {
-                    val x1 = o1.midpoint.x
-                    val x2 = o2.midpoint.x
-                    x1.compareTo(x2)
-                }
+        Collections.sort(mergedCol.areas) { o1, o2 ->
+            if (isVertical) {
+                val y1 = o1.midpoint.y
+                val y2 = o2.midpoint.y
+                y1.compareTo(y2)
+            } else {
+                val x1 = o1.midpoint.x
+                val x2 = o2.midpoint.x
+                x1.compareTo(x2)
             }
-        })
+        }
         mergeAreasMinorDim(mergedCol.areas)
         return mergedCol
     }
 
-    fun addAreas(areas: List<Area?>) {
+    private fun addAreas(areas: List<Area?>) {
         for (area in areas) {
             addArea(area)
         }
@@ -265,7 +249,7 @@ class Column : HasRectangle {
             if (intersect) {
                 areas.removeAt(i)
                 areas.removeAt(i)
-                areas.add(i, a1!!.merge(a2))
+                areas.add(i, a1.merge(a2))
                 --i
             }
             i++
@@ -325,19 +309,6 @@ class Column : HasRectangle {
         get() = rectangle!!.y + rectangle!!.height - 1
 
     /**
-     * @return true if column contains only splitted areas
-     */
-    val isAllAreasSplitted: Boolean
-        get() {
-            for (area in areas) {
-                if (!area!!.splitted) {
-                    return false
-                }
-            }
-            return true
-        }
-
-    /**
      * Number of pixels inside column
      */
     val pixels: Int
@@ -361,8 +332,8 @@ class Column : HasRectangle {
      */
     val ratio: Float
         get() {
-            val min = Math.min(rectangle!!.width, rectangle!!.height)
-            val max = Math.max(rectangle!!.width, rectangle!!.height)
+            val min = min(rectangle!!.width, rectangle!!.height)
+            val max = max(rectangle!!.width, rectangle!!.height)
             return 1.0f * min / max
         }
 
@@ -382,33 +353,6 @@ class Column : HasRectangle {
         }
 
     /**
-     * Average of area sizes
-     */
-    val avgAreaSize: Float
-        get() {
-            if (areas.size == 0) {
-                return 1f
-            }
-            var sum = 0f
-            for (area in areas) {
-                sum += area.size.toFloat()
-            }
-            return sum / areas.size
-        }
-
-    /**
-     * Number of original areas (before merges) combined into this column
-     */
-    val sourceAreaCount: Int
-        get() {
-            var count = 0
-            for (area in areas) {
-                count += area!!.sourceAreas.size
-            }
-            return count
-        }
-
-    /**
      * Median of area sizes
      */
     val medianAreaSize: Float
@@ -418,11 +362,11 @@ class Column : HasRectangle {
             }
             val areasBySize: MutableList<Area?> = ArrayList()
             areasBySize.addAll(areas)
-            Collections.sort(areasBySize) { o1, o2 ->
+            areasBySize.sortWith(Comparator { o1, o2 ->
                 val s1 = o1!!.size
                 val s2 = o2!!.size
                 s1.compareTo(s2)
-            }
+            })
             return if (areas.size % 2 == 1) {
                 areasBySize[areas.size / 2]!!.size.toFloat()
             } else {
@@ -433,119 +377,13 @@ class Column : HasRectangle {
         }
 
     /**
-     * Standard deviation of area sizes
-     */
-    val areaSizeStd: Float
-        get() {
-            val mean = avgAreaSize
-            var sum = 0f
-            for (area in areas) {
-                sum += Math.pow((area.size - mean).toDouble(), 2.0).toFloat()
-            }
-            return Math.sqrt(sum.toDouble()).toFloat()
-        }
-
-    /**
-     * Coefficient of variation of area sizes
-     */
-    val areaSizeCV: Float
-        get() {
-            val mean = avgAreaSize
-            var sum = 0f
-            for (area in areas) {
-                sum += Math.pow((area.size - mean).toDouble(), 2.0).toFloat()
-            }
-            val std = Math.sqrt(sum.toDouble()).toFloat()
-            return std / mean
-        }
-
-    /**
-     * Average area minorDim/majorDim ratio.
-     */
-    val avgMinorMajorRatio: Float
-        get() {
-            if (areas.size == 0) {
-                return 1f
-            }
-            var sum = 0f
-            for (area in areas) {
-                sum += 1.0f * area.minorDim / area.majorDim
-            }
-            return sum / areas.size
-        }
-
-    /**
-     * Minimum area minorDim/majorDim ratio.
-     */
-    val minMinorMajorRatio: Float
-        get() {
-            if (areas.size == 0) {
-                return 1f
-            }
-            var min = 10000f
-            for (area in areas) {
-                val ratio = 1.0f * area.minorDim / area.majorDim
-                if (ratio < min) {
-                    min = ratio
-                }
-            }
-            return min
-        }
-
-    /**
-     * Maximum area minorDim/majorDim ratio.
-     */
-    val maxMinorMajorRatio: Float
-        get() {
-            if (areas.size == 0) {
-                return 1f
-            }
-            var max = 0f
-            for (area in areas) {
-                val ratio = 1.0f * area.minorDim / area.majorDim
-                if (ratio > max) {
-                    max = ratio
-                }
-            }
-            return max
-        }
-
-    /**
-     * Maximum area width/height ratio
-     */
-    val maxAreaRatio: Float
-        get() {
-            var max = 0f
-            for (area in areas) {
-                if (area.ratio > max) {
-                    max = area.ratio
-                }
-            }
-            return max
-        }
-
-    /**
-     * Minimum area width/height ratio
-     */
-    val minAreaRatio: Float
-        get() {
-            var min = 1f
-            for (area in areas) {
-                if (area.ratio < min) {
-                    min = area.ratio
-                }
-            }
-            return min
-        }
-
-    /**
      * Gets the mininum RGB value among areas pixels
      */
     val minRGBValue: Int
         get() {
             var minRGB = 255
             for (area in areas) {
-                if (area!!.minRGB < minRGB) {
+                if (area.minRGB < minRGB) {
                     minRGB = area.minRGB
                 }
             }
@@ -561,7 +399,7 @@ class Column : HasRectangle {
             var rgbWeight = 0
             for (area in areas) {
                 val weight = area.pixels
-                rgbSum += area!!.minRGB * weight
+                rgbSum += area.minRGB * weight
                 rgbWeight += weight
             }
             return 1.0f * rgbSum / rgbWeight
@@ -584,7 +422,7 @@ class Column : HasRectangle {
             return simpleColumn!!
         }
         simpleColumn = io.github.ifropc.kotomo.Column(
-            areas.filter { !it.isPunctuation }.map { it.rectangle!! },
+            areas.filter { !it.isPunctuation }.map { it.rectangle },
             rectangle!!,
             vertical = isVertical,
             furigana = isFurigana

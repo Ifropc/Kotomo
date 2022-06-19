@@ -21,6 +21,12 @@ import io.github.ifropc.kotomo.util.Util.scale
 import mu.KotlinLogging
 import java.awt.Color
 import java.util.*
+import kotlin.math.abs
+import kotlin.math.ceil
+import kotlin.math.floor
+import kotlin.math.min
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 private val log = KotlinLogging.logger { }
 
@@ -105,13 +111,13 @@ class FindColumns(task: AreaTask?) : AreaStep(task, "columns") {
         // process areas in order that prioritizes column growth in reading direction
         val cols = index!!.all
         val todo = PriorityQueue<Column?>(
-            cols!!.size
+            cols.size
         ) { o1, o2 ->
             val size1 = o1.minorDim * o1.size
             val size2 = o2.minorDim * o2.size
             size1.compareTo(size2)
         }
-        todo.addAll(cols!!)
+        todo.addAll(cols)
 
         // merge columns until nothing can be done
         //while(!todo.empty()) {
@@ -135,7 +141,7 @@ class FindColumns(task: AreaTask?) : AreaStep(task, "columns") {
 
             // find the largest column (not always col, can be target)
             var largest = col
-            for (target in targets!!) {
+            for (target in targets) {
                 if (target.minorDim > largest!!.minorDim) {
                     largest = target
                 }
@@ -160,7 +166,7 @@ class FindColumns(task: AreaTask?) : AreaStep(task, "columns") {
             }
             if (log.isDebugEnabled) {
                 for (target in targets) {
-                    log.debug { "  target:" + target + " score:" + target!!.score + " rgb:" + target.avgRGBValue }
+                    log.debug { "  target:" + target + " score:" + target.score + " rgb:" + target.avgRGBValue }
                 }
                 log.debug { "  merged:$merged" }
             }
@@ -176,7 +182,7 @@ class FindColumns(task: AreaTask?) : AreaStep(task, "columns") {
             // check that merged column is valid and average column score increases
             if (checkMerge(merged, col, targets, largest)) {
                 for (target in targets) {
-                    index!!.remove(target!!)
+                    index!!.remove(target)
                     target.remove = true
                 }
                 index!!.remove(col)
@@ -194,16 +200,16 @@ class FindColumns(task: AreaTask?) : AreaStep(task, "columns") {
     private fun filterTargetsByRGB(targets: MutableList<Column>, largest: Column?): List<Column?> {
         val rejected: MutableList<Column?> = ArrayList()
         val refRGBValue = largest!!.avgRGBValue
-        val i = targets!!.iterator()
+        val i = targets.iterator()
         while (i.hasNext()) {
             val target = i.next()
             // allow targets that are contained inside col
-            if (largest!!.contains(target)) {
+            if (largest.contains(target)) {
                 continue
             }
             // allow dakuten,
             // these are sometimes gray instead of black and can fail rgb check
-            if (target!!.areas.size == 1 && target.ratio >= 0.6f && target.maxY >= largest.y - largest.width / 4 && target.maxY < largest.maxY && target.midpoint.x > largest.midpoint.x && target.pixelAreaRatio >= 0.5f && largest.getHorizontalIntersectRatio(
+            if (target.areas.size == 1 && target.ratio >= 0.6f && target.maxY >= largest.y - largest.width / 4 && target.maxY < largest.maxY && target.midpoint.x > largest.midpoint.x && target.pixelAreaRatio >= 0.5f && largest.getHorizontalIntersectRatio(
                     target
                 ) >= 0.7f
             ) {
@@ -262,7 +268,7 @@ class FindColumns(task: AreaTask?) : AreaStep(task, "columns") {
     private fun createLongProbe(col: Column, iteration: Int): Rectangle {
         val width = col.width
         val height = col.height
-        val extra = Math.ceil((Math.min(width, height) * 0.5f * iteration).toDouble()).toInt()
+        val extra = ceil((min(width, height) * 0.5f * iteration).toDouble()).toInt()
         return if (col.isVertical) {
             Rectangle(
                 col.x, col.y - extra,
@@ -282,7 +288,7 @@ class FindColumns(task: AreaTask?) : AreaStep(task, "columns") {
     private fun createThickProbe(col: Column): Rectangle {
         val width = col.width
         val height = col.height
-        val extra = Math.floor(Math.min(width, height).toDouble()).toInt()
+        val extra = floor(min(width, height).toDouble()).toInt()
         return if (col.isVertical) {
             Rectangle(
                 col.x - extra, col.y,
@@ -319,7 +325,7 @@ class FindColumns(task: AreaTask?) : AreaStep(task, "columns") {
         // check if column is expanding along minor dimension, decrease score if 
         // large expansion and long column (often invalid expansions into furigana)  
         val minorDimExpansion = 1.0f * merged.minorDim / largest.minorDim
-        val maxPenalty = scale(col!!.areas.size.toFloat(), 2f, 4f, 1.0f, 0.8f)
+        val maxPenalty = scale(col.areas.size.toFloat(), 2f, 4f, 1.0f, 0.8f)
         val expansionScore = scale(minorDimExpansion, 1.15f, 1.4f, 1.0f, maxPenalty)
         merged.score = merged.score!! * expansionScore
 
@@ -332,13 +338,13 @@ class FindColumns(task: AreaTask?) : AreaStep(task, "columns") {
         var weightSum = 0f
         var lowestScore = 10000f
         for (target in merge(col, targets)) {
-            if (target!!.score!! < lowestScore) {
+            if (target.score!! < lowestScore) {
                 lowestScore = target.score!!
             }
         }
         for (target in merge(col, targets)) {
-            var weight = Math.pow(target.size.toDouble(), 0.58).toFloat()
-            if (target!!.score == lowestScore) {
+            var weight = target.size.toDouble().pow(0.58).toFloat()
+            if (target.score == lowestScore) {
                 weight *= 1.25f
             }
             weight *= scale(
@@ -411,9 +417,7 @@ class FindColumns(task: AreaTask?) : AreaStep(task, "columns") {
         if (!checkColumnEnd(col, firstProbe)) {
             return false
         }
-        return if (!checkColumnEnd(col, secondProbe)) {
-            false
-        } else true
+        return checkColumnEnd(col, secondProbe)
     }
 
     /**
@@ -424,7 +428,7 @@ class FindColumns(task: AreaTask?) : AreaStep(task, "columns") {
     private fun checkColumnEnd(col: Column?, probe: Rectangle): Boolean {
         var pixelsSum = 0f
         for (area in col!!.areas) {
-            if (!probe.intersects(area!!.rect)) {
+            if (!probe.intersects(area.rect)) {
                 continue
             }
             val intersect = probe.intersection(area.rect)
@@ -435,11 +439,7 @@ class FindColumns(task: AreaTask?) : AreaStep(task, "columns") {
             pixelsSum += pixels
         }
         val ratio = pixelsSum / (probe.width * probe.height)
-        return if (ratio < 0.05f) {
-            false
-        } else {
-            true
-        }
+        return ratio >= 0.05f
     }
 
     /**
@@ -472,7 +472,7 @@ class FindColumns(task: AreaTask?) : AreaStep(task, "columns") {
             scoreSum += score
         }
         log.debug { "  scoreSum:   $scoreSum" }
-        val scoreSqr = Math.sqrt(scoreSum.toDouble()).toFloat()
+        val scoreSqr = sqrt(scoreSum.toDouble()).toFloat()
         log.debug { "  scoreSqr:   $scoreSqr" }
         return scoreSqr
     }
@@ -483,7 +483,7 @@ class FindColumns(task: AreaTask?) : AreaStep(task, "columns") {
     private fun calcScoreSize(area: Area, col: Column): Float {
         var ratio = 1.0f * area.maxDim / (col.minorDim * 0.9f)
         if (ratio > 1.0f) ratio = 1.0f
-        val score = Math.pow(ratio.toDouble(), 2.0).toFloat()
+        val score = ratio.toDouble().pow(2.0).toFloat()
         log.debug { "    sizeRatio:    $ratio" }
         log.debug { "    sizeScore:    $score" }
         return score
@@ -497,7 +497,7 @@ class FindColumns(task: AreaTask?) : AreaStep(task, "columns") {
         // allow small deviation from ideal square without penalty
         var score = scale(ratio, 0.0f, 0.9f, 0.0f, 1.0f)
         val exponent = 1.2f
-        score = Math.pow(score.toDouble(), exponent.toDouble()).toFloat()
+        score = score.toDouble().pow(exponent.toDouble()).toFloat()
         log.debug { "    shapeRatio:   $ratio" }
         log.debug { "    shapeScore:   $score" }
         return score
@@ -516,11 +516,11 @@ class FindColumns(task: AreaTask?) : AreaStep(task, "columns") {
             firstEdge = area.y - col.y
             secondEdge = col.maxY - area.maxY
         }
-        val diff = Math.abs(firstEdge - secondEdge)
+        val diff = abs(firstEdge - secondEdge)
         var diffPrct = 1.0f * diff / col.minorDim
         diffPrct = scale(diffPrct, 0.1f, 1.0f, 0.0f, 1.0f)
         val exponent = scale(sizeScore, 0.2f, 0.8f, 6f, 3f)
-        val locationScore = Math.pow((1.0f - diffPrct).toDouble(), exponent.toDouble()).toFloat()
+        val locationScore = (1.0f - diffPrct).toDouble().pow(exponent.toDouble()).toFloat()
         log.debug { "    diffPrct:     $diffPrct" }
         log.debug { "    locationScore:$locationScore" }
         return locationScore
@@ -530,7 +530,7 @@ class FindColumns(task: AreaTask?) : AreaStep(task, "columns") {
      * Calculates RGB value difference (smaller is better)
      */
     private fun calcScoreRGB(area: Area?, col: Column): Float {
-        val rgbDelta = (area!!.minRGB - col.minRGBValue) as Int
+        val rgbDelta = (area!!.minRGB - col.minRGBValue)
         val rgbScore = scale(rgbDelta.toFloat(), 50f, 100f, 1.0f, 0.4f)
         log.debug { "    rgbDelta:     $rgbDelta" }
         log.debug { "    rgbScore:     $rgbScore" }
@@ -578,14 +578,14 @@ class FindColumns(task: AreaTask?) : AreaStep(task, "columns") {
         col.isChanged = true
         val columns = index!!.all
         val areas: MutableList<Area> = ArrayList()
-        for (column in columns!!) {
-            areas.addAll(column!!.areas)
+        for (column in columns) {
+            areas.addAll(column.areas)
         }
 
         ///task.addDefaultDebugImage("columns", areas, columns, Parameters.vertical);
         val image = task!!.createDefaultDebugImage(areas, columns)
         if (probe != null) {
-            paintRectangle(image!!, probe, Color.GREEN)
+            paintRectangle(image, probe, Color.GREEN)
         }
         task!!.addDebugImage(image, "columns", col.isVertical)
         col.isChanged = false

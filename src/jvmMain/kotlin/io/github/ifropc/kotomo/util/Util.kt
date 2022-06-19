@@ -18,8 +18,6 @@ import io.github.ifropc.kotomo.ocr.Rectangle
 import mu.KotlinLogging
 import java.io.File
 
-private val log = KotlinLogging.logger { }
-
 object Util {
     /**
      * Finds file reference
@@ -80,46 +78,9 @@ object Util {
         ret += "]"
         return ret
     }
-
-    /**
-     * Creates boolean matrix from bitmap matrix
-     */
-    fun createBinaryMatrix32(matrix: IntArray): Array<BooleanArray> {
-        if (matrix.size != 32) {
-            Error("Invalid length")
-        }
-        val boolMatrix = Array(32) { BooleanArray(32) }
-        for (y in 0..31) {
-            for (x in 0..31) {
-                if (isBitSet(x, y, matrix)) {
-                    boolMatrix[x][y] = true
-                }
-            }
-        }
-        return boolMatrix
-    }
-
-    /**
-     * Prints java memory statistics
-     */
-    fun printMemoryUsage() {
-        System.gc()
-        val heapSize = Runtime.getRuntime().totalMemory()
-        val heapMaxSize = Runtime.getRuntime().maxMemory()
-        val heapFreeSize = Runtime.getRuntime().freeMemory()
-        val heapUsedSize = heapSize - heapFreeSize
-        log.debug { "\nMemory usage:" } 
-        log.debug { "heapSize    :$heapSize" } 
-        log.debug { "heapMaxSize :$heapMaxSize" } 
-        log.debug { "heapFreeSize:$heapFreeSize" } 
-        log.debug { "heapUsedSize:$heapUsedSize" } 
-    }
 }
 
 fun Rectangle.toAwt(): java.awt.Rectangle{
     return java.awt.Rectangle(this.x, this.y, this.width, this.height)
 }
 
-fun java.awt.Rectangle.toKotomo(): Rectangle {
-   return Rectangle(this.x, this.y, this.width, this.height)
-}

@@ -16,8 +16,6 @@ package io.github.ifropc.kotomo.ocr
 
 import io.github.ifropc.kotomo.util.isBitSet
 import io.github.ifropc.kotomo.util.setBit
-import io.github.ifropc.kotomo.util.toAwt
-
 import java.util.*
 
 /**
@@ -66,7 +64,7 @@ class ComponentFindUnconnected {
         if (visited[pixel.x][pixel.y]) {
             return
         }
-        if (isBitSet(pixel.x, pixel.y, matrix!!)) {
+        if (isBitSet(pixel.x, pixel.y, matrix)) {
             pixels!!.add(pixel)
             todo!!.add(Pixel(pixel.x - 1, pixel.y))
             todo!!.add(Pixel(pixel.x + 1, pixel.y))
@@ -94,7 +92,7 @@ class ComponentFindUnconnected {
             if (pixel.y > maxY) maxY = pixel.y
         }
         component.pixels = pixels!!.size
-        component.bounds = io.github.ifropc.kotomo.ocr.Rectangle(minX, minY, maxX - minX + 1, maxY - minY + 1)
+        component.bounds = Rectangle(minX, minY, maxX - minX + 1, maxY - minY + 1)
         return component
     }
 }

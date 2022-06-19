@@ -27,6 +27,7 @@ import java.awt.Color
 import java.awt.Font
 import java.awt.GraphicsEnvironment
 import java.awt.image.BufferedImage
+import kotlin.math.abs
 
 private val log = KotlinLogging.logger { }
 
@@ -63,7 +64,7 @@ class ReferenceMatrixCacheBuilder {
             font, Parameters.targetSize,
             Parameters.ocrHaloSize, Characters.all
         )
-        if (file!!.exists() && SKIP_EXISTS) {
+        if (file.exists() && SKIP_EXISTS) {
             log.debug { "$font already generated\nfile:$file" } 
             return
         }
@@ -128,8 +129,8 @@ class ReferenceMatrixCacheBuilder {
         for (size in 25..44) {
             val font = Font(fontName, style, size)
             val image = paintCharacter(character, font)
-            val hfit = Math.abs(image.width - targetSize)
-            val vfit = Math.abs(image.height - targetSize)
+            val hfit = abs(image.width - targetSize)
+            val vfit = abs(image.height - targetSize)
             val fit = if (hfit < vfit) hfit else vfit
             if (fit < bestFit) {
                 bestFit = fit

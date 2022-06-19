@@ -23,7 +23,6 @@ import io.github.ifropc.kotomo.ocr.OCRTask
 import io.github.ifropc.kotomo.ocr.Point
 import io.github.ifropc.kotomo.ocr.Rectangle
 import io.github.ifropc.kotomo.ocr.ReferenceMatrixCacheLoader
-import io.github.ifropc.kotomo.util.Parameters
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -199,24 +198,4 @@ class KanjiTomo {
      */
     private var verticalOrientation = true
 
-    /**
-     * Sets the reading direction. Default is automatic.
-     *
-     * Target image needs to be re-analyzed after changing the orientation by calling setTargetImage again.
-     */
-    fun setOrientation(orientation: Orientation) {
-        Parameters.orientationTarget = orientation
-    }
-
-    /**
-     * Sets character and background color. Black and white characters work best,
-     * but coloured characters might also work if there's enough contrast.
-     *
-     * Target image needs to be re-analyzed after changing the color by calling setTargetImage again.
-     *
-     * Default: CharacterColor.AUTOMATIC
-     */
-    fun setCharacterColor(color: CharacterColor) {
-        Parameters.colorTarget = color
-    }
 }

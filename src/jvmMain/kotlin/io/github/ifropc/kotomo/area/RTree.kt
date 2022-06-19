@@ -75,8 +75,8 @@ class RTree<T : HasRectangle> {
      * Creates a new node that can hold all rectangles inside image
      */
     constructor(image: Array<BooleanArray>) {
-        val width = image!!.size
-        val height = image[0]!!.size
+        val width = image.size
+        val height = image[0].size
         bounds = Rectangle(0, 0, width, height)
     }
 
@@ -139,7 +139,7 @@ class RTree<T : HasRectangle> {
         } else {
             var target: RTree<T>? = null
             for (node in nodes!!) {
-                if (node.coverage != null && node.coverage!!.contains(value!!.rectangle!!)) {
+                if (node.coverage != null && node.coverage!!.contains(value.rectangle!!)) {
                     target = node
                     break
                 }
@@ -272,7 +272,7 @@ class RTree<T : HasRectangle> {
         var y = 0
         for (value in values!!) {
             val midPoint = value.midpoint
-            x += midPoint!!.x
+            x += midPoint.x
             y += midPoint.y
         }
         x /= values!!.size

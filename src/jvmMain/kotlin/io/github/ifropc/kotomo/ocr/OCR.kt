@@ -85,7 +85,7 @@ class OCR {
             }
 
         if (Parameters.isSaveOCRFailed) {
-            val bestMatch = task!!.results!![0].character
+            val bestMatch = task.results!![0].character
             var expectedCharacter: Char? = null
             if (Parameters.expectedCharacters != null) {
                 expectedCharacter = Parameters.expectedCharacters!![task.charIndex!!]

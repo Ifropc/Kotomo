@@ -20,6 +20,8 @@ import io.github.ifropc.kotomo.util.Util.printArray
 import java.awt.Color
 import java.awt.image.BufferedImage
 import java.math.BigInteger
+import kotlin.math.roundToInt
+import kotlin.math.roundToLong
 
 /**
  * Result after alignment between target image and reference character
@@ -65,10 +67,6 @@ class OCRResult(
     /**
      * Gets average score across all alignments. Higher is better.
      */
-    /**
-     * Average score across all transformations. Higher score is better.
-     */
-    var avgScore = 0f
 
     /**
      * If true, refined aligment was used that includes halo pixels (pink and gray).
@@ -83,7 +81,7 @@ class OCRResult(
         get() = reference.character
 
     override fun toString(): String {
-        return """${character}	score:$score	black:$blackPixels	white:$whitePixels	targetHalo:${
+        return """$character	score:$score	black:$blackPixels	white:$whitePixels	targetHalo:${
             printArray(
                 targetHaloPixels
             )
@@ -99,7 +97,7 @@ class OCRResult(
         }
     }
 
-    fun buildDebugImageBasic(): BufferedImage {
+    private fun buildDebugImageBasic(): BufferedImage {
         val image = createWhiteImage(32, 32)
         addLayer(image, Color.BLACK, target.matrix, reference.matrix)
         addLayer(image, Parameters.ocrTargetHaloFirstColor, target.matrix)
@@ -107,7 +105,7 @@ class OCRResult(
         return image
     }
 
-    fun buildDebugImageRefined(): BufferedImage {
+    private fun buildDebugImageRefined(): BufferedImage {
         val image = createWhiteImage(32, 32)
         addLayer(image, Color.BLACK, target.matrix, reference.matrix)
         for (i in 1 until Parameters.ocrHaloSize) {
@@ -175,6 +173,6 @@ class OCRResult(
     private fun interpolate(rgb1: Int, rgb2: Int, layer: Int): Int {
         val delta = rgb2 - rgb1
         val ratio = 1.0f * (layer - 1) / (Parameters.ocrHaloSize - 1)
-        return rgb1 + Math.round(ratio * delta)
+        return rgb1 + (ratio * delta).roundToInt()
     }
 }

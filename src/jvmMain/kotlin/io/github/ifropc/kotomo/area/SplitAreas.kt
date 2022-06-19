@@ -15,6 +15,8 @@
 package io.github.ifropc.kotomo.area
 
 import io.github.ifropc.kotomo.util.Parameters
+import kotlin.math.ceil
+import kotlin.math.floor
 
 /**
  * Splits too long areas
@@ -34,9 +36,9 @@ class SplitAreas(task: AreaTask?) : AreaStep(task, "splitareas") {
     
     override fun runImpl() {
         for (col in task!!.columns!!) {
-            val minLength = Math.ceil((col.minDim * splitMinLength).toDouble()).toInt()
+            val minLength = ceil((col.minDim * splitMinLength).toDouble()).toInt()
             var i = 0
-            while (i < col!!.areas.size) {
+            while (i < col.areas.size) {
                 val area = col.areas[i]
                 if (area.height < 10 && area.width < 10) {
                     i++
@@ -64,9 +66,9 @@ class SplitAreas(task: AreaTask?) : AreaStep(task, "splitareas") {
     private fun splitVertical(area: Area, col: Column): Boolean {
 
         // find line with least amount of pixels 
-        val minY = area.y + Math.floor((area.height * scanFrom).toDouble()).toInt()
-        val maxY = area.y + Math.ceil((area.height * scanTo).toDouble()).toInt()
-        var minPixels = Math.ceil((area.width * maxPixelsPrct).toDouble()).toInt() + 1
+        val minY = area.y + floor((area.height * scanFrom).toDouble()).toInt()
+        val maxY = area.y + ceil((area.height * scanTo).toDouble()).toInt()
+        var minPixels = ceil((area.width * maxPixelsPrct).toDouble()).toInt() + 1
         var splitAt = -1
         if (minY <= 0 || maxY >= task!!.height - 1) {
             return false
@@ -84,7 +86,7 @@ class SplitAreas(task: AreaTask?) : AreaStep(task, "splitareas") {
             ++delta
             if (delta == (maxY - minY) / 4) {
                 // give priority to center
-                minPixels = Math.floor((minPixels * 0.9f).toDouble()).toInt()
+                minPixels = floor((minPixels * 0.9f).toDouble()).toInt()
             }
             y = if (delta % 2 == 0) y + delta else y - delta
         }
@@ -106,9 +108,9 @@ class SplitAreas(task: AreaTask?) : AreaStep(task, "splitareas") {
             if (up > down) {
                 splitAt++
             }
-            val index = col!!.areas.indexOf(area)
+            val index = col.areas.indexOf(area)
             col.areas.remove(area)
-            col.areas.addAll(index, area!!.splitY(splitAt))
+            col.areas.addAll(index, area.splitY(splitAt))
             true
         } else {
             false
@@ -118,9 +120,9 @@ class SplitAreas(task: AreaTask?) : AreaStep(task, "splitareas") {
     private fun splitHorizontal(area: Area, col: Column): Boolean {
 
         // find line with least amount of pixels 
-        val minX = area.x + Math.floor((area.width * scanFrom).toDouble()).toInt()
-        val maxX = area.x + Math.ceil((area.width * scanTo).toDouble()).toInt()
-        var minPixels = Math.ceil((area.height * maxPixelsPrct).toDouble()).toInt()
+        val minX = area.x + floor((area.width * scanFrom).toDouble()).toInt()
+        val maxX = area.x + ceil((area.width * scanTo).toDouble()).toInt()
+        var minPixels = ceil((area.height * maxPixelsPrct).toDouble()).toInt()
         var splitAt = -1
         if (minX <= 0 || maxX >= task!!.width - 1) {
             return false
@@ -138,7 +140,7 @@ class SplitAreas(task: AreaTask?) : AreaStep(task, "splitareas") {
             ++delta
             if (delta == (maxX - minX) / 4) {
                 // give priority to center
-                minPixels = Math.floor((minPixels * 0.9f).toDouble()).toInt()
+                minPixels = floor((minPixels * 0.9f).toDouble()).toInt()
             }
             x = if (delta % 2 == 0) x + delta else x - delta
         }
@@ -174,9 +176,9 @@ class SplitAreas(task: AreaTask?) : AreaStep(task, "splitareas") {
             if (left > right) {
                 splitAt++
             }
-            val index = col!!.areas.indexOf(area)
+            val index = col.areas.indexOf(area)
             col.areas.remove(area)
-            col.areas.addAll(index, area!!.splitX(splitAt))
+            col.areas.addAll(index, area.splitX(splitAt))
             true
         } else {
             false

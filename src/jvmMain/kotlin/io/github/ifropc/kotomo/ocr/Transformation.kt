@@ -61,12 +61,7 @@ class Transformation  {
         horizontalTranslate: Int, verticalTranslate: Int,
         horizontalStretch: Int, verticalStretch: Int
     ): Boolean {
-        return if (this.horizontalTranslate == horizontalTranslate && this.verticalTranslate == verticalTranslate && this.horizontalStretch == horizontalStretch && this.verticalStretch == verticalStretch
-        ) {
-            true
-        } else {
-            false
-        }
+        return this.horizontalTranslate == horizontalTranslate && this.verticalTranslate == verticalTranslate && this.horizontalStretch == horizontalStretch && this.verticalStretch == verticalStretch
     }
 
     override fun equals(obj: Any?): Boolean {

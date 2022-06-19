@@ -32,6 +32,8 @@ import java.awt.Color
 import java.awt.image.BufferedImage
 import java.io.File
 import javax.imageio.ImageIO
+import kotlin.math.max
+import kotlin.math.min
 
 private val log = KotlinLogging.logger { }
 /**
@@ -120,7 +122,7 @@ class AreaTask(targetImage: BufferedImage) {
     fun collectAreas() {
         areas = ArrayList()
         for (col in columns!!) {
-            areas!!.addAll(col!!.areas)
+            areas!!.addAll(col.areas)
         }
     }
 
@@ -146,11 +148,11 @@ class AreaTask(targetImage: BufferedImage) {
      *
      * @param point Mouse cursor location relative to target image
      */
-    fun getArea(point: Point): Area? {
+    private fun getArea(point: Point): Area? {
         var minDistance = 1000000
         var closestArea: Area? = null
         for (area in areas!!) {
-            if (area!!.isPunctuation) {
+            if (area.isPunctuation) {
                 continue
             }
             val distance = area.midpoint.distance(point).toInt()
@@ -192,7 +194,7 @@ class AreaTask(targetImage: BufferedImage) {
     fun getBorderPixel(x: Int, y: Int): Boolean {
         return if (x < 0 || y < 0 || x >= width || y >= height || borderPixels == null) {
             false
-        } else borderPixels!![x][y]
+        } else borderPixels[x][y]
     }
 
     /**
@@ -202,13 +204,13 @@ class AreaTask(targetImage: BufferedImage) {
         if (x < 0 || y < 0 || x >= width || y >= height) {
             return
         }
-        borderPixels!![x][y] = value
+        borderPixels[x][y] = value
     }
 
     /**
      * Checks if the binary image has black background pixel at x,y
      */
-    fun getBackgroundPixel(x: Int, y: Int): Boolean {
+    private fun getBackgroundPixel(x: Int, y: Int): Boolean {
         return if (x < 0 || y < 0 || x >= width || y >= height) {
             false
         } else backgroundImage[x][y]
@@ -218,7 +220,7 @@ class AreaTask(targetImage: BufferedImage) {
      * Returns true if image contains any pixels in vertical line
      * @param black If true, scans for black pixels, else white pixels
      */
-    fun containsPixelsVertical(black: Boolean, x: Int, startY: Int, endY: Int): Boolean {
+    private fun containsPixelsVertical(black: Boolean, x: Int, startY: Int, endY: Int): Boolean {
         for (y in startY..endY) {
             if (binaryImage[x][y] == black) {
                 return true
@@ -231,24 +233,10 @@ class AreaTask(targetImage: BufferedImage) {
      * Returns true if image contains any pixels in horizontal line
      * @param black If true, scans for black pixels, else white pixels
      */
-    fun containsPixelsHorizontal(black: Boolean, startX: Int, endX: Int, y: Int): Boolean {
+    private fun containsPixelsHorizontal(black: Boolean, startX: Int, endX: Int, y: Int): Boolean {
         for (x in startX..endX) {
             if (binaryImage[x][y] == black) {
                 return true
-            }
-        }
-        return false
-    }
-
-    /**
-     * Return true if image contains any black pixels within rect
-     */
-    fun containsPixels(rect: Rectangle): Boolean {
-        for (y in rect.y..rect.y + rect.height - 1) {
-            for (x in rect.x..rect.x + rect.width - 1) {
-                if (getPixel(x, y)) {
-                    return true
-                }
             }
         }
         return false
@@ -319,7 +307,7 @@ class AreaTask(targetImage: BufferedImage) {
         val red = color.red
         val green = color.green
         val blue = color.blue
-        var min = Math.min(Math.min(red, green), blue)
+        var min = min(min(red, green), blue)
         if (isPixelInverted(x, y)) {
             min = 255 - min
         }
@@ -333,7 +321,7 @@ class AreaTask(targetImage: BufferedImage) {
         return if (FixedParameters.fixedBlackLevelEnabled || Parameters.colorTarget === CharacterColor.BLACK_ON_WHITE) {
             false
         } else if (Parameters.colorTarget === CharacterColor.AUTOMATIC) {
-            inverted[x / InvertImage.Companion.BLOCK_SIZE][y / InvertImage.Companion.BLOCK_SIZE]
+            inverted[x / InvertImage.BLOCK_SIZE][y / InvertImage.BLOCK_SIZE]
         } else {
             true
         }
@@ -360,7 +348,7 @@ class AreaTask(targetImage: BufferedImage) {
                 if (area === firstArea) {
                     found = true
                 }
-                if (found && !area!!.isPunctuation) {
+                if (found && !area.isPunctuation) {
                     areas.add(area)
                 }
                 if (areas.size == Parameters.ocrMaxCharacters) {
@@ -383,8 +371,8 @@ class AreaTask(targetImage: BufferedImage) {
         for (area in areas) {
 
             // crop from binary image
-            val croppedImage = crop(binaryImage, area!!.rectangle!!)
-            val subImage = SubImage(croppedImage, area!!.rectangle, area!!.column)
+            val croppedImage = crop(binaryImage, area!!.rectangle)
+            val subImage = SubImage(croppedImage, area.rectangle, area.column)
             subImages.add(subImage)
         }
         return subImages
@@ -584,7 +572,7 @@ class AreaTask(targetImage: BufferedImage) {
         }
         val file = File("$targetDir/$filename")
         var scale = 1
-        val minDim = Math.max(image.image.width, image.image.height)
+        val minDim = max(image.image.width, image.image.height)
         if (minDim < Parameters.smallDebugAreaImageThreshold) {
             scale = Parameters.smallDebugAreaImageScale
         }

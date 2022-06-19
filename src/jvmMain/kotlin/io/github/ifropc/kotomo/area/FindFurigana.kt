@@ -65,7 +65,7 @@ class FindFurigana(task: AreaTask?) : AreaStep(task, "furigana") {
         for (furigana in furiganaCols) {
             furigana.isFurigana = true
             furigana.isChanged = true
-            col!!.furiganaColumns.add(furigana)
+            col.furiganaColumns.add(furigana)
         }
     }
 
@@ -74,11 +74,7 @@ class FindFurigana(task: AreaTask?) : AreaStep(task, "furigana") {
      */
     private fun checkBackground(probe: Rectangle): Boolean {
         val pixels = task!!.countPixels(probe, true, false)
-        return if (pixels >= 2) {
-            true
-        } else {
-            false
-        }
+        return pixels >= 2
     }
 
     

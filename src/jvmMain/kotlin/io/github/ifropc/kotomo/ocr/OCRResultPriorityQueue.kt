@@ -91,7 +91,7 @@ class OCRResultPriorityQueue(
                     results.add(expectedResult!!)
                 }
             }
-            Collections.reverse(results)
+            results.reverse()
             return results
         }
 

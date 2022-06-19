@@ -21,6 +21,7 @@ import io.github.ifropc.kotomo.util.Parameters
 import mu.KotlinLogging
 import java.awt.Color
 import java.awt.Graphics2D
+import kotlin.math.ceil
 
 private val log = KotlinLogging.logger { }
 
@@ -52,13 +53,13 @@ class FindConnections(task: AreaTask?) : AreaStep(task, "connections") {
         val probeSizeFactor = 1.75f
         val probe: Rectangle
         probe = if (Parameters.vertical) {
-            val probeSize = Math.ceil((column.width * probeSizeFactor).toDouble()).toInt()
+            val probeSize = ceil((column.width * probeSizeFactor).toDouble()).toInt()
             Rectangle(
                 column.x - probeSize - 1, column.y - probeSize / 2,
                 probeSize, probeSize
             )
         } else {
-            val probeSize = Math.ceil((column.height * probeSizeFactor).toDouble()).toInt()
+            val probeSize = ceil((column.height * probeSizeFactor).toDouble()).toInt()
             Rectangle(
                 column.x - probeSize / 2, column.maxY + 1,
                 probeSize, probeSize
@@ -70,11 +71,11 @@ class FindConnections(task: AreaTask?) : AreaStep(task, "connections") {
         // find closest column
         var target: Column? = null
         var distance = 100000f
-        for (tempCol in targetColumns!!) {
+        for (tempCol in targetColumns) {
             if (column === tempCol) {
                 continue
             }
-            if (tempCol!!.isFurigana) {
+            if (tempCol.isFurigana) {
                 continue
             }
             if (Parameters.vertical) {
@@ -151,14 +152,14 @@ class FindConnections(task: AreaTask?) : AreaStep(task, "connections") {
         }
 
         // mark the connection
-        column!!.nextColumn = target
+        column.nextColumn = target
         target.previousColumn = column
     }
 
     
     override fun addDebugImages() {
         val image = task!!.createDefaultDebugImage()
-        val g = image!!.createGraphics()
+        val g = image.createGraphics()
         g.paint = Color.BLUE
         for (column in task!!.columns!!) {
             paintNextColumn(column, g)

@@ -20,6 +20,11 @@ import io.github.ifropc.kotomo.util.Parameters
 import io.github.ifropc.kotomo.util.Util.scale
 import mu.KotlinLogging
 import java.util.*
+import kotlin.math.abs
+import kotlin.math.ceil
+import kotlin.math.max
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 private val log = KotlinLogging.logger { }
 
@@ -104,7 +109,7 @@ class OrientationMerge(task: AreaTask?) : AreaStep(task, "combined") {
             if (!col.isFurigana) {
                 continue
             }
-            for (area: Area? in col!!.areas) {
+            for (area: Area? in col.areas) {
                 index.add((area)!!)
             }
         }
@@ -117,7 +122,7 @@ class OrientationMerge(task: AreaTask?) : AreaStep(task, "combined") {
         val cols = ArrayList<Column>()
         cols.addAll((task!!.verticalColumns)!!)
         cols.addAll((task!!.horizontalColumns)!!)
-        Collections.sort(cols, Comparator { o1, o2 ->
+        cols.sortWith(Comparator { o1, o2 ->
 
             // iterate from large to small so that small individual areas get included
             // in larger groups
@@ -128,7 +133,7 @@ class OrientationMerge(task: AreaTask?) : AreaStep(task, "combined") {
 
         // reset scores created during FindColumns
         for (col: Column in cols) {
-            col!!.score = null
+            col.score = null
         }
         for (col: Column in cols) {
             processColumn(col)
@@ -162,7 +167,7 @@ class OrientationMerge(task: AreaTask?) : AreaStep(task, "combined") {
             // find columns that intersect with next
             val candidates: MutableList<Column?> = ArrayList()
             candidates.addAll(index!![next.rectangle, (next)!!])
-            for (furigana: Column in next!!.furiganaColumns) {
+            for (furigana: Column in next.furiganaColumns) {
                 candidates.addAll(index!![furigana.rectangle])
             }
 
@@ -172,7 +177,7 @@ class OrientationMerge(task: AreaTask?) : AreaStep(task, "combined") {
             while (i.hasNext()) {
                 val candidate = i.next()
                 val candRGB = candidate!!.minRGBValue.toFloat()
-                val delta = Math.abs(colRGB - candRGB).toInt()
+                val delta = abs(colRGB - candRGB).toInt()
                 if (delta > 100) {
                     i.remove()
                 }
@@ -185,8 +190,8 @@ class OrientationMerge(task: AreaTask?) : AreaStep(task, "combined") {
             for (cand: Column? in candidates) {
                 val intersect = next.rectangle!!.intersection(cand!!.rectangle!!)
                 val intSize = intersect.width * intersect.height
-                val refSize1 = Math.ceil(Math.pow(next.minorDim.toDouble(), 2.0) / 4).toInt()
-                val refSize2 = Math.ceil(Math.pow(cand.minorDim.toDouble(), 2.0) / 4).toInt()
+                val refSize1 = ceil(next.minorDim.toDouble().pow(2.0) / 4).toInt()
+                val refSize2 = ceil(cand.minorDim.toDouble().pow(2.0) / 4).toInt()
                 if (intSize >= refSize1 || intSize >= refSize2) {
                     todo.add(cand)
                 }
@@ -266,9 +271,9 @@ class OrientationMerge(task: AreaTask?) : AreaStep(task, "combined") {
             if (areaDistance == null) {
                 continue
             }
-            var weight = Math.sqrt(col.areaSizeSum.toDouble()).toFloat()
+            var weight = sqrt(col.areaSizeSum.toDouble()).toFloat()
             if (col.areas.size == 2) {
-                weight *= Math.pow(col.avgAreaRatio.toDouble(), 2.0).toFloat()
+                weight *= col.avgAreaRatio.toDouble().pow(2.0).toFloat()
             }
             distanceSum += areaDistance * weight
             weightSum += weight
@@ -305,7 +310,7 @@ class OrientationMerge(task: AreaTask?) : AreaStep(task, "combined") {
             }
 
             // ignore splitted areas
-            if (prev.splitted || next!!.splitted) {
+            if (prev.splitted || next.splitted) {
                 continue
             }
 
@@ -320,7 +325,7 @@ class OrientationMerge(task: AreaTask?) : AreaStep(task, "combined") {
                 minAreaSize = next.size.toFloat()
                 minAreaShape = next.ratio
             }
-            val targetSize = Math.pow(col.minorDim.toDouble(), 2.0).toFloat()
+            val targetSize = col.minorDim.toDouble().pow(2.0).toFloat()
             val minAreaRatio = 1.0f * minAreaSize / targetSize
             if (minAreaRatio <= 0.3f && minAreaShape >= 0.5f) {
                 continue
@@ -334,7 +339,7 @@ class OrientationMerge(task: AreaTask?) : AreaStep(task, "combined") {
             }
 
             // ignore too long areas
-            val maxLength = Math.max(prev.majorDim, next.majorDim).toFloat()
+            val maxLength = max(prev.majorDim, next.majorDim).toFloat()
             if (maxLength > col.minorDim * 1.5f) {
                 continue
             }
@@ -367,8 +372,8 @@ class OrientationMerge(task: AreaTask?) : AreaStep(task, "combined") {
         var nullScoreWeight = 0f
         var totalWeight = 0f
         for (col: Column in cols) {
-            val weight = Math.sqrt(col.areaSizeSum.toDouble()).toFloat()
-            if (col!!.areaDistance == null) {
+            val weight = sqrt(col.areaSizeSum.toDouble()).toFloat()
+            if (col.areaDistance == null) {
                 nullScoreWeight += weight
             }
             totalWeight += weight
@@ -443,7 +448,7 @@ class OrientationMerge(task: AreaTask?) : AreaStep(task, "combined") {
         return if (areaConnectionsScore == null) {
             null
         } else {
-            (1.0f / Math.pow(areaConnectionsScore.toDouble(), 0.2)).toFloat()
+            (1.0f / areaConnectionsScore.toDouble().pow(0.2)).toFloat()
         }
     }
 
@@ -470,25 +475,23 @@ class OrientationMerge(task: AreaTask?) : AreaStep(task, "combined") {
         val validAreas: MutableList<Area> = ArrayList()
 
         // check if furigana areas in other orientation match exactly
-        for (area: Area in areas!!) {
+        for (area: Area in areas) {
             if (!isAreaFurigana(area, vertical)) {
                 validAreas.add(area)
             }
         }
-        Collections.sort(validAreas, object : Comparator<Area> {
-            override fun compare(o1: Area, o2: Area): Int {
-                val i1: Int
-                val i2: Int
-                if (vertical) {
-                    i1 = o1.y
-                    i2 = o2.y
-                } else {
-                    i1 = o1.x
-                    i2 = o2.x
-                }
-                return i1.compareTo(i2)
+        Collections.sort(validAreas) { o1, o2 ->
+            val i1: Int
+            val i2: Int
+            if (vertical) {
+                i1 = o1.y
+                i2 = o2.y
+            } else {
+                i1 = o1.x
+                i2 = o2.x
             }
-        })
+            i1.compareTo(i2)
+        }
         return validAreas
     }
 
@@ -499,19 +502,15 @@ class OrientationMerge(task: AreaTask?) : AreaStep(task, "combined") {
         val pixels = area.pixels
         val furiAreas: List<Area>?
         if (vertical) {
-            furiAreas = horizontalFuriganaIndex!![area!!.rect]
+            furiAreas = horizontalFuriganaIndex!![area.rect]
         } else {
-            furiAreas = verticalFuriganaIndex!![area!!.rect]
+            furiAreas = verticalFuriganaIndex!![area.rect]
         }
         var furiPixels = 0
         for (furiArea: Area in furiAreas) {
             furiPixels += furiArea.pixels
         }
-        return if (pixels == furiPixels) {
-            true
-        } else {
-            false
-        }
+        return pixels == furiPixels
     }
 
     /**

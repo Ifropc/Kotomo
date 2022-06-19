@@ -62,9 +62,4 @@ class ReferenceMatrixCache {
             return matrices
         }
 
-    /**
-     * Gets fonts in the cache
-     */
-    val fonts: Set<String>
-        get() = cache.keys
 }

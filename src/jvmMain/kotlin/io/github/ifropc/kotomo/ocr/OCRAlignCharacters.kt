@@ -174,23 +174,23 @@ class OCRAlignCharacters(task: OCRTask?, private val transform: Transform) {
         }
         val bestScores: MutableMap<Char, OCRResult> = HashMap()
         for (result1 in results1) {
-            bestScores[result1!!.character] = result1
+            bestScores[result1.character] = result1
         }
         for (result2 in results2) {
-            val c = result2!!.character
+            val c = result2.character
             val result1 = bestScores[c]
-            if (result1 == null || result1.score < result2!!.score) {
+            if (result1 == null || result1.score < result2.score) {
                 bestScores[c] = result2
             }
         }
         val results: MutableList<OCRResult> = ArrayList()
         results.addAll(bestScores.values)
-        Collections.sort(results) { o1, o2 -> -1 * o1.score.compareTo(o2.score) }
+        results.sortWith(Comparator { o1, o2 -> -1 * o1.score.compareTo(o2.score) })
         if (forceExpectedCharacter) {
             var removedExpectedResult: OCRResult? = null
             while (results.size > maxSize) {
                 val removed = results.removeAt(results.size - 1)
-                if (removed!!.character.equals(expectedCharacter)) {
+                if (removed.character.equals(expectedCharacter)) {
                     removedExpectedResult = removed
                 }
             }

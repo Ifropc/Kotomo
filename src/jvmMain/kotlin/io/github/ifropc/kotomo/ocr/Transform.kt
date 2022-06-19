@@ -29,6 +29,8 @@ import io.github.ifropc.kotomo.util.moveMatrix
 import java.awt.image.BufferedImage
 import java.io.File
 import javax.imageio.ImageIO
+import kotlin.math.abs
+import kotlin.math.ceil
 
 /**
  * Applies stretch and offset transformations to target image. Caches intermediate
@@ -63,13 +65,13 @@ class Transform(private val task: OCRTask) {
             for (vt in -maxTranslate..maxTranslate) {
                 for (hs in -maxStretch..maxStretch) {
                     for (vs in -maxStretch..maxStretch) {
-                        if (Math.abs(ht) + Math.abs(vt) + Math.abs(hs) + Math.abs(vs) > maxSteps) {
+                        if (abs(ht) + abs(vt) + abs(hs) + abs(vs) > maxSteps) {
                             continue
                         }
-                        if (Math.ceil((hs / 2.0f).toDouble()) + Math.abs(ht) > (32 - Parameters.targetSize) / 2) {
+                        if (ceil((hs / 2.0f).toDouble()) + abs(ht) > (32 - Parameters.targetSize) / 2) {
                             continue
                         }
-                        if (Math.ceil((vs / 2.0f).toDouble()) + Math.abs(vt) > (32 - Parameters.targetSize) / 2) {
+                        if (ceil((vs / 2.0f).toDouble()) + abs(vt) > (32 - Parameters.targetSize) / 2) {
                             continue
                         }
                         val parameters = Transformation(ht, vt, hs, vs)
@@ -86,7 +88,7 @@ class Transform(private val task: OCRTask) {
     /**
      * Gets target bitmap without any transformations
      */
-    var defaultTarget: TargetMatrix? = null
+    private var defaultTarget: TargetMatrix? = null
         private set
 
     init {
@@ -156,7 +158,7 @@ class Transform(private val task: OCRTask) {
     /**
      * Translates matrix with given transformations and crops to 32x32
      */
-    private fun translateMatrix(matrix: IntArray, parameters: Transformation): IntArray? {
+    private fun translateMatrix(matrix: IntArray, parameters: Transformation): IntArray {
         return moveMatrix(
             matrix, parameters.horizontalTranslate,
             parameters.verticalTranslate

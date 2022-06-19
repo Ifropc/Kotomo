@@ -24,7 +24,7 @@ class DebugImage(
     /**
      * Short one-word description of the processing step. For example: "binary"
      */
-    val step: String,
+    step: String,
     /**
      * True if this image has vertical columns, false if horizontal,
      * null if both or no columns.

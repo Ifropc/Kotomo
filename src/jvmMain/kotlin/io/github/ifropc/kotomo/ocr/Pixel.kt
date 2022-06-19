@@ -14,23 +14,13 @@
  */
 package io.github.ifropc.kotomo.ocr
 
-class Pixel(public val x: Int, val y: Int) {
+class Pixel(val x: Int, val y: Int) {
     override fun hashCode(): Int {
         return x + 100000 * y
     }
 
     override fun equals(obj: Any?): Boolean {
         return (obj as Pixel?)!!.x == x && obj!!.y == y
-    }
-
-    fun isNeighbour(px2: Pixel): Boolean {
-        val deltaX = Math.abs(x - px2.x)
-        val deltaY = Math.abs(y - px2.y)
-        return if (deltaX <= 1 && deltaY <= 1) {
-            true
-        } else {
-            false
-        }
     }
 
     override fun toString(): String {

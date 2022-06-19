@@ -20,7 +20,7 @@ import mu.KotlinLogging
 
 private val log = KotlinLogging.logger { }
 
-fun moveMatrix(matrix: IntArray, horizontal: Int, vertical: Int): IntArray? {
+fun moveMatrix(matrix: IntArray, horizontal: Int, vertical: Int): IntArray {
     val matrix2 = IntArray(32)
     for (y in matrix.indices) {
         val newY = y + vertical
@@ -41,7 +41,7 @@ fun moveMatrix(matrix: IntArray, horizontal: Int, vertical: Int): IntArray? {
  *
  * @param layers how many halo layers are generated
  */
-fun buildMatrixHalo(matrix: IntArray, layers: Int): ArrayList<IntArray>? {
+fun buildMatrixHalo(matrix: IntArray, layers: Int): ArrayList<IntArray> {
     var matrix = matrix
     val halo = ArrayList<IntArray>()
     if (layers > 1) {
@@ -186,62 +186,6 @@ fun debugPrintMatrix(matrix1: IntArray?, matrix2: IntArray?) {
 }
 
 /**
- * Moves rectangle inside matrix.
- *
- * @param deltaX Bits inside rect are moved right by this amount
- * @param deltaY Bits inside rect are moved down by this amount
- */
-fun moveRectangle(matrix: IntArray?, rect: Rectangle, deltaX: Int, deltaY: Int) {
-    if (deltaX == 0 && deltaY == 0) {
-        return
-    }
-
-    // select iteration direction so that in-place replacement is possible
-    val xMin = rect.x
-    val xMax = rect.x + rect.width - 1
-    val xStart = if (deltaX >= 0) xMax else xMin
-    val xStop = if (deltaX >= 0) xMin else xMax
-    val xStep = if (deltaX >= 0) -1 else +1
-    val yMin = rect.y
-    val yMax = rect.y + rect.height - 1
-    val yStart = if (deltaY >= 0) yMax else yMin
-    val yStop = if (deltaY >= 0) yMin else yMax
-    val yStep = if (deltaY >= 0) -1 else +1
-    var sourceX = xStart
-    while (if (xStep == +1) sourceX <= xStop else sourceX >= xStop) {
-        var sourceY = yStart
-        while (if (yStep == +1) sourceY <= yStop else sourceY >= yStop) {
-            val targetX = sourceX + deltaX
-            val targetY = sourceY + deltaY
-            if (isBitSet(sourceX, sourceY, matrix!!)) {
-                setBit(targetX, targetY, matrix)
-                clearBit(sourceX, sourceY, matrix)
-            } else {
-                clearBit(targetX, targetY, matrix)
-            }
-            sourceY += yStep
-        }
-        sourceX += xStep
-    }
-}
-
-/**
- * Checks if matrices are equal
- *
- * @return true if equal
- */
-fun compareMatrix(matrix1: IntArray?, matrix2: IntArray?): Boolean {
-    for (x in 0..31) {
-        for (y in 0..31) {
-            if (isBitSet(x, y, matrix1!!) != isBitSet(x, y, matrix2!!)) {
-                return false
-            }
-        }
-    }
-    return true
-}
-
-/**
  * Copies bits from source to target matrix. Restricted to rect area.
  * Bits are translated by deltaX/Y amount.
  *
@@ -300,7 +244,7 @@ fun copyBits(
 fun stretchBits(
     source: IntArray?, target: IntArray?, rect: Rectangle,
     horizontalAmount: Int, verticalAmount: Int
-): Rectangle? {
+): Rectangle {
     return if (horizontalAmount != 0 && verticalAmount != 0) {
         throw Error("Not implemented")
         // TODO combined stretch
@@ -317,7 +261,7 @@ fun stretchBits(
  * @param amount how many pixels source is stretched
  * @return new bounds
  */
-fun stretchBitsX(source: IntArray?, target: IntArray?, rect: Rectangle, amount: Int): Rectangle? {
+fun stretchBitsX(source: IntArray?, target: IntArray?, rect: Rectangle, amount: Int): Rectangle {
     if (amount <= 0) {
         throw Error("amount must be positive")
         // TODO shrink
@@ -353,7 +297,7 @@ fun stretchBitsX(source: IntArray?, target: IntArray?, rect: Rectangle, amount: 
  * @param amount how many pixels source is stretched
  * @return new bounds
  */
-fun stretchBitsY(source: IntArray?, target: IntArray?, rect: Rectangle, amount: Int): Rectangle? {
+fun stretchBitsY(source: IntArray?, target: IntArray?, rect: Rectangle, amount: Int): Rectangle {
     if (amount <= 0) {
         throw Error("amount must be positive")
         // TODO shrink
@@ -401,40 +345,6 @@ fun addBits(source: IntArray, target: IntArray, bounds: Rectangle) {
     for (y in bounds.y until bounds.y + bounds.height) {
         target[y] = target[y] or (source[y] and mask)
     }
-}
-
-/**
- * Removes all source bits from target. 0 in source doesn't overwrite target.
- */
-fun removeBits(source: IntArray, target: IntArray) {
-    for (y in 0..31) {
-        target[y] = target[y] and source[y].inv()
-    }
-}
-
-/**
- * Removes all source bits from target within bounds. 0 in source doesn't overwrite target.
- */
-fun removeBits(source: IntArray, target: IntArray, bounds: Rectangle) {
-    val mask = (0.inv() shl (32 - bounds.width)) ushr bounds.x
-    for (y in bounds.y until bounds.y + bounds.height) {
-        target[y] = target[y] and (source[y] and mask).inv()
-    }
-}
-
-/**
- * Debug prints bits in value;
- */
-fun printBits(value: Int) {
-    var b = ""
-    for (x in 0..31) {
-        if ((value and (1 shl (31 - x))) != 0) {
-            b += ("1")
-        } else {
-            b += ("0")
-        }
-    }
-    log.debug{ b }
 }
 
 /**

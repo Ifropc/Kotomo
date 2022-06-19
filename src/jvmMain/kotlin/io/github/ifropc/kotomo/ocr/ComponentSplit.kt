@@ -71,7 +71,7 @@ class ComponentSplit {
      * @param splitX Split location. Returns the component without splitting if null.
      */
     private fun splitX(component: Component, splitX: Int?): List<Component> {
-        val bounds = component!!.bounds
+        val bounds = component.bounds
         val splitted: MutableList<Component> = ArrayList()
         if (splitX == null) {
             splitted.add(component)
@@ -104,7 +104,7 @@ class ComponentSplit {
      * @param splitY Split location. Returns the component without splitting if null.
      */
     private fun splitY(component: Component, splitY: Int?): List<Component> {
-        val bounds = component!!.bounds
+        val bounds = component.bounds
         val splitted: MutableList<Component> = ArrayList()
         if (splitY == null) {
             splitted.add(component)
