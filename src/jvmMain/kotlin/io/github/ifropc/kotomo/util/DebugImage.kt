@@ -36,7 +36,7 @@ class DebugImage(
 
     /**
      * @param step Short one-word description of the image. For example: "binary"
-     * This appears in file name and can be referenced in par.filterDebugImages
+     * This appears in file name and can be referenced in Parameters.filterDebugImages
      *
      * @param vertical If set, orientation is diplayed in the file name
      *

@@ -29,7 +29,7 @@ import javax.imageio.ImageIO
  * Runs tests
  */
 class Tester {
-    private val par = Parameters.instance
+    private val par = Parameters
     private val dataLoaded = false
     private var tomo: KanjiTomo? = null
     private var loader: TestSetLoader? = null
@@ -268,7 +268,7 @@ class Tester {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            val par = Parameters.instance
+            val par = Parameters
             par.printLevel = PrintLevel.DEBUG
             par.saveAreaImages = SaveAreaImages.OFF
             par.saveOCRImages = SaveOCRImages.OFF

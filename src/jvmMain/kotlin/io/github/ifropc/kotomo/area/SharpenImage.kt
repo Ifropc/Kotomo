@@ -22,7 +22,7 @@ import io.github.ifropc.kotomo.util.ImageUtil.sharpenImage
 class SharpenImage(task: AreaTask?) : AreaStep(task, "original", "sharpened") {
     
     override fun runImpl() {
-        task!!.sharpenedImage = sharpenImage(task!!.originalImage, par)
+        task!!.sharpenedImage = sharpenImage(task!!.originalImage)
     }
 
     

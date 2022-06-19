@@ -15,14 +15,13 @@
 package io.github.ifropc.kotomo.ocr
 
 import io.github.ifropc.kotomo.util.Parameters
-import io.github.ifropc.kotomo.util.Parameters.Companion.instance
 
 /**
  * Calculates OCR score by comparing target and reference matrices for a given alignment
  * and calculating the number of common and nearby pixels.
  */
 class OCRScoreCalculator {
-    private val par = instance
+    
     private var target: TargetMatrix? = null
     private var reference: ReferenceMatrix? = null
     private var blackPixels = 0
@@ -102,13 +101,13 @@ class OCRScoreCalculator {
      */
     private fun calcScore() {
         score =
-            Math.floor((par.ocrBaseScore + blackPixels * par.ocrBlackPixelScore + whitePixels * par.ocrWhiteScore).toDouble())
+            Math.floor((Parameters.ocrBaseScore + blackPixels * Parameters.ocrBlackPixelScore + whitePixels * Parameters.ocrWhiteScore).toDouble())
                 .toInt()
         for (i in targetHaloPixels.indices) {
-            score += Math.floor((targetHaloPixels[i] * par.ocrTargetHaloScores[i]).toDouble()).toInt()
+            score += Math.floor((targetHaloPixels[i] * Parameters.ocrTargetHaloScores[i]).toDouble()).toInt()
         }
         for (i in referenceHaloPixels.indices) {
-            score += Math.floor((referenceHaloPixels[i] * par.ocrReferenceHaloScores[i]).toDouble()).toInt()
+            score += Math.floor((referenceHaloPixels[i] * Parameters.ocrReferenceHaloScores[i]).toDouble()).toInt()
         }
         if (score > 1f) {
             score = (reference!!.scoreModifier * score).toInt()

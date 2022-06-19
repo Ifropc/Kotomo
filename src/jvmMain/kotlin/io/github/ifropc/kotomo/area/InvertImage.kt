@@ -15,11 +15,12 @@
 package io.github.ifropc.kotomo.area
 
 import io.github.ifropc.kotomo.CharacterColor
+import io.github.ifropc.kotomo.ocr.Rectangle
 import io.github.ifropc.kotomo.util.FixedParameters
 import io.github.ifropc.kotomo.util.ImageUtil.createCopy
+import io.github.ifropc.kotomo.util.Parameters
 import java.awt.AlphaComposite
 import java.awt.Color
-import io.github.ifropc.kotomo.ocr.Rectangle
 import java.util.*
 import java.util.concurrent.LinkedBlockingQueue
 
@@ -29,11 +30,11 @@ import java.util.concurrent.LinkedBlockingQueue
 class InvertImage(task: AreaTask?) : AreaStep(task, "invert") {
     
     override fun runImpl() {
-        if (FixedParameters.fixedBlackLevelEnabled || par.colorTarget === CharacterColor.BLACK_ON_WHITE) {
+        if (FixedParameters.fixedBlackLevelEnabled || Parameters.colorTarget === CharacterColor.BLACK_ON_WHITE) {
             // don't invert
-        } else if (par.colorTarget === CharacterColor.AUTOMATIC) {
+        } else if (Parameters.colorTarget === CharacterColor.AUTOMATIC) {
             detectBlackOnWhite()
-        } else if (par.colorTarget === CharacterColor.WHITE_ON_BLACK) {
+        } else if (Parameters.colorTarget === CharacterColor.WHITE_ON_BLACK) {
             invertWholeImage()
         }
     }

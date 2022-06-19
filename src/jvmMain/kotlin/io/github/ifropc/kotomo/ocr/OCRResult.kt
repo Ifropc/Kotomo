@@ -16,7 +16,6 @@ package io.github.ifropc.kotomo.ocr
 
 import io.github.ifropc.kotomo.util.ImageUtil.createWhiteImage
 import io.github.ifropc.kotomo.util.Parameters
-import io.github.ifropc.kotomo.util.Parameters.Companion.instance
 import io.github.ifropc.kotomo.util.Util.printArray
 import java.awt.Color
 import java.awt.image.BufferedImage
@@ -35,7 +34,7 @@ class OCRResult(
      */
     var reference: ReferenceMatrix
 ) {
-    private val par = instance
+    
 
     /**
      * Common pixels that are found in both target and reference images
@@ -103,8 +102,8 @@ class OCRResult(
     fun buildDebugImageBasic(): BufferedImage {
         val image = createWhiteImage(32, 32)
         addLayer(image, Color.BLACK, target.matrix, reference.matrix)
-        addLayer(image, par.ocrTargetHaloFirstColor, target.matrix)
-        addLayer(image, par.ocrReferenceHaloFirstColor, reference.matrix)
+        addLayer(image, Parameters.ocrTargetHaloFirstColor, target.matrix)
+        addLayer(image, Parameters.ocrReferenceHaloFirstColor, reference.matrix)
         return image
     }
 
@@ -112,15 +111,15 @@ class OCRResult(
         val image = createWhiteImage(32, 32)
         addLayer(image, Color.BLACK, target.matrix, reference.matrix)
         for (i in 1 until Parameters.ocrHaloSize) {
-            val col = interpolate(par.ocrTargetHaloFirstColor, par.ocrTargetHaloLastColor, i)
+            val col = interpolate(Parameters.ocrTargetHaloFirstColor, Parameters.ocrTargetHaloLastColor, i)
             addLayer(image, col, target.matrix, reference.halo!![i - 1])
         }
         for (i in 1 until Parameters.ocrHaloSize) {
-            val col = interpolate(par.ocrReferenceHaloFirstColor, par.ocrReferenceHaloLastColor, i)
+            val col = interpolate(Parameters.ocrReferenceHaloFirstColor, Parameters.ocrReferenceHaloLastColor, i)
             addLayer(image, col, reference.matrix, target.halo!![i - 1])
         }
-        addLayer(image, par.ocrTargetHaloLastColor, target.matrix)
-        addLayer(image, par.ocrReferenceHaloLastColor, reference.matrix)
+        addLayer(image, Parameters.ocrTargetHaloLastColor, target.matrix)
+        addLayer(image, Parameters.ocrReferenceHaloLastColor, reference.matrix)
         return image
     }
 

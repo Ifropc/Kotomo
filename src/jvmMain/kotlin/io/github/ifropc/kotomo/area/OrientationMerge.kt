@@ -15,8 +15,9 @@
 package io.github.ifropc.kotomo.area
 
 import io.github.ifropc.kotomo.Orientation
-import io.github.ifropc.kotomo.util.Util.scale
 import io.github.ifropc.kotomo.ocr.Rectangle
+import io.github.ifropc.kotomo.util.Parameters
+import io.github.ifropc.kotomo.util.Util.scale
 import java.util.*
 
 /**
@@ -62,11 +63,11 @@ class OrientationMerge(task: AreaTask?) : AreaStep(task, "combined") {
      */
     
     override fun runImpl() {
-        if (par.orientationTarget === Orientation.VERTICAL) {
+        if (Parameters.orientationTarget === Orientation.VERTICAL) {
             task!!.columns = task!!.verticalColumns
             return
         }
-        if (par.orientationTarget === Orientation.HORIZONTAL) {
+        if (Parameters.orientationTarget === Orientation.HORIZONTAL) {
             task!!.columns = task!!.horizontalColumns
             return
         }

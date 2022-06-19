@@ -14,11 +14,12 @@
  */
 package io.github.ifropc.kotomo.area
 
-import io.github.ifropc.kotomo.util.ImageUtil.createRectangle
-import java.awt.Color
-import java.awt.Graphics2D
 import io.github.ifropc.kotomo.ocr.Point
 import io.github.ifropc.kotomo.ocr.Rectangle
+import io.github.ifropc.kotomo.util.ImageUtil.createRectangle
+import io.github.ifropc.kotomo.util.Parameters
+import java.awt.Color
+import java.awt.Graphics2D
 
 /**
  * Finds columns that are connected to each other (continue text) in reading direction.
@@ -48,7 +49,7 @@ class FindConnections(task: AreaTask?) : AreaStep(task, "connections") {
         // find closest column in reading direction
         val probeSizeFactor = 1.75f
         val probe: Rectangle
-        probe = if (par.vertical) {
+        probe = if (Parameters.vertical) {
             val probeSize = Math.ceil((column.width * probeSizeFactor).toDouble()).toInt()
             Rectangle(
                 column.x - probeSize - 1, column.y - probeSize / 2,
@@ -74,7 +75,7 @@ class FindConnections(task: AreaTask?) : AreaStep(task, "connections") {
             if (tempCol!!.isFurigana) {
                 continue
             }
-            if (par.vertical) {
+            if (Parameters.vertical) {
                 if (!probe.contains(tempCol.maxX, tempCol.y)) {
                     continue
                 }
@@ -160,7 +161,7 @@ class FindConnections(task: AreaTask?) : AreaStep(task, "connections") {
         for (column in task!!.columns!!) {
             paintNextColumn(column, g)
         }
-        task!!.addDebugImage(image, "connections", par.vertical)
+        task!!.addDebugImage(image, "connections", Parameters.vertical)
     }
 
     private fun getConnectionStartPoint(column: Column): Point {

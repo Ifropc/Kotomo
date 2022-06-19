@@ -14,7 +14,9 @@
  */
 package io.github.ifropc.kotomo.ocr
 
-import io.github.ifropc.kotomo.util.*
+import io.github.ifropc.kotomo.util.addBits
+import io.github.ifropc.kotomo.util.countBits
+import io.github.ifropc.kotomo.util.findBounds
 
 /**
  * Splits large components into subcomponents along x and y axis.

@@ -36,7 +36,7 @@ import javax.imageio.ImageIO
  * Area detection algorithm input and output values.
  */
 class AreaTask(targetImage: BufferedImage) {
-    private val par = Parameters.instance
+    
 
     /**
      * Target image width
@@ -328,9 +328,9 @@ class AreaTask(targetImage: BufferedImage) {
      * @return true if x,y pixels have been inverted.
      */
     protected fun isPixelInverted(x: Int, y: Int): Boolean {
-        return if (FixedParameters.fixedBlackLevelEnabled || par.colorTarget === CharacterColor.BLACK_ON_WHITE) {
+        return if (FixedParameters.fixedBlackLevelEnabled || Parameters.colorTarget === CharacterColor.BLACK_ON_WHITE) {
             false
-        } else if (par.colorTarget === CharacterColor.AUTOMATIC) {
+        } else if (Parameters.colorTarget === CharacterColor.AUTOMATIC) {
             inverted[x / InvertImage.Companion.BLOCK_SIZE][y / InvertImage.Companion.BLOCK_SIZE]
         } else {
             true
@@ -338,7 +338,7 @@ class AreaTask(targetImage: BufferedImage) {
     }
 
     /**
-     * Gets at most par.ocrMaxCharacters images containing single characters closest
+     * Gets at most Parameters.ocrMaxCharacters images containing single characters closest
      * to the point in reading direction. Returns empty list if none is found.
      *
      * @param point Mouse cursor location relative to target image
@@ -361,7 +361,7 @@ class AreaTask(targetImage: BufferedImage) {
                 if (found && !area!!.isPunctuation) {
                     areas.add(area)
                 }
-                if (areas.size == par.ocrMaxCharacters) {
+                if (areas.size == Parameters.ocrMaxCharacters) {
                     break@loop
                 }
             }
@@ -452,7 +452,7 @@ class AreaTask(targetImage: BufferedImage) {
      * @param image Image to be added to list of debug images
      *
      * @param step Short one-word description of the image. For example: "binary"
-     * This appears in file name and can be referenced in par.filterDebugImages
+     * This appears in file name and can be referenced in Parameters.filterDebugImages
      */
     fun addDebugImage(image: Array<BooleanArray>, step: String?) {
         val bufferedImage = createImageFromMatrix(image)
@@ -465,10 +465,10 @@ class AreaTask(targetImage: BufferedImage) {
      * @param image Image to be added to list of debug images
      *
      * @param step Short one-word description of the image. For example: "binary"
-     * This appears in file name and can be referenced in par.filterDebugImages
+     * This appears in file name and can be referenced in Parameters.filterDebugImages
      */
     fun addDebugImage(image: BufferedImage?, step: String?) {
-        addDebugImage(DebugImage(image!!, step!!, null, par.debugFilePrefix))
+        addDebugImage(DebugImage(image!!, step!!, null, Parameters.debugFilePrefix))
     }
 
     /**
@@ -477,19 +477,19 @@ class AreaTask(targetImage: BufferedImage) {
      * @param image Image to be added to list of debug images
      *
      * @param step Short one-word description of the image. For example: "binary"
-     * This appears in file name and can be referenced in par.filterDebugImages
+     * This appears in file name and can be referenced in Parameters.filterDebugImages
      *
      * @param vertical If set, orientation is diplayed in the file name
      */
     fun addDebugImage(image: BufferedImage?, step: String?, vertical: Boolean?) {
-        addDebugImage(DebugImage(image!!, step!!, vertical, par.debugFilePrefix))
+        addDebugImage(DebugImage(image!!, step!!, vertical, Parameters.debugFilePrefix))
     }
 
     /**
      * Adds image to list of debug images
      */
     private fun addDebugImage(image: DebugImage) {
-        if (debugImages.size < par.maxDebugImages) {
+        if (debugImages.size < Parameters.maxDebugImages) {
             debugImages.add(image)
         } else {
             System.err.println("maxDebugImages reached")
@@ -552,7 +552,7 @@ class AreaTask(targetImage: BufferedImage) {
      */
     
     fun writeDebugImages() {
-        if (!par.isSaveAreaFailed) {
+        if (!Parameters.isSaveAreaFailed) {
             return
         }
         println("Writing area debug images")
@@ -562,7 +562,7 @@ class AreaTask(targetImage: BufferedImage) {
     }
 
     /**
-     * Writes debug image to disk in par.debugDir directory. Files are
+     * Writes debug image to disk in Parameters.debugDir directory. Files are
      * named as "test number.index number.algorithm step.png"
      */
     
@@ -570,10 +570,10 @@ class AreaTask(targetImage: BufferedImage) {
         if (image == null) {
             return
         }
-        val targetDir = par.debugDir
+        val targetDir = Parameters.debugDir
         val filename = image.filename
-        if (par.debugImages != null && par.debugImages.size > 0) {
-            for (debugImage in par.debugImages) {
+        if (Parameters.debugImages != null && Parameters.debugImages.size > 0) {
+            for (debugImage in Parameters.debugImages) {
                 if (filename.contains(debugImage)) {
                     break
                 }
@@ -583,11 +583,11 @@ class AreaTask(targetImage: BufferedImage) {
         val file = File("$targetDir/$filename")
         var scale = 1
         val minDim = Math.max(image.image.width, image.image.height)
-        if (minDim < par.smallDebugAreaImageThreshold) {
-            scale = par.smallDebugAreaImageScale
+        if (minDim < Parameters.smallDebugAreaImageThreshold) {
+            scale = Parameters.smallDebugAreaImageScale
         }
         val scaledImage = buildScaledImage(image.image, scale)
-        if (!par.debugAreaImageToClipboard) {
+        if (!Parameters.debugAreaImageToClipboard) {
             ImageIO.write(scaledImage, "png", file)
         } else {
             setClipboard(scaledImage)

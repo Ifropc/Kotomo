@@ -31,7 +31,7 @@ class CreateBinaryImage constructor(task: AreaTask?) : AreaStep(task, "binary") 
         // TODO instead of static blackThreshold calculate a histogram?
         val bwImage: BufferedImage = makeBlackAndWhite(
             (task!!.sharpenedImage)!!,
-            if (FixedParameters.fixedBlackLevelEnabled) null else par.pixelRGBThreshold
+            if (FixedParameters.fixedBlackLevelEnabled) null else Parameters.pixelRGBThreshold
         )
         task!!.binaryImage = createMatrixFromImage(bwImage)
     }

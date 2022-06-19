@@ -14,8 +14,9 @@
  */
 package io.github.ifropc.kotomo.area
 
-import io.github.ifropc.kotomo.ocr.Rectangle
 import io.github.ifropc.kotomo.ocr.Point
+import io.github.ifropc.kotomo.ocr.Rectangle
+import io.github.ifropc.kotomo.util.Parameters
 
 /**
  * Finds and marks areas that represent punctuation.
@@ -245,7 +246,7 @@ class FindPunctuation(task: AreaTask?) : AreaStep(task, "punctuation") {
             var size: Boolean
             var location: Boolean
             var distance: Boolean
-            if (par.vertical) {
+            if (Parameters.vertical) {
                 size = area.maxDim <= Math.ceil((0.35f * col.width).toDouble())
                 location = col.maxX - area.maxX < col.width * 0.25f
                 distance = if (next == null) {
@@ -275,7 +276,7 @@ class FindPunctuation(task: AreaTask?) : AreaStep(task, "punctuation") {
 
     
     override fun addDebugImages() {
-        task!!.addDefaultDebugImage("punctuation", par.vertical)
+        task!!.addDefaultDebugImage("punctuation", Parameters.vertical)
     }
 
     companion object {

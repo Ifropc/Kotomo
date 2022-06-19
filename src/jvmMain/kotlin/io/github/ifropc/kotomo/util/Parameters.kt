@@ -16,12 +16,12 @@ package io.github.ifropc.kotomo.util
 
 import io.github.ifropc.kotomo.CharacterColor
 import io.github.ifropc.kotomo.Orientation
+import io.github.ifropc.kotomo.ocr.Rectangle
 import io.github.ifropc.kotomo.util.Util.findFile
 import java.awt.Color
-import io.github.ifropc.kotomo.ocr.Rectangle
 import java.io.File
 
-class Parameters private constructor() {
+object Parameters {
     /**
      * Directory relative to package root that contains the data files
      */
@@ -162,11 +162,9 @@ class Parameters private constructor() {
      */
     var indexMaxCharacters = 4
 
-    @get:Throws(Exception::class)
     val dataDir: File
         get() = findFile(dataDirName)
 
-    @get:Throws(Exception::class)
     val cacheDir: File
         get() = File(findFile(dataDirName).toString() + "/" + cacheDirName)
 
@@ -279,7 +277,6 @@ class Parameters private constructor() {
     /**
      * Directory relative to package root where debug images are stored
      */
-    @get:Throws(Exception::class)
     val debugDir: File
         get() = File(testDir.absolutePath + "//" + debugDirName)
 
@@ -291,7 +288,6 @@ class Parameters private constructor() {
     /**
      * Directory relative to package root where test set specifications are stored
      */
-    @get:Throws(Exception::class)
     val testDir: File
         get() = findFile(testDirName)
 
@@ -326,34 +322,20 @@ class Parameters private constructor() {
         return tempDebugFileIndex
     }
 
-    companion object {
-        private var par: Parameters? = null
+    /**
+     * Target size for reference characters. Target characters are scaled to this size.
+     * Should be below 32 to make room for transformations. If modified reference cache
+     * must to be regenerated.
+     */
+    const val targetSize = 30
 
 
-        val instance: Parameters
-            get() {
-                if (par == null) {
-                    par = Parameters()
-                }
-                return par!!
-            }
-
-        /**
-         * Target size for reference characters. Target characters are scaled to this size.
-         * Should be below 32 to make room for transformations. If modified reference cache
-         * must to be regenerated.
-         */
-        const val targetSize = 30
-
-
-
-        /**
-         * How many halo layers are generated around reference and target characters.
-         * If this is increased ReferenceMatrixCacheBuilder must be run again. Most layers are
-         * one pixel wide, last layer contains all remaining pixels.
-         */
-        const val ocrHaloSize = 3
-    }
+    /**
+     * How many halo layers are generated around reference and target characters.
+     * If this is increased ReferenceMatrixCacheBuilder must be run again. Most layers are
+     * one pixel wide, last layer contains all remaining pixels.
+     */
+    const val ocrHaloSize = 3
 }
 
 object FixedParameters {

@@ -15,7 +15,6 @@
 package io.github.ifropc.kotomo.ocr
 
 import io.github.ifropc.kotomo.util.Parameters
-import io.github.ifropc.kotomo.util.Parameters.Companion.instance
 import java.io.File
 import java.util.*
 
@@ -47,7 +46,7 @@ object ReferenceMatrixHashCalculator {
         characters: String?
     ): File {
         return File(
-            instance.cacheDir.toString() + "/" +
+            Parameters.cacheDir.toString() + "/" +
                     getReferenceFileName(font, targetSize, ocrHaloSize, characters)
         )
     }

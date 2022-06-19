@@ -14,7 +14,7 @@
  */
 package io.github.ifropc.kotomo.ocr
 
-import io.github.ifropc.kotomo.util.Parameters.Companion.instance
+import io.github.ifropc.kotomo.util.Parameters
 import java.util.*
 
 /**
@@ -22,7 +22,7 @@ import java.util.*
  * and selects best matches.
  */
 class OCRAlignCharacters(task: OCRTask?, private val transform: Transform) {
-    private val par = instance
+    
     private val scoreCalculator: OCRScoreCalculator
     private var topN = 0
     private var expectedCharacter: Char? = null
@@ -48,7 +48,7 @@ class OCRAlignCharacters(task: OCRTask?, private val transform: Transform) {
         var bestResults: List<OCRResult>? = null
         this.topN = topN
         val started = System.currentTimeMillis()
-        if (par.isPrintDebug) {
+        if (Parameters.isPrintDebug) {
             if (!refined) {
                 print("\nBasic alignment ")
             } else {
@@ -67,7 +67,7 @@ class OCRAlignCharacters(task: OCRTask?, private val transform: Transform) {
             bestResults = combineResults(bestResults, results, topN)
         }
         val done = System.currentTimeMillis()
-        if (par.isPrintDebug) {
+        if (Parameters.isPrintDebug) {
             println((done - started).toString() + " ms")
         }
         return bestResults
@@ -114,12 +114,12 @@ class OCRAlignCharacters(task: OCRTask?, private val transform: Transform) {
         val fonts: MutableList<String> = ArrayList()
 
         // add primary font
-        fonts.add(par.referenceFonts[0])
+        fonts.add(Parameters.referenceFonts[0])
 
         // add secondary fonts
         if (refined) {
-            for (i in 1 until par.referenceFonts.size) {
-                fonts.add(par.referenceFonts[i])
+            for (i in 1 until Parameters.referenceFonts.size) {
+                fonts.add(Parameters.referenceFonts[i])
             }
         }
         return fonts
@@ -146,8 +146,8 @@ class OCRAlignCharacters(task: OCRTask?, private val transform: Transform) {
 
     init {
         scoreCalculator = OCRScoreCalculator()
-        if (par.expectedCharacters != null) {
-            expectedCharacter = par.expectedCharacters!![task!!.charIndex!!]
+        if (Parameters.expectedCharacters != null) {
+            expectedCharacter = Parameters.expectedCharacters!![task!!.charIndex!!]
         }
     }
 

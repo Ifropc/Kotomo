@@ -14,11 +14,8 @@
  */
 package io.github.ifropc.kotomo.ocr
 
-import io.github.ifropc.kotomo.util.Parameters.Companion.instance
 import io.github.ifropc.kotomo.util.addBits
 import io.github.ifropc.kotomo.util.countBits
-import io.github.ifropc.kotomo.util.debugPrintMatrix
-import io.github.ifropc.kotomo.util.toAwt
 
 /**
  * Builds reference components from ReferenceMatrix.

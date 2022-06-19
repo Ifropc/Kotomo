@@ -14,9 +14,12 @@
  */
 package io.github.ifropc.kotomo.ocr
 
-import io.github.ifropc.kotomo.util.*
 import io.github.ifropc.kotomo.util.ImageUtil.buildScaledImage
-import io.github.ifropc.kotomo.util.Parameters.Companion.instance
+import io.github.ifropc.kotomo.util.Parameters
+import io.github.ifropc.kotomo.util.buildMatrixHalo
+import io.github.ifropc.kotomo.util.copyBits
+import io.github.ifropc.kotomo.util.countBits
+import io.github.ifropc.kotomo.util.stretchBits
 import java.io.File
 import java.util.*
 import javax.imageio.ImageIO
@@ -26,7 +29,7 @@ import javax.imageio.ImageIO
  * different component transformations and selects best matches.
  */
 class OCRAlignComponents {
-    private val par = instance
+    
     private val calculator = OCRScoreCalculator()
 
     /** Extra debug images are saved for this character  */
@@ -40,7 +43,7 @@ class OCRAlignComponents {
     
     fun run(results: List<OCRResult>?): List<OCRResult> {
         val started = System.currentTimeMillis()
-        if (par.isPrintDebug) {
+        if (Parameters.isPrintDebug) {
             print("Component alignment ")
         }
         val newResults: MutableList<OCRResult> = ArrayList()
@@ -55,7 +58,7 @@ class OCRAlignComponents {
             -1 * score1.compareTo(score2)
         }
         val done = System.currentTimeMillis()
-        if (par.isPrintDebug) {
+        if (Parameters.isPrintDebug) {
             println((done - started).toString() + " ms")
         }
         return newResults
@@ -177,11 +180,11 @@ class OCRAlignComponents {
     private fun writeDebugImage(result: OCRResult, transform: Transformation) {
         val transformStr = transform.horizontalTranslate.toString() + "," + transform.verticalTranslate
         val file = File(
-            par.debugDir.absolutePath + "/" +
-                    par.getDebugFilePrefix(result.target.charIndex) + ".step3." + result.character + "." +
+            Parameters.debugDir.absolutePath + "/" +
+                    Parameters.getDebugFilePrefix(result.target.charIndex) + ".step3." + result.character + "." +
                     result.score + ".(" + transformStr + ").png"
         )
-        val scaledImage = buildScaledImage(result.buildDebugImage(), par.debugOCRImageScale)
+        val scaledImage = buildScaledImage(result.buildDebugImage(), Parameters.debugOCRImageScale)
         ImageIO.write(scaledImage, "png", file)
     }
 }

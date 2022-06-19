@@ -20,11 +20,11 @@ import io.github.ifropc.kotomo.area.AreaTask
 import io.github.ifropc.kotomo.area.SubImage
 import io.github.ifropc.kotomo.ocr.OCR
 import io.github.ifropc.kotomo.ocr.OCRTask
-import io.github.ifropc.kotomo.util.Parameters
-import io.github.ifropc.kotomo.util.PrintLevel
 import io.github.ifropc.kotomo.ocr.Point
 import io.github.ifropc.kotomo.ocr.Rectangle
 import io.github.ifropc.kotomo.ocr.ReferenceMatrixCacheLoader
+import io.github.ifropc.kotomo.util.Parameters
+import io.github.ifropc.kotomo.util.PrintLevel
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -34,7 +34,7 @@ import java.awt.image.BufferedImage
  * Main class of the KanjiTomo OCR library
  */
 class KanjiTomo {
-    private val par = Parameters.instance
+
     private var areaTask: AreaTask? = null
     private var subImages: List<SubImage>? = null
     private var results: OCRResults? = null
@@ -56,10 +56,10 @@ class KanjiTomo {
         val started = System.currentTimeMillis()
         detectAreas(image)
         val time = System.currentTimeMillis() - started
-        if (par.isPrintDebug) {
+        if (Parameters.isPrintDebug) {
             println("Target image processed, $time ms\n")
         }
-        if (par.isPrintOutput && !par.isPrintDebug) {
+        if (Parameters.isPrintOutput && !Parameters.isPrintDebug) {
             println("Target image processed\n")
         }
     }
@@ -99,7 +99,7 @@ class KanjiTomo {
         if (areaTask == null) {
             throw Exception("Target image not set")
         }
-        if (par.isPrintOutput) {
+        if (Parameters.isPrintOutput) {
             println("Run OCR at point:" + point.x + "," + point.y)
         }
 
@@ -116,7 +116,7 @@ class KanjiTomo {
         if (areaTask == null) {
             throw Exception("Target image not set")
         }
-        if (par.isPrintOutput) {
+        if (Parameters.isPrintOutput) {
             println("Run OCR rectangle list")
         }
 
@@ -139,7 +139,7 @@ class KanjiTomo {
             verticalOrientation = subImage.isVertical
         }
         if (subImages!!.size == 0) {
-            if (par.isPrintOutput) {
+            if (Parameters.isPrintOutput) {
                 println("No characters identified")
             }
             return null
@@ -187,7 +187,7 @@ class KanjiTomo {
         results = OCRResults(characters, locations, ocrScores, verticalOrientation)
 
         val time = System.currentTimeMillis() - started
-        if (par.isPrintOutput) {
+        if (Parameters.isPrintOutput) {
             println(
                 """
     ${results.toString()}
@@ -195,7 +195,7 @@ class KanjiTomo {
     """.trimIndent()
             )
         }
-        if (par.isPrintDebug) {
+        if (Parameters.isPrintDebug) {
             println("OCR runtime $time ms\n")
         }
         return results
@@ -221,7 +221,7 @@ class KanjiTomo {
      * Target image needs to be re-analyzed after changing the orientation by calling setTargetImage again.
      */
     fun setOrientation(orientation: Orientation) {
-        par.orientationTarget = orientation
+        Parameters.orientationTarget = orientation
     }
 
     /**
@@ -233,7 +233,7 @@ class KanjiTomo {
      * Default: CharacterColor.AUTOMATIC
      */
     fun setCharacterColor(color: CharacterColor) {
-        par.colorTarget = color
+        Parameters.colorTarget = color
     }
 
     /**
@@ -243,9 +243,9 @@ class KanjiTomo {
      */
     fun setPrintOutput(printOutput: Boolean) {
         if (printOutput == false) {
-            par.printLevel = PrintLevel.OFF
+            Parameters.printLevel = PrintLevel.OFF
         } else {
-            par.printLevel = PrintLevel.BASIC
+            Parameters.printLevel = PrintLevel.BASIC
         }
     }
 }

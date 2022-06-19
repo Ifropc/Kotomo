@@ -15,6 +15,7 @@
 package io.github.ifropc.kotomo.area
 
 import io.github.ifropc.kotomo.ocr.Rectangle
+import io.github.ifropc.kotomo.util.Parameters
 
 /**
  * Find columns that contain furigana
@@ -82,6 +83,6 @@ class FindFurigana(task: AreaTask?) : AreaStep(task, "furigana") {
 
     
     override fun addDebugImages() {
-        task!!.addDefaultDebugImage("furigana", par.vertical)
+        task!!.addDefaultDebugImage("furigana", Parameters.vertical)
     }
 }

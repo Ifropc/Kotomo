@@ -21,7 +21,7 @@ import io.github.ifropc.kotomo.util.Parameters
  * Area detection coordinator.
  */
 class AreaDetector {
-    private val par = Parameters.instance
+    
     private var task: AreaTask? = null
     
     fun run(task: AreaTask) {
@@ -45,7 +45,7 @@ class AreaDetector {
         val areas = task.areas
 
         // find vertical columns
-        if (par.orientationTarget === Orientation.AUTOMATIC || par.orientationTarget === Orientation.VERTICAL) {
+        if (Parameters.orientationTarget === Orientation.AUTOMATIC || Parameters.orientationTarget === Orientation.VERTICAL) {
             findColumns(true)
             task.verticalColumns = task.columns
         } else {
@@ -53,7 +53,7 @@ class AreaDetector {
         }
 
         // find horizontal columns
-        if (par.orientationTarget === Orientation.AUTOMATIC || par.orientationTarget === Orientation.HORIZONTAL) {
+        if (Parameters.orientationTarget === Orientation.AUTOMATIC || Parameters.orientationTarget === Orientation.HORIZONTAL) {
             task.areas = areas
             findColumns(false)
             task.horizontalColumns = task.columns
@@ -64,7 +64,7 @@ class AreaDetector {
         // filter columns by score so that each area in target image corresponds to only 
         // one column in one orientation.
         OrientationMerge(task).run()
-        if (par.isPrintDebug) {
+        if (Parameters.isPrintDebug) {
             val done = System.currentTimeMillis()
             println("AreaDetector total " + (done - started) + " ms")
         }
@@ -80,7 +80,7 @@ class AreaDetector {
     
     private fun findColumns(vertical: Boolean) {
         task!!.columns = null
-        par.vertical = vertical
+        Parameters.vertical = vertical
 
         // find columns
         FindColumns(task).run()
@@ -107,11 +107,11 @@ class AreaDetector {
      */
     
     private fun checkDebugImages() {
-        if (par.isSaveAreaAll) {
+        if (Parameters.isSaveAreaAll) {
             task!!.writeDebugImages()
-        } else if (par.isSaveAreaFailed) {
+        } else if (Parameters.isSaveAreaFailed) {
             // check that expected rectangles (areas or columns) are present
-            rect@ for (rect in par.expectedRectangles) {
+            rect@ for (rect in Parameters.expectedRectangles) {
                 for (col in task!!.columns!!) {
                     if (col.rectangle == rect) {
                         continue@rect

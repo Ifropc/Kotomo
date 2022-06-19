@@ -14,6 +14,8 @@
  */
 package io.github.ifropc.kotomo.area
 
+import io.github.ifropc.kotomo.util.Parameters
+
 /**
  * Splits too long areas
  */
@@ -40,7 +42,7 @@ class SplitAreas(task: AreaTask?) : AreaStep(task, "splitareas") {
                     i++
                     continue
                 }
-                val refLength = if (par.vertical) area.height else area.width
+                val refLength = if (Parameters.vertical) area.height else area.width
                 if (refLength > minLength) {
                     if (splitArea(area, col)) {
                         i-- // splitted areas are added to the end of list
@@ -52,7 +54,7 @@ class SplitAreas(task: AreaTask?) : AreaStep(task, "splitareas") {
     }
 
     private fun splitArea(area: Area, col: Column): Boolean {
-        return if (par.vertical) {
+        return if (Parameters.vertical) {
             splitVertical(area, col)
         } else {
             splitHorizontal(area, col)
@@ -183,6 +185,6 @@ class SplitAreas(task: AreaTask?) : AreaStep(task, "splitareas") {
 
     
     override fun addDebugImages() {
-        task!!.addDefaultDebugImage("splitareas", par.vertical)
+        task!!.addDefaultDebugImage("splitareas", Parameters.vertical)
     }
 }

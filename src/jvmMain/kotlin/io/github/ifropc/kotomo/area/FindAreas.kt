@@ -14,11 +14,12 @@
  */
 package io.github.ifropc.kotomo.area
 
+import io.github.ifropc.kotomo.ocr.Rectangle
 import io.github.ifropc.kotomo.util.ImageUtil.createWhiteImage
+import io.github.ifropc.kotomo.util.Parameters
 import io.github.ifropc.kotomo.util.Util.scale
 import java.awt.Color
 import java.awt.Graphics2D
-import io.github.ifropc.kotomo.ocr.Rectangle
 import java.awt.image.BufferedImage
 import java.util.*
 import java.util.concurrent.LinkedBlockingQueue
@@ -166,7 +167,7 @@ class FindAreas(task: AreaTask?) : AreaStep(task, "touching", "background", "are
                 minRGB = rgb
             }
         }
-        //		if (minRGB > par.pixelRGBThreshold) {
+        //		if (minRGB > Parameters.pixelRGBThreshold) {
 //			return;
 //		}
         area.minRGB = minRGB
@@ -272,7 +273,7 @@ class FindAreas(task: AreaTask?) : AreaStep(task, "touching", "background", "are
                 continue
             }
             val score = (neighbourCounts[0] * 2f + neighbourCounts[1]) / area.pixels
-            val rgbQuality = 1.0f * area.minRGB / par.pixelRGBThreshold
+            val rgbQuality = 1.0f * area.minRGB / Parameters.pixelRGBThreshold
             val rgbFactor = scale(rgbQuality, 0.5f, 0.7f, 1.0f, 0.6f)
             //			float pixelsFactor = Util.scale(area.pixels, 6, 15, 1.25f, 0.8f);
             val threshold = 1.3f * rgbFactor

@@ -23,7 +23,6 @@ import io.github.ifropc.kotomo.util.ImageUtil.sharpenImage
 import io.github.ifropc.kotomo.util.ImageUtil.stretch
 import io.github.ifropc.kotomo.util.ImageUtil.stretchCheckRatio
 import io.github.ifropc.kotomo.util.Parameters
-import io.github.ifropc.kotomo.util.Parameters.Companion.instance
 import io.github.ifropc.kotomo.util.buildMatrixHalo
 import io.github.ifropc.kotomo.util.countBits
 import io.github.ifropc.kotomo.util.moveMatrix
@@ -36,7 +35,7 @@ import javax.imageio.ImageIO
  * results for fast re-use.
  */
 class Transform(private val task: OCRTask) {
-    private val par = instance
+    
 
     /**
      * Matrix representations of stretched target image with various stretch amounts.
@@ -97,7 +96,7 @@ class Transform(private val task: OCRTask) {
 
         // image has already been sharpened once during area detection but resize might bring
         // back gray edges, so sharpen again
-        image = sharpenImage(resizedImage, par)
+        image = sharpenImage(resizedImage)
     }
 
     /**
@@ -147,7 +146,7 @@ class Transform(private val task: OCRTask) {
             val newHeight = Parameters.targetSize + verticalStretch
             val grayscale = stretch(image, newWidth, newHeight)
             val squareGrayscale = createSquareImage(grayscale, 32)
-            val squareBWImage = makeBlackAndWhite(squareGrayscale, par.pixelRGBThreshold)
+            val squareBWImage = makeBlackAndWhite(squareGrayscale, Parameters.pixelRGBThreshold)
             stretchedMatrix = buildMatrix32(squareBWImage)
             stretchedMatrices[stretchAmount] = stretchedMatrix
         }
@@ -167,11 +166,11 @@ class Transform(private val task: OCRTask) {
     
     private fun writeDebugImage(target: TargetMatrix, parameters: Transformation) {
         val file = File(
-            par.debugDir.absolutePath + "/" +
-                    par.debugFilePrefix + ".ocr.transform." + parameters + ".png"
+            Parameters.debugDir.absolutePath + "/" +
+                    Parameters.debugFilePrefix + ".ocr.transform." + parameters + ".png"
         )
         val image = buildImage(target.matrix)
-        val scaledImage = buildScaledImage(image, par.debugOCRImageScale)
+        val scaledImage = buildScaledImage(image, Parameters.debugOCRImageScale)
         ImageIO.write(scaledImage, "png", file)
     }
 }

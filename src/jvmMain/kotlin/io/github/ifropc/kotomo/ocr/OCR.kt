@@ -17,7 +17,7 @@ package io.github.ifropc.kotomo.ocr
 import io.github.ifropc.kotomo.util.ImageUtil.buildImage
 import io.github.ifropc.kotomo.util.ImageUtil.buildScaledImage
 import io.github.ifropc.kotomo.util.ImageUtil.colorizeImage
-import io.github.ifropc.kotomo.util.Parameters.Companion.instance
+import io.github.ifropc.kotomo.util.Parameters
 import java.io.File
 import javax.imageio.ImageIO
 
@@ -26,7 +26,7 @@ import javax.imageio.ImageIO
  * subset of best results become input of next stage.
  */
 class OCR {
-    private val par = instance
+    
     
     fun run(task: OCRTask?) {
         val started = System.currentTimeMillis()
@@ -37,14 +37,14 @@ class OCR {
 
         // stage 1, find common pixels, consider basic transformations
         val stage1 = OCRAlignCharacters(task, transform)
-        task.results = stage1.run(null, true, 1, 1, 1, par.ocrKeepResultsStage1)
+        task.results = stage1.run(null, true, 1, 1, 1, Parameters.ocrKeepResultsStage1)
         if (debugStages) {
             debug(task, System.currentTimeMillis() - started, 1)
         }
 
         // stage 2, find common pixels, consider more transformations per character
         val stage2 = OCRAlignCharacters(task, transform)
-        task.results = stage2.run(getCharacters(task.results), true, 2, 2, 4, par.ocrkeepResultsStage2)
+        task.results = stage2.run(getCharacters(task.results), true, 2, 2, 4, Parameters.ocrkeepResultsStage2)
         if (debugStages) {
             debug(task, System.currentTimeMillis() - started, 2)
         }
@@ -71,7 +71,7 @@ class OCR {
      */
     
     private fun debug(task: OCRTask?, time: Long, stage: Int) {
-        if (par.isPrintDebug) {
+        if (Parameters.isPrintDebug) {
             println("OCR total $time ms")
             if (task!!.results!!.size == 0) {
                 System.err.println("No results")
@@ -82,13 +82,13 @@ class OCR {
                 println(result)
             }
         }
-        if (par.isSaveOCRFailed) {
+        if (Parameters.isSaveOCRFailed) {
             val bestMatch = task!!.results!![0].character
             var expectedCharacter: Char? = null
-            if (par.expectedCharacters != null) {
-                expectedCharacter = par.expectedCharacters!![task.charIndex!!]
+            if (Parameters.expectedCharacters != null) {
+                expectedCharacter = Parameters.expectedCharacters!![task.charIndex!!]
             }
-            if (par.isSaveOCRAll || bestMatch != expectedCharacter) {
+            if (Parameters.isSaveOCRAll || bestMatch != expectedCharacter) {
                 writeDebugImages(task, stage)
             }
         }
@@ -119,35 +119,35 @@ class OCR {
     
     private fun writeTargetImage(result: OCRResult, stage: Int) {
         val file = File(
-            par.debugDir.absolutePath + "/" +
-                    par.getDebugFilePrefix(result.target.charIndex) + ".ocr." + stage + ".ori.png"
+            Parameters.debugDir.absolutePath + "/" +
+                    Parameters.getDebugFilePrefix(result.target.charIndex) + ".ocr." + stage + ".ori.png"
         )
         val targetImage = buildImage(result.target.matrix)
-        val colorImage = colorizeImage(targetImage, par.ocrTargetHaloLastColor)
-        val scaledImage = buildScaledImage(colorImage, par.debugOCRImageScale)
+        val colorImage = colorizeImage(targetImage, Parameters.ocrTargetHaloLastColor)
+        val scaledImage = buildScaledImage(colorImage, Parameters.debugOCRImageScale)
         ImageIO.write(scaledImage, "png", file)
     }
 
     
     private fun writeReferenceImage(result: OCRResult, stage: Int) {
         val file = File(
-            par.debugDir.absolutePath + "/" +
-                    par.getDebugFilePrefix(result.target.charIndex) + ".ocr." + stage + ".ref." + result.character + ".png"
+            Parameters.debugDir.absolutePath + "/" +
+                    Parameters.getDebugFilePrefix(result.target.charIndex) + ".ocr." + stage + ".ref." + result.character + ".png"
         )
         val referenceImage = buildImage(result.reference.matrix)
-        val colorImage = colorizeImage(referenceImage, par.ocrReferenceHaloLastColor)
-        val scaledImage = buildScaledImage(colorImage, par.debugOCRImageScale)
+        val colorImage = colorizeImage(referenceImage, Parameters.ocrReferenceHaloLastColor)
+        val scaledImage = buildScaledImage(colorImage, Parameters.debugOCRImageScale)
         ImageIO.write(scaledImage, "png", file)
     }
 
     
     private fun writeDebugImage(result: OCRResult, stage: Int) {
         val file = File(
-            par.debugDir.absolutePath + "/" +
-                    par.getDebugFilePrefix(result.target.charIndex) + ".ocr." + stage + ".res." + result.character + "." +
+            Parameters.debugDir.absolutePath + "/" +
+                    Parameters.getDebugFilePrefix(result.target.charIndex) + ".ocr." + stage + ".res." + result.character + "." +
                     result.score + "." + result.target.transform + ".png"
         )
-        val scaledImage = buildScaledImage(result.buildDebugImage(), par.debugOCRImageScale)
+        val scaledImage = buildScaledImage(result.buildDebugImage(), Parameters.debugOCRImageScale)
         ImageIO.write(scaledImage, "png", file)
     }
 

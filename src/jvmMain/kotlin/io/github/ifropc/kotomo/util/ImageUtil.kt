@@ -16,11 +16,11 @@ package io.github.ifropc.kotomo.util
 
 import io.github.ifropc.kotomo.area.Area
 import io.github.ifropc.kotomo.area.Column
+import io.github.ifropc.kotomo.ocr.Point
 import io.github.ifropc.kotomo.ocr.Rectangle
 import org.imgscalr.Scalr
 import java.awt.Color
 import java.awt.Image
-import io.github.ifropc.kotomo.ocr.Point
 import java.awt.Toolkit
 import java.awt.datatransfer.DataFlavor
 import java.awt.datatransfer.Transferable
@@ -639,13 +639,13 @@ object ImageUtil {
      * Sharpens the image
      */
 
-	fun sharpenImage(image: BufferedImage, par: Parameters): BufferedImage {
+	fun sharpenImage(image: BufferedImage): BufferedImage {
         if (FixedParameters.fixedBlackLevelEnabled) {
             return createCopy(image)
         }
         val sharpened: BufferedImage? = null
         val filter = UnsharpMaskFilter(
-            par.unsharpAmount, par.unsharpRadius, par.unsharpThreshold
+            Parameters.unsharpAmount, Parameters.unsharpRadius, Parameters.unsharpThreshold
         )
         return filter.filter(image, sharpened)
     }

@@ -14,9 +14,10 @@
  */
 package io.github.ifropc.kotomo.area
 
-import io.github.ifropc.kotomo.util.ImageUtil.paintRectangle
-import java.awt.Color
 import io.github.ifropc.kotomo.ocr.Rectangle
+import io.github.ifropc.kotomo.util.ImageUtil.paintRectangle
+import io.github.ifropc.kotomo.util.Parameters
+import java.awt.Color
 import java.util.*
 
 /**
@@ -346,7 +347,7 @@ class MergeAreas(task: AreaTask?) : AreaStep(task, "mergeareas") {
 
     
     override fun addDebugImages() {
-        task!!.addDefaultDebugImage("mergeareas", par.vertical)
+        task!!.addDefaultDebugImage("mergeareas", Parameters.vertical)
     }
 
     companion object {

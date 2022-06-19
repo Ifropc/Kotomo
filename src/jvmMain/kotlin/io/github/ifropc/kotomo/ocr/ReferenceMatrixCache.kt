@@ -14,7 +14,7 @@
  */
 package io.github.ifropc.kotomo.ocr
 
-import io.github.ifropc.kotomo.util.Parameters.Companion.instance
+import io.github.ifropc.kotomo.util.Parameters
 
 /**
  * Cache of reference matrices for each character listed in Character class
@@ -27,7 +27,7 @@ class ReferenceMatrixCache {
 
     init {
         cache = HashMap()
-        for (font in instance.referenceFonts) {
+        for (font in Parameters.referenceFonts) {
             cache[font] = ArrayList()
         }
     }

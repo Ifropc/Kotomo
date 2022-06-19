@@ -16,7 +16,6 @@ package io.github.ifropc.kotomo.ocr
 
 import io.github.ifropc.kotomo.ocr.Characters.getScoreModifier
 import io.github.ifropc.kotomo.util.Parameters
-import io.github.ifropc.kotomo.util.Parameters.Companion.instance
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import java.io.File
@@ -27,7 +26,7 @@ import java.io.File
 object ReferenceMatrixCacheLoader {
     lateinit var cache: ReferenceMatrixCache
         private set
-    private val par = instance
+    
 
     /**
      * Loads the cache from serialized data file (unless already done)
@@ -41,7 +40,7 @@ object ReferenceMatrixCacheLoader {
         deserialize()
         applyScoreModifiers()
         val done = System.currentTimeMillis()
-        if (par.isPrintDebug) {
+        if (Parameters.isPrintDebug) {
             println("ReferenceMatrixCache " + (done - started) + " ms")
         }
     }
@@ -63,7 +62,7 @@ object ReferenceMatrixCacheLoader {
     
     private fun deserialize() {
         cache = ReferenceMatrixCache()
-        for (font in par.referenceFonts) {
+        for (font in Parameters.referenceFonts) {
             val fileName = ReferenceMatrixHashCalculator.getReferenceFileName(
                 font, Parameters.targetSize,
                 Parameters.ocrHaloSize, Characters.all
@@ -84,7 +83,7 @@ object ReferenceMatrixCacheLoader {
         if (!file.exists()) {
             return false
         }
-        if (par.isPrintOutput) {
+        if (Parameters.isPrintOutput) {
             println("Deserializing references from file:$file")
         }
         deserializeStream(font, file.path)

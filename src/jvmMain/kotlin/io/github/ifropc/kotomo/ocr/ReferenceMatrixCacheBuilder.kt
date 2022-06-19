@@ -18,7 +18,6 @@ import io.github.ifropc.kotomo.util.ImageUtil.buildMatrix32
 import io.github.ifropc.kotomo.util.ImageUtil.makeBlackAndWhite
 import io.github.ifropc.kotomo.util.ImageUtil.stretchCheckRatio
 import io.github.ifropc.kotomo.util.Parameters
-import io.github.ifropc.kotomo.util.Parameters.Companion.instance
 import io.github.ifropc.kotomo.util.buildMatrixHalo
 import io.github.ifropc.kotomo.util.countBits
 import kotlinx.serialization.encodeToString
@@ -34,7 +33,7 @@ import java.awt.image.BufferedImage
  * This needs to be run only if the character set changes.
  */
 class ReferenceMatrixCacheBuilder {
-    private val par = instance
+    
     private var characters: MutableSet<Char>? = null
     private val components: ComponentBuilder
 
@@ -45,7 +44,7 @@ class ReferenceMatrixCacheBuilder {
     
     fun buildCache() {
         println("Building reference cache")
-        for (font in par.referenceFonts) {
+        for (font in Parameters.referenceFonts) {
             generateCharacters(font)
         }
     }
@@ -137,7 +136,7 @@ class ReferenceMatrixCacheBuilder {
 
         // resize image to targetSize, center and surround with white border to 32x32 pixels
         bestImage = stretchCheckRatio(bestImage!!, targetSize, 32)
-        bestImage = makeBlackAndWhite(bestImage, par.pixelRGBThreshold)
+        bestImage = makeBlackAndWhite(bestImage, Parameters.pixelRGBThreshold)
         checkRow(bestImage, character, 31 - (32 - targetSize) / 2)
         return bestImage
     }
@@ -147,9 +146,9 @@ class ReferenceMatrixCacheBuilder {
      */
     
     private fun isFontBold(fontName: String): Boolean {
-        for (i in par.referenceFonts.indices) {
-            if (par.referenceFonts[i] == fontName) {
-                return par.referenceFontsBold[i]
+        for (i in Parameters.referenceFonts.indices) {
+            if (Parameters.referenceFonts[i] == fontName) {
+                return Parameters.referenceFontsBold[i]
             }
         }
         throw Exception("Font:$fontName not found")

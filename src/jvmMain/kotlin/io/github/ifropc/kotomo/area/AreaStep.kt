@@ -23,7 +23,7 @@ import io.github.ifropc.kotomo.util.Parameters
  * each step.
  */
 abstract class AreaStep(protected var task: AreaTask?, vararg debugImages: String) {
-    protected var par = Parameters.instance
+    protected var par = Parameters
 
     /**
      * If true, debug images are generated after this step.
@@ -38,8 +38,8 @@ abstract class AreaStep(protected var task: AreaTask?, vararg debugImages: Strin
         addDebugImages = false
 
         // check if this step should write debug images
-        if (par.isSaveAreaFailed) {
-            for (s1 in par.debugImages) {
+        if (Parameters.isSaveAreaFailed) {
+            for (s1 in Parameters.debugImages) {
                 for (s2 in debugImages) {
                     if (s1 == s2) {
                         addDebugImages = true
@@ -60,7 +60,7 @@ abstract class AreaStep(protected var task: AreaTask?, vararg debugImages: Strin
             task!!.collectAreas()
         }
         val done = System.currentTimeMillis()
-        if (par.isPrintDebug) {
+        if (Parameters.isPrintDebug) {
             val subclassName = this.javaClass.name
             println(subclassName + " " + (done - started) + " ms")
         }

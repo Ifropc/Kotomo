@@ -14,10 +14,11 @@
  */
 package io.github.ifropc.kotomo.area
 
+import io.github.ifropc.kotomo.ocr.Rectangle
 import io.github.ifropc.kotomo.util.ImageUtil.paintRectangle
+import io.github.ifropc.kotomo.util.Parameters
 import io.github.ifropc.kotomo.util.Util.scale
 import java.awt.Color
-import io.github.ifropc.kotomo.ocr.Rectangle
 import java.util.*
 
 /**
@@ -84,7 +85,7 @@ class FindColumns(task: AreaTask?) : AreaStep(task, "columns") {
             area.rect.width,
             area.rect.height
         )
-        column.isVertical = par.vertical
+        column.isVertical = Parameters.vertical
         column.score = column.ratio
         return column
     }
@@ -344,7 +345,7 @@ class FindColumns(task: AreaTask?) : AreaStep(task, "columns") {
                 weight *= 1.25f
             }
             weight *= scale(
-                target.minRGBValue.toFloat(), 0f, par.pixelRGBThreshold.toFloat(),
+                target.minRGBValue.toFloat(), 0f, Parameters.pixelRGBThreshold.toFloat(),
                 1.0f, 0.5f
             )
             scoreSum += target.score!! * weight
@@ -598,7 +599,7 @@ class FindColumns(task: AreaTask?) : AreaStep(task, "columns") {
             areas.addAll(column!!.areas)
         }
 
-        ///task.addDefaultDebugImage("columns", areas, columns, par.vertical);
+        ///task.addDefaultDebugImage("columns", areas, columns, Parameters.vertical);
         val image = task!!.createDefaultDebugImage(areas, columns)
         if (probe != null) {
             paintRectangle(image!!, probe, Color.GREEN)
@@ -609,6 +610,6 @@ class FindColumns(task: AreaTask?) : AreaStep(task, "columns") {
 
     
     override fun addDebugImages() {
-        task!!.addDefaultDebugImage("columns", par.vertical)
+        task!!.addDefaultDebugImage("columns", Parameters.vertical)
     }
 }
