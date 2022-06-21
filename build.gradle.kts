@@ -22,11 +22,22 @@ kotlin {
             useJUnitPlatform()
         }
     }
-    js(BOTH) {
+    js(IR) {
         browser {
             commonWebpackConfig {
                 cssSupport.enabled = true
             }
+            webpackTask {
+                output.libraryTarget = "commonjs2"
+            }
+            testTask {
+                useKarma {
+                    useFirefox()
+                    // TODO: enable chrome
+//                    useChrome()
+                }
+            }
+            binaries.executable()
         }
     }
 
@@ -34,7 +45,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.2")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
                 implementation("io.github.microutils:kotlin-logging:2.1.23")
             }
         }

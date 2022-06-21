@@ -14,9 +14,13 @@ test/**
 .classpath
 .project
 *.iml
+**.log
 
 # Ignore Gradle project-specific cache directory
 .gradle
 
 # Ignore Gradle build output directory
 build
+
+extension/node_modules
+extension/dist
