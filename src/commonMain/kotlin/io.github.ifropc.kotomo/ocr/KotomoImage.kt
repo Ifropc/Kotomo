@@ -22,4 +22,8 @@ interface KotomoImage {
     fun getRGB(x: Int, y: Int): RGB
 }
 
-typealias RGB = Int
+data class RGB(val red: Int, val green: Int, val blue: Int, val alpha: Int) {
+    fun toInt(): Int {
+        return (alpha and 255 shl 24) or (red and 255 shl 16) or (green and 255 shl 8) or (blue and 255 shl 0)
+    }
+}

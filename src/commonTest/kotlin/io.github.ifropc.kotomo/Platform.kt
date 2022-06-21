@@ -13,17 +13,16 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-package io.github.ifropc.kotomo.ocr
+package io.github.ifropc.kotomo
 
-import java.awt.Color
-import java.awt.image.BufferedImage
+expect object Platform {
+    val platform: PlatformEnum
+}
 
-class KotomoImageImpl(val bufferedImage: BufferedImage): KotomoImage {
-    override val width = bufferedImage.width
-    override val height = bufferedImage.height
+fun isJs(): Boolean {
+    return Platform.platform == PlatformEnum.JS
+}
 
-    override fun getRGB(x: Int, y: Int): RGB {
-        val color =  Color(bufferedImage.getRGB(x, y))
-        return RGB(color.red, color.green, color.blue, color.alpha)
-    }
+enum class PlatformEnum {
+    JS, JVM
 }

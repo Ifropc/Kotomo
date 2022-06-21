@@ -31,11 +31,12 @@ kotlin {
                 output.libraryTarget = "commonjs2"
             }
             testTask {
-                useKarma {
-                    useFirefox()
-                    // TODO: enable chrome
-//                    useChrome()
-                }
+                useMocha {  }
+//                useKarma {
+//                    useFirefox()
+//                    // TODO: enable chrome
+////                    useChrome()
+//                }
             }
             binaries.executable()
         }
@@ -52,6 +53,7 @@ kotlin {
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1")
             }
         }
         val jvmMain by getting {
@@ -61,7 +63,11 @@ kotlin {
             }
         }
         val jvmTest by getting
-        val jsMain by getting
+        val jsMain by getting {
+            dependencies {
+                implementation(npm("image-js", "0.34.1"))
+            }
+        }
         val jsTest by getting
     }
 }

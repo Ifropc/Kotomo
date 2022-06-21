@@ -20,6 +20,7 @@ import io.github.ifropc.kotomo.ocr.Rectangle
 import mu.KotlinLogging
 import java.awt.image.BufferedImage
 import java.io.File
+import java.util.Base64
 
 internal object Util {
     /**

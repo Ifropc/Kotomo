@@ -15,6 +15,7 @@
 
 package io.github.ifropc.kotomo
 
+import io.github.ifropc.kotomo.ocr.ImageLoader
 import io.github.ifropc.kotomo.ocr.Point
 import io.github.ifropc.kotomo.ocr.Rectangle
 import io.github.ifropc.kotomo.ocr.ReferenceMatrixCacheBuilder
@@ -112,7 +113,7 @@ class TestCleanOCR {
     }
 
     private fun testPoint(filename: String, expected: String, accpetedMarginPercent: Float): MutableList<IdentifiedCharacter> {
-        val image = ImageIO.read(this::class.java.classLoader.getResourceAsStream(filename)).toKotomoImage()
+        val image = runBlocking { ImageLoader.loadFromFile(filename) }
         tomo.setTargetImage(image)
         val results = runBlocking { tomo.runOCR(Point(0, 0)) }
 
@@ -121,16 +122,6 @@ class TestCleanOCR {
             .forEach { assertDominance(it, accpetedMarginPercent / 100) }
 
         return results.characters
-    }
-
-    private fun testArea(filename: String, width: Int, height: Int, expected: String,  accpetedMarginPercent: Float) {
-        val image = ImageIO.read(this::class.java.classLoader.getResourceAsStream(filename)).toKotomoImage()
-        tomo.setTargetImage(image)
-        val results = runBlocking { tomo.runOCR(listOf(Rectangle(0, 0, width, height))) }
-
-        assertEquals(expected, results!!.bestMatchingCharacters)
-        results!!.characters.map { it.referenceCharacters.toCharArray().zip(it.scores.normalized()).drop(1).first() }
-            .forEach { assertDominance(it, accpetedMarginPercent / 100) }
     }
 
     private fun assertDominance(pair: Pair<Char, Float>, margin: Float) {

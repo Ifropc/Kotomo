@@ -15,15 +15,13 @@
 
 package io.github.ifropc.kotomo.ocr
 
-import java.awt.Color
-import java.awt.image.BufferedImage
+import io.github.ifropc.kotomo.externals.Image
+import kotlinx.coroutines.await
 
-class KotomoImageImpl(val bufferedImage: BufferedImage): KotomoImage {
-    override val width = bufferedImage.width
-    override val height = bufferedImage.height
+actual object ImageLoader {
+    actual suspend fun loadFromFile(path: String): KotomoImage {
+        val img = Image.load(path).await()
 
-    override fun getRGB(x: Int, y: Int): RGB {
-        val color =  Color(bufferedImage.getRGB(x, y))
-        return RGB(color.red, color.green, color.blue, color.alpha)
+        return KotomoImageJS(img)
     }
 }

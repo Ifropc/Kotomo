@@ -303,7 +303,7 @@ class AreaTask(targetImage: KotomoImage) {
      * Gets RGB value of pixel x,y (minimum from single channel)
      */
     fun getPixelRGB(x: Int, y: Int): Int {
-        val rgb = originalImage.getRGB(x, y)
+        val rgb = originalImage.getRGB(x, y).toInt()
         val color = Color(rgb)
         val red = color.red
         val green = color.green
