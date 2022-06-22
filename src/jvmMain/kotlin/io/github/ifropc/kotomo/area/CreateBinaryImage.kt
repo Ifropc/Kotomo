@@ -19,6 +19,7 @@ import io.github.ifropc.kotomo.util.ImageUtil.createImageFromMatrix
 import io.github.ifropc.kotomo.util.ImageUtil.createMatrixFromImage
 import io.github.ifropc.kotomo.util.ImageUtil.makeBlackAndWhite
 import io.github.ifropc.kotomo.util.JVMUtil.toBufferedImage
+import io.github.ifropc.kotomo.util.JVMUtil.withDebuggable
 import io.github.ifropc.kotomo.util.Parameters
 import java.awt.image.BufferedImage
 
@@ -40,6 +41,6 @@ class CreateBinaryImage constructor(task: AreaTask?) : AreaStep(task, "binary") 
     
     override fun addDebugImages() {
         val image: BufferedImage = createImageFromMatrix(task!!.binaryImage)
-        task!!.addDebugImage(image, "binary")
+        withDebuggable(task!!) { it.addDebugImage(image, "binary") }
     }
 }

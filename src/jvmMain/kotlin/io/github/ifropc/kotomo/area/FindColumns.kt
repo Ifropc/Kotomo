@@ -17,6 +17,8 @@ package io.github.ifropc.kotomo.area
 import io.github.ifropc.kotomo.ocr.Colors
 import io.github.ifropc.kotomo.ocr.KotomoRectangle
 import io.github.ifropc.kotomo.util.ImageUtil.paintRectangle
+import io.github.ifropc.kotomo.util.JVMUtil.runWithDebuggable
+import io.github.ifropc.kotomo.util.JVMUtil.withDebuggable
 import io.github.ifropc.kotomo.util.Parameters
 import io.github.ifropc.kotomo.util.Util.scale
 import mu.KotlinLogging
@@ -107,7 +109,7 @@ class FindColumns(task: AreaTask?) : AreaStep(task, "columns") {
      */
 
     private fun mergeColumns(expandLength: Boolean, iteration: Int) {
-        if (debugAll) log.debug { "mergeColumn expandLength:$expandLength iteration:$iteration" } 
+        if (debugAll) log.debug { "mergeColumn expandLength:$expandLength iteration:$iteration" }
 
         // process areas in order that prioritizes column growth in reading direction
         val cols = index!!.all
@@ -135,7 +137,11 @@ class FindColumns(task: AreaTask?) : AreaStep(task, "columns") {
             val targets = index!![probe, col]
             if (isDebug(col)) {
                 addIntermediateDebugImage(col, probe)
-                log.debug { task!!.debugImages[task!!.debugImages.size - 1]!!.filename }
+                log.debug {
+                    withDebuggable(task!!) { task ->
+                        task!!.debugImages[task!!.debugImages.size - 1]!!.filename
+                    }
+                }
                 log.debug { "  col:   " + col + " score:" + col.score + " rgb:" + col.avgRGBValue }
                 log.debug { "  probe: $probe" }
             }
@@ -584,16 +590,16 @@ class FindColumns(task: AreaTask?) : AreaStep(task, "columns") {
         }
 
         ///task.addDefaultDebugImage("columns", areas, columns, Parameters.vertical);
-        val image = task!!.createDefaultDebugImage(areas, columns)
+        val image = runWithDebuggable(task!!) { task -> task.createDefaultDebugImage(areas, columns) }
         if (probe != null) {
             paintRectangle(image, probe, Colors.GREEN)
         }
-        task!!.addDebugImage(image, "columns", col.isVertical)
+        withDebuggable(task!!) { task ->   task!!.addDebugImage(image, "columns", col.isVertical) }
         col.isChanged = false
     }
 
 
     override fun addDebugImages() {
-        task!!.addDefaultDebugImage("columns", Parameters.vertical)
+        withDebuggable(task!!) { task -> task!!.addDefaultDebugImage("columns", Parameters.vertical) }
     }
 }

@@ -14,6 +14,7 @@
  */
 package io.github.ifropc.kotomo.area
 
+import io.github.ifropc.kotomo.util.JVMUtil
 import io.github.ifropc.kotomo.util.Parameters
 import kotlin.math.ceil
 import kotlin.math.floor
@@ -187,6 +188,8 @@ class SplitAreas(task: AreaTask?) : AreaStep(task, "splitareas") {
 
     
     override fun addDebugImages() {
-        task!!.addDefaultDebugImage("splitareas", Parameters.vertical)
+        JVMUtil.withDebuggable(task!!) { task ->
+            task!!.addDefaultDebugImage("splitareas", Parameters.vertical)
+        }
     }
 }

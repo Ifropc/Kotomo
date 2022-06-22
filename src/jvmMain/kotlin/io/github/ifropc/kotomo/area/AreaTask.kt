@@ -39,8 +39,7 @@ private val log = KotlinLogging.logger { }
 /**
  * Area detection algorithm input and output values.
  */
-class AreaTask(targetImage: KotomoImage) {
-    
+open class AreaTask(targetImage: KotomoImage) {
 
     /**
      * Target image width
@@ -103,12 +102,6 @@ class AreaTask(targetImage: KotomoImage) {
      * Column in horizontal orientation.
      */
     var horizontalColumns: MutableList<Column>? = null
-
-    /**
-     * List of images used during development to visualize processing steps.
-     * Only generated if debugMode = true;
-     */
-    var debugImages: MutableList<DebugImage?> = ArrayList()
 
     init {
         width = targetImage.width
@@ -434,8 +427,15 @@ class AreaTask(targetImage: KotomoImage) {
             log.error(e) {}
         }
     }
+}
 
-    // TODO: think of a better way of using DEBUG images. Should not be ported to common library
+// TODO: think of a better way of using DEBUG images. Should not be ported to common library
+class AreaTaskDebuggable(targetImage: KotomoImage): AreaTask(targetImage) {
+    /**
+     * List of images used during development to visualize processing steps.
+     * Only generated if debugMode = true;
+     */
+    var debugImages: MutableList<DebugImage?> = ArrayList()
 
     /**
      * Adds image to list of debug images
@@ -493,7 +493,7 @@ class AreaTask(targetImage: KotomoImage) {
      *
      * @param vertical if set, orientation is displayed in debug file name
      */
-    
+
     fun addDefaultDebugImage(name: String?, vertical: Boolean?) {
         addDefaultDebugImage(name, areas, columns, vertical)
     }
@@ -509,7 +509,7 @@ class AreaTask(targetImage: KotomoImage) {
      *
      * @param vertical if set, orientation is displayed in debug file name
      */
-    
+
     fun addDefaultDebugImage(
         name: String?, areas: List<Area>? = this.areas, columns: List<Column?>? = this.columns,
         vertical: Boolean? = null
@@ -523,7 +523,7 @@ class AreaTask(targetImage: KotomoImage) {
     /**
      * Paints a default debug image displaying columns and areas and gray background.
      */
-    
+
     fun createDefaultDebugImage(
         areas: List<Area>? = this.areas,
         columns: List<Column?>? = this.columns
@@ -541,7 +541,7 @@ class AreaTask(targetImage: KotomoImage) {
     /**
      * Writes debug images to target directory. filenameBase is included in each file name.
      */
-    
+
     fun writeDebugImages() {
         if (!Parameters.isSaveAreaFailed) {
             return
@@ -556,7 +556,7 @@ class AreaTask(targetImage: KotomoImage) {
      * Writes debug image to disk in Parameters.debugDir directory. Files are
      * named as "test number.index number.algorithm step.png"
      */
-    
+
     private fun writeDebugImage(image: DebugImage?) {
         if (image == null) {
             return

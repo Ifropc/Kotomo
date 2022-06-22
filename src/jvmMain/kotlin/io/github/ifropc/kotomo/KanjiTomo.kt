@@ -17,6 +17,7 @@ package io.github.ifropc.kotomo
 
 import io.github.ifropc.kotomo.area.AreaDetector
 import io.github.ifropc.kotomo.area.AreaTask
+import io.github.ifropc.kotomo.area.AreaTaskDebuggable
 import io.github.ifropc.kotomo.area.SubImage
 import io.github.ifropc.kotomo.ocr.KotomoImage
 import io.github.ifropc.kotomo.ocr.OCR
@@ -24,6 +25,7 @@ import io.github.ifropc.kotomo.ocr.OCRTask
 import io.github.ifropc.kotomo.ocr.Point
 import io.github.ifropc.kotomo.ocr.KotomoRectangle
 import io.github.ifropc.kotomo.ocr.ReferenceMatrixCacheLoader
+import io.github.ifropc.kotomo.util.Parameters
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -189,7 +191,11 @@ class KanjiTomo {
      */
 
     private fun detectAreas(image: KotomoImage) {
-        areaTask = AreaTask(image)
+        if (Parameters.enableDebugImages) {
+            areaTask = AreaTaskDebuggable(image)
+        } else {
+            areaTask = AreaTask(image)
+        }
         AreaDetector().run(areaTask!!)
     }
 

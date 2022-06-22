@@ -15,12 +15,19 @@
 
 package io.github.ifropc.kotomo.util
 
+import io.github.ifropc.kotomo.area.AreaTask
+import io.github.ifropc.kotomo.area.AreaTaskDebuggable
 import io.github.ifropc.kotomo.ocr.KotomoColor
 import io.github.ifropc.kotomo.ocr.KotomoImage
 import io.github.ifropc.kotomo.ocr.KotomoImageImpl
 import io.github.ifropc.kotomo.ocr.KotomoRectangle
+import kotlinx.coroutines.withTimeout
+import mu.KotlinLogging
 import java.awt.Color
 import java.awt.image.BufferedImage
+import kotlin.system.measureTimeMillis
+
+private val log = KotlinLogging.logger { }
 
 internal object JVMUtil {
     fun KotomoRectangle.toAwt(): java.awt.Rectangle{
@@ -41,5 +48,16 @@ internal object JVMUtil {
 
     fun BufferedImage.toKotomoImage(): KotomoImage {
         return KotomoImageImpl(this)
+    }
+
+    inline fun withDebuggable(t: AreaTask, block: (AreaTaskDebuggable) -> Unit) {
+        when (t) {
+            is AreaTaskDebuggable -> block(t)
+            else -> log.warn(Exception()) { "WithDebuggable was called on non-debuggable image" }
+        }
+    }
+
+    inline fun <T> runWithDebuggable(t: AreaTask, block: (AreaTaskDebuggable) -> T): T{
+        return block(t as AreaTaskDebuggable)
     }
 }

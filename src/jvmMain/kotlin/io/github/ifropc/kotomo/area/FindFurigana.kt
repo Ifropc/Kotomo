@@ -15,6 +15,7 @@
 package io.github.ifropc.kotomo.area
 
 import io.github.ifropc.kotomo.ocr.KotomoRectangle
+import io.github.ifropc.kotomo.util.JVMUtil
 import io.github.ifropc.kotomo.util.Parameters
 
 /**
@@ -79,6 +80,8 @@ class FindFurigana(task: AreaTask?) : AreaStep(task, "furigana") {
 
     
     override fun addDebugImages() {
-        task!!.addDefaultDebugImage("furigana", Parameters.vertical)
+        JVMUtil.withDebuggable(task!!) { task ->
+            task!!.addDefaultDebugImage("furigana", Parameters.vertical)
+        }
     }
 }

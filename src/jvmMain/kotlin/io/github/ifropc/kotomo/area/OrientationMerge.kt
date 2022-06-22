@@ -16,6 +16,7 @@ package io.github.ifropc.kotomo.area
 
 import io.github.ifropc.kotomo.Orientation
 import io.github.ifropc.kotomo.ocr.KotomoRectangle
+import io.github.ifropc.kotomo.util.JVMUtil
 import io.github.ifropc.kotomo.util.Parameters
 import io.github.ifropc.kotomo.util.Util.scale
 import mu.KotlinLogging
@@ -529,6 +530,8 @@ class OrientationMerge(task: AreaTask?) : AreaStep(task, "combined") {
 
     
     override fun addDebugImages() {
-        task!!.addDefaultDebugImage("combined")
+        JVMUtil.withDebuggable(task!!) { task ->
+            task!!.addDefaultDebugImage("combined")
+        }
     }
 }

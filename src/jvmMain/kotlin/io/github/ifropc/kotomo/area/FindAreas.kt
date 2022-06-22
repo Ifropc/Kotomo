@@ -16,6 +16,7 @@ package io.github.ifropc.kotomo.area
 
 import io.github.ifropc.kotomo.ocr.KotomoRectangle
 import io.github.ifropc.kotomo.util.ImageUtil.createWhiteImage
+import io.github.ifropc.kotomo.util.JVMUtil
 import io.github.ifropc.kotomo.util.Parameters
 import io.github.ifropc.kotomo.util.Util.scale
 import mu.KotlinLogging
@@ -353,9 +354,11 @@ class FindAreas(task: AreaTask?) : AreaStep(task, "touching", "background", "are
 
     
     override fun addDebugImages() {
-        task!!.addDebugImage(debugImage, "touching")
-        task!!.addDebugImage(task!!.backgroundImage, "background")
-        task!!.addDefaultDebugImage("areas")
+        JVMUtil.withDebuggable(task!!) {task ->
+            task!!.addDebugImage(debugImage, "touching")
+            task!!.addDebugImage(task!!.backgroundImage, "background")
+            task!!.addDefaultDebugImage("areas")
+        }
     }
 
     companion object {

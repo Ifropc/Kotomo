@@ -18,6 +18,7 @@ import io.github.ifropc.kotomo.CharacterColor
 import io.github.ifropc.kotomo.ocr.KotomoRectangle
 import io.github.ifropc.kotomo.util.FixedParameters
 import io.github.ifropc.kotomo.util.ImageUtil.createCopy
+import io.github.ifropc.kotomo.util.JVMUtil
 import io.github.ifropc.kotomo.util.Parameters
 import mu.KotlinLogging
 import java.awt.AlphaComposite
@@ -479,7 +480,9 @@ class InvertImage(task: AreaTask?) : AreaStep(task, "invert") {
                 }
             }
         }
-        task!!.addDebugImage(image, "invert")
+        JVMUtil.withDebuggable(task!!) { task ->
+            task!!.addDebugImage(image, "invert")
+        }
     }
 
     companion object {

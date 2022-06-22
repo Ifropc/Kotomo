@@ -152,6 +152,7 @@ object Parameters {
         get() = File(findFile(dataDirName).toString() + "/" + cacheDirName)
 
     // debug-related parameters
+    val enableDebugImages = true
     var saveAreaImages = SaveAreaImages.OFF
     var saveOCRImages = SaveOCRImages.OFF
 

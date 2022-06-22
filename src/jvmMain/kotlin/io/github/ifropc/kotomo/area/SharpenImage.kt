@@ -15,6 +15,7 @@
 package io.github.ifropc.kotomo.area
 
 import io.github.ifropc.kotomo.util.ImageUtil.sharpenImage
+import io.github.ifropc.kotomo.util.JVMUtil
 import io.github.ifropc.kotomo.util.JVMUtil.toBufferedImage
 import io.github.ifropc.kotomo.util.JVMUtil.toKotomoImage
 
@@ -29,7 +30,9 @@ class SharpenImage(task: AreaTask?) : AreaStep(task, "original", "sharpened") {
 
     
     override fun addDebugImages() {
-        task!!.addDebugImage(task!!.originalImage.toBufferedImage(), "original")
-        task!!.addDebugImage(task!!.sharpenedImage?.toBufferedImage(), "sharpened")
+        JVMUtil.withDebuggable(task!!) { task ->
+            task!!.addDebugImage(task!!.originalImage.toBufferedImage(), "original")
+            task!!.addDebugImage(task!!.sharpenedImage?.toBufferedImage(), "sharpened")
+        }
     }
 }

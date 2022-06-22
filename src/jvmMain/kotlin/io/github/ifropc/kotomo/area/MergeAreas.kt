@@ -17,6 +17,8 @@ package io.github.ifropc.kotomo.area
 import io.github.ifropc.kotomo.ocr.Colors
 import io.github.ifropc.kotomo.ocr.KotomoRectangle
 import io.github.ifropc.kotomo.util.ImageUtil.paintRectangle
+import io.github.ifropc.kotomo.util.JVMUtil.runWithDebuggable
+import io.github.ifropc.kotomo.util.JVMUtil.withDebuggable
 import io.github.ifropc.kotomo.util.Parameters
 import mu.KotlinLogging
 import java.awt.Color
@@ -43,7 +45,7 @@ class MergeAreas(task: AreaTask?) : AreaStep(task, "mergeareas") {
      * Warning! This will create large amount of data, use only for small target images.
      */
     private val debugAll = false
-    
+
     override fun runImpl() {
         for (col in task!!.columns!!) {
             mergeAreas(col)
@@ -64,7 +66,7 @@ class MergeAreas(task: AreaTask?) : AreaStep(task, "mergeareas") {
     /**
      * Loop and merge adjacent areas inside column until no merges can be done
      */
-    
+
     private fun mergeAreas(col: Column) {
 
         // split areas into chunks delimited by punctuation and large areas that 
@@ -128,14 +130,14 @@ class MergeAreas(task: AreaTask?) : AreaStep(task, "mergeareas") {
      *
      * @return List of merged areas with best score
      */
-    
+
     private fun findBestMerge(col: Column, areas: List<Area>): List<Area> {
         if (areas.size == 1) {
             return areas
         }
         if (isDebug(areas)) {
-            log.debug { "findBestMerge" } 
-            log.debug { "col:$col" } 
+            log.debug { "findBestMerge" }
+            log.debug { "col:$col" }
             log.debug {  "areas:" + toString(areas) }
         }
         val combination = BooleanArray(areas.size)
@@ -147,7 +149,7 @@ class MergeAreas(task: AreaTask?) : AreaStep(task, "mergeareas") {
             if (mergedAreas != null) {
                 if (debug) {
                     addIntermediateDebugImage(col, areas, mergedAreas)
-                    log.debug (task!!.debugImages[task!!.debugImages.size - 1]!!.filename)
+                    withDebuggable(task!!) { task -> log.debug (task!!.debugImages[task!!.debugImages.size - 1]!!.filename) }
                     log.debug("  combination:" + toString(combination))
                 }
                 val score = calcScore(mergedAreas)
@@ -156,13 +158,13 @@ class MergeAreas(task: AreaTask?) : AreaStep(task, "mergeareas") {
                     bestAreas = mergedAreas
                     if (debug) bestCombination = toString(combination)
                 }
-                if (debug) log.debug { "  score:$score" } 
+                if (debug) log.debug { "  score:$score" }
             }
             nextCombination(combination)
         } while (!combination[combination.size - 1]) // last boolean must be false
         if (debug) {
-            log.debug { "best:$bestCombination" } 
-            log.debug { "score:$bestScore" } 
+            log.debug { "best:$bestCombination" }
+            log.debug { "score:$bestScore" }
             log.debug { "areas:" + toString(bestAreas) }
         }
         return bestAreas
@@ -249,7 +251,7 @@ class MergeAreas(task: AreaTask?) : AreaStep(task, "mergeareas") {
         var scale = width.toFloat() / reference
         if (scale > 0.8f) scale = 1.0f
         if (scale < 0.6f) scale = 0.6f
-        if (debug && scale != 1.0f) log.debug { "col:$col scale:$scale" } 
+        if (debug && scale != 1.0f) log.debug { "col:$col scale:$scale" }
         return scale
     }
 
@@ -262,7 +264,7 @@ class MergeAreas(task: AreaTask?) : AreaStep(task, "mergeareas") {
     }
 
     private fun calcScore(areas: List<Area>): Float {
-        if (debug) log.debug { "  targetSize:$targetSize maxSize:$maxSize" } 
+        if (debug) log.debug { "  targetSize:$targetSize maxSize:$maxSize" }
         var scoreSum = 0f
         for (i in areas.indices) {
             val area = areas[i]
@@ -282,7 +284,7 @@ class MergeAreas(task: AreaTask?) : AreaStep(task, "mergeareas") {
             score *= (1f - distanceRatio).toDouble().pow(1.0).toFloat()
 
             //if (debug) System.err.println("  area:"+area+" size:"+size+" score:"+score);
-            if (debug) log.debug { "  area:$area size:$size distance:$distance score:$score" } 
+            if (debug) log.debug { "  area:$area size:$size distance:$distance score:$score" }
             scoreSum += score
         }
         return scoreSum / areas.size
@@ -319,7 +321,7 @@ class MergeAreas(task: AreaTask?) : AreaStep(task, "mergeareas") {
      * @param chunkAreas Original areas in the current chunk
      * @param mergedAreas Merged areas in the current chunk
      */
-    
+
     private fun addIntermediateDebugImage(col: Column, chunkAreas: List<Area>, mergedAreas: List<Area>) {
         task!!.collectAreas()
 
@@ -331,8 +333,9 @@ class MergeAreas(task: AreaTask?) : AreaStep(task, "mergeareas") {
             }
         }
         areas.addAll(mergedAreas)
-        val image = task!!.createDefaultDebugImage(areas, task!!.columns)
-
+        val image = runWithDebuggable(task!!) { task ->
+            task!!.createDefaultDebugImage(areas, task!!.columns)
+        }
         // paint rectangle around chunk
         val chunkRect: KotomoRectangle
         val firstArea = chunkAreas[0]
@@ -349,12 +352,12 @@ class MergeAreas(task: AreaTask?) : AreaStep(task, "mergeareas") {
             )
         }
         paintRectangle(image, chunkRect, Colors.GREEN)
-        task!!.addDebugImage(image, "mergeareas", col.isVertical)
+        withDebuggable(task!!) { task ->  task!!.addDebugImage(image, "mergeareas", col.isVertical) }
     }
 
-    
+
     override fun addDebugImages() {
-        task!!.addDefaultDebugImage("mergeareas", Parameters.vertical)
+        withDebuggable(task!!) { task ->task!!.addDefaultDebugImage("mergeareas", Parameters.vertical) }
     }
 
     companion object {

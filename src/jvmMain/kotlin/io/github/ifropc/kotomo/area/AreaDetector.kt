@@ -107,23 +107,27 @@ class AreaDetector {
      */
     
     private fun checkDebugImages() {
-        if (Parameters.isSaveAreaAll) {
-            task!!.writeDebugImages()
-        } else if (Parameters.isSaveAreaFailed) {
-            // check that expected rectangles (areas or columns) are present
-            rect@ for (rect in Parameters.expectedRectangles) {
-                for (col in task!!.columns!!) {
-                    if (col.rectangle == rect) {
-                        continue@rect
-                    }
-                    for (area in col.areas) {
-                        if (area.rect == rect) {
-                            continue@rect
+        when (val t = task) {
+            is AreaTaskDebuggable -> {
+                if (Parameters.isSaveAreaAll) {
+                    t.writeDebugImages()
+                } else if (Parameters.isSaveAreaFailed) {
+                    // check that expected rectangles (areas or columns) are present
+                    rect@ for (rect in Parameters.expectedRectangles) {
+                        for (col in task!!.columns!!) {
+                            if (col.rectangle == rect) {
+                                continue@rect
+                            }
+                            for (area in col.areas) {
+                                if (area.rect == rect) {
+                                    continue@rect
+                                }
+                            }
                         }
+                        t.writeDebugImages()
+                        break
                     }
                 }
-                task!!.writeDebugImages()
-                break
             }
         }
     }

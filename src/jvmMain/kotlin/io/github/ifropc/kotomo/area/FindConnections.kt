@@ -17,6 +17,8 @@ package io.github.ifropc.kotomo.area
 import io.github.ifropc.kotomo.ocr.Point
 import io.github.ifropc.kotomo.ocr.KotomoRectangle
 import io.github.ifropc.kotomo.util.ImageUtil.createRectangle
+import io.github.ifropc.kotomo.util.JVMUtil
+import io.github.ifropc.kotomo.util.JVMUtil.runWithDebuggable
 import io.github.ifropc.kotomo.util.Parameters
 import mu.KotlinLogging
 import java.awt.Color
@@ -30,7 +32,7 @@ private val log = KotlinLogging.logger { }
  */
 class FindConnections(task: AreaTask?) : AreaStep(task, "connections") {
     private var index: RTree<Column>? = null
-    
+
     override fun runImpl() {
 
         // initialize index
@@ -156,15 +158,17 @@ class FindConnections(task: AreaTask?) : AreaStep(task, "connections") {
         target.previousColumn = column
     }
 
-    
+
     override fun addDebugImages() {
-        val image = task!!.createDefaultDebugImage()
+        val image = runWithDebuggable(task!!) { task -> task!!.createDefaultDebugImage() }
         val g = image.createGraphics()
         g.paint = Color.BLUE
         for (column in task!!.columns!!) {
             paintNextColumn(column, g)
         }
-        task!!.addDebugImage(image, "connections", Parameters.vertical)
+        JVMUtil.withDebuggable(task!!) { task ->
+            task!!.addDebugImage(image, "connections", Parameters.vertical)
+        }
     }
 
     private fun getConnectionStartPoint(column: Column): Point {

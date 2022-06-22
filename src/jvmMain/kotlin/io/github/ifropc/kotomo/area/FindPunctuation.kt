@@ -16,6 +16,7 @@ package io.github.ifropc.kotomo.area
 
 import io.github.ifropc.kotomo.ocr.Point
 import io.github.ifropc.kotomo.ocr.KotomoRectangle
+import io.github.ifropc.kotomo.util.JVMUtil
 import io.github.ifropc.kotomo.util.Parameters
 import kotlin.math.ceil
 import kotlin.math.floor
@@ -278,7 +279,9 @@ class FindPunctuation(task: AreaTask?) : AreaStep(task, "punctuation") {
 
     
     override fun addDebugImages() {
-        task!!.addDefaultDebugImage("punctuation", Parameters.vertical)
+        JVMUtil.withDebuggable(task!!) { task ->
+            task!!.addDefaultDebugImage("punctuation", Parameters.vertical)
+        }
     }
 
     companion object {
