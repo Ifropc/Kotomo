@@ -15,8 +15,8 @@
 package io.github.ifropc.kotomo.area
 
 import io.github.ifropc.kotomo.util.ImageUtil.sharpenImage
-import io.github.ifropc.kotomo.util.Util.toBufferedImage
-import io.github.ifropc.kotomo.util.Util.toKotomoImage
+import io.github.ifropc.kotomo.util.JVMUtil.toBufferedImage
+import io.github.ifropc.kotomo.util.JVMUtil.toKotomoImage
 
 /**
  * Runs unsharp mask to the original image

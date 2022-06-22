@@ -15,7 +15,7 @@
 
 package io.github.ifropc.kotomo.ocr
 
-import io.github.ifropc.kotomo.util.Util.toKotomoImage
+import io.github.ifropc.kotomo.util.JVMUtil.toKotomoImage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.imageio.ImageIO

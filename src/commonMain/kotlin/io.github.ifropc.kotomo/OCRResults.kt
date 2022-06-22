@@ -15,14 +15,14 @@
 
 package io.github.ifropc.kotomo
 
-import io.github.ifropc.kotomo.ocr.Rectangle
+import io.github.ifropc.kotomo.ocr.KotomoRectangle
 
 /**
  * Results of the OCR run
  */
 class OCRResults(
     characters: List<String>,
-    locations: List<Rectangle>,
+    locations: List<KotomoRectangle>,
     scores: List<List<Int>>,
     vertical: Boolean
 ) {

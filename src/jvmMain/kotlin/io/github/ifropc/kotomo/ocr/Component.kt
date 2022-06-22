@@ -29,7 +29,7 @@ class Component {
     /**
      * Location of the component inside reference character
      */
-    var bounds: Rectangle? = null
+    var bounds: KotomoRectangle? = null
 
     /**
      * Component's pixels. Matrix might also contain pixels that belong to other components

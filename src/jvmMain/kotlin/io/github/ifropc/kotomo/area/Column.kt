@@ -14,7 +14,7 @@
  */
 package io.github.ifropc.kotomo.area
 
-import io.github.ifropc.kotomo.ocr.Rectangle
+import io.github.ifropc.kotomo.ocr.KotomoRectangle
 import java.awt.Color
 import io.github.ifropc.kotomo.ocr.Point
 import java.util.*
@@ -34,7 +34,7 @@ class Column : HasRectangle {
     /**
      * Bounding box around areas
      */
-    override var rectangle: Rectangle? = null
+    override var rectangle: KotomoRectangle? = null
     /**
      * @return true if column has vertical orientation
      */
@@ -137,7 +137,7 @@ class Column : HasRectangle {
     /**
      * @return true if column's rectangle intersect with argument rectangle
      */
-    fun intersects(rect: Rectangle?): Boolean {
+    fun intersects(rect: KotomoRectangle?): Boolean {
         return if (rect == null) {
             false
         } else {

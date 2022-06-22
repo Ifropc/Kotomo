@@ -29,7 +29,7 @@ class ComponentBuilder {
      */
     fun buildComponents(reference: ReferenceMatrix?): ArrayList<Component> {
         val base = Component()
-        base.bounds = Rectangle(0, 0, 32, 32)
+        base.bounds = KotomoRectangle(0, 0, 32, 32)
         base.matrix = reference!!.matrix
         val components = findSubComponents(base)
         compressComponents(components, reference.matrix)

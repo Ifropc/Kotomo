@@ -15,7 +15,7 @@
 package io.github.ifropc.kotomo.area
 
 import io.github.ifropc.kotomo.Orientation
-import io.github.ifropc.kotomo.ocr.Rectangle
+import io.github.ifropc.kotomo.ocr.KotomoRectangle
 import io.github.ifropc.kotomo.util.Parameters
 import io.github.ifropc.kotomo.util.Util.scale
 import mu.KotlinLogging
@@ -37,7 +37,7 @@ class OrientationMerge(task: AreaTask?) : AreaStep(task, "combined") {
     /**
      * Generates debug images for columns containing this rectangle
      */
-    private val debugRect: Rectangle? = null // new Rectangle(604,544,62,123);
+    private val debugRect: KotomoRectangle? = null // new Rectangle(604,544,62,123);
     private val debugAll = false
 
     /**
@@ -222,7 +222,7 @@ class OrientationMerge(task: AreaTask?) : AreaStep(task, "combined") {
      *
      * @return Lower score is better. null if score can't be calculated.
      */
-    private fun calcScore(cols: List<Column>, bounds: Rectangle?): Float? {
+    private fun calcScore(cols: List<Column>, bounds: KotomoRectangle?): Float? {
         if (cols.size == 0) {
             return null
         }

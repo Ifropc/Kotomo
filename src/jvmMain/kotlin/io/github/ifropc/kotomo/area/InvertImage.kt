@@ -15,7 +15,7 @@
 package io.github.ifropc.kotomo.area
 
 import io.github.ifropc.kotomo.CharacterColor
-import io.github.ifropc.kotomo.ocr.Rectangle
+import io.github.ifropc.kotomo.ocr.KotomoRectangle
 import io.github.ifropc.kotomo.util.FixedParameters
 import io.github.ifropc.kotomo.util.ImageUtil.createCopy
 import io.github.ifropc.kotomo.util.Parameters
@@ -254,7 +254,7 @@ class InvertImage(task: AreaTask?) : AreaStep(task, "invert") {
         }
 
         // fill gaps within marked region
-        val region = Rectangle(minX, minY, maxX - minX + 1, maxY - minY + 1)
+        val region = KotomoRectangle(minX, minY, maxX - minX + 1, maxY - minY + 1)
         fillGaps(region)
     }
 
@@ -293,10 +293,10 @@ class InvertImage(task: AreaTask?) : AreaStep(task, "invert") {
      * @param marked List of inverted blocks that belong to region
      * @param region Region bounds
      */
-    private fun fillGaps(region: Rectangle) {
+    private fun fillGaps(region: KotomoRectangle) {
 
         // rectangle that is one block smaller in every direction
-        val internal = Rectangle(
+        val internal = KotomoRectangle(
             region.x + 1, region.y + 1,
             region.width - 2, region.height - 2
         )
@@ -396,7 +396,7 @@ class InvertImage(task: AreaTask?) : AreaStep(task, "invert") {
         if (x < width - 1) {
             if (!invert[x + 1][y]) right = true
         }
-        val rect = Rectangle(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE)
+        val rect = KotomoRectangle(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE)
         invertRegion(rect, top, bottom, left, right)
     }
 
@@ -404,7 +404,7 @@ class InvertImage(task: AreaTask?) : AreaStep(task, "invert") {
      * Inverts pixels inside rectangle. Paints argument borders black
      */
     private fun invertRegion(
-        rect: Rectangle, top: Boolean, bottom: Boolean,
+        rect: KotomoRectangle, top: Boolean, bottom: Boolean,
         left: Boolean, right: Boolean
     ) {
         val minX = rect.x
@@ -454,7 +454,7 @@ class InvertImage(task: AreaTask?) : AreaStep(task, "invert") {
      * Inverts pixels in the whole image
      */
     private fun invertWholeImage() {
-        val rect = Rectangle(0, 0, task!!.width, task!!.height)
+        val rect = KotomoRectangle(0, 0, task!!.width, task!!.height)
         invertRegion(rect, false, false, false, false)
     }
 

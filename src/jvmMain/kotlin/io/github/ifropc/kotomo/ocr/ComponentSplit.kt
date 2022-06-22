@@ -78,12 +78,12 @@ class ComponentSplit {
             return splitted
         }
         val left = Component()
-        left.bounds = Rectangle(bounds!!.x, bounds.y, splitX - bounds.x + 1, bounds.height)
+        left.bounds = KotomoRectangle(bounds!!.x, bounds.y, splitX - bounds.x + 1, bounds.height)
         left.matrix = IntArray(32)
         addBits(component.matrix, left.matrix, left.bounds!!)
         left.pixels = countBits(left.matrix)
         val right = Component()
-        right.bounds = Rectangle(splitX + 1, bounds.y, bounds.width - left.bounds!!.width, bounds.height)
+        right.bounds = KotomoRectangle(splitX + 1, bounds.y, bounds.width - left.bounds!!.width, bounds.height)
         right.matrix = IntArray(32)
         addBits(component.matrix, right.matrix, right.bounds!!)
         right.pixels = countBits(right.matrix)
@@ -111,12 +111,12 @@ class ComponentSplit {
             return splitted
         }
         val up = Component()
-        up.bounds = Rectangle(bounds!!.x, bounds.y, bounds.width, splitY - bounds.y + 1)
+        up.bounds = KotomoRectangle(bounds!!.x, bounds.y, bounds.width, splitY - bounds.y + 1)
         up.matrix = IntArray(32)
         addBits(component.matrix, up.matrix, up.bounds!!)
         up.pixels = countBits(up.matrix)
         val down = Component()
-        down.bounds = Rectangle(bounds.x, splitY + 1, bounds.width, bounds.height - up.bounds!!.height)
+        down.bounds = KotomoRectangle(bounds.x, splitY + 1, bounds.width, bounds.height - up.bounds!!.height)
         down.matrix = IntArray(32)
         addBits(component.matrix, down.matrix, down.bounds!!)
         down.pixels = countBits(down.matrix)

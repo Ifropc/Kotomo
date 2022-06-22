@@ -36,7 +36,7 @@ abstract class AreaStep(protected var task: AreaTask?, vararg debugImages: Strin
      * Any image generated in addDebugImages must first be registered here.
      */
     init {
-        addDebugImages = false
+        addDebugImages = true
 
         // check if this step should write debug images
         if (Parameters.isSaveAreaFailed) {

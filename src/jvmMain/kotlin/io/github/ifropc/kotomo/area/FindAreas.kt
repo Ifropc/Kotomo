@@ -14,7 +14,7 @@
  */
 package io.github.ifropc.kotomo.area
 
-import io.github.ifropc.kotomo.ocr.Rectangle
+import io.github.ifropc.kotomo.ocr.KotomoRectangle
 import io.github.ifropc.kotomo.util.ImageUtil.createWhiteImage
 import io.github.ifropc.kotomo.util.Parameters
 import io.github.ifropc.kotomo.util.Util.scale
@@ -142,7 +142,7 @@ class FindAreas(task: AreaTask?) : AreaStep(task, "touching", "background", "are
         }
         val width = areaMaxX - areaMinX + 1
         val height = areaMaxY - areaMinY + 1
-        val rect = Rectangle(areaMinX, areaMinY, width, height)
+        val rect = KotomoRectangle(areaMinX, areaMinY, width, height)
         val area = Area(rect, pixels.size)
         area.sourceAreas.add(area)
 
@@ -316,7 +316,7 @@ class FindAreas(task: AreaTask?) : AreaStep(task, "touching", "background", "are
         while (x < width) {
             var y = 0
             while (y < height) {
-                val probe = Rectangle(x, y, probeSize, probeSize)
+                val probe = KotomoRectangle(x, y, probeSize, probeSize)
                 val smallAreas: MutableList<Area?> = ArrayList()
                 for (area in index[probe]) {
                     // TODO scale with resolution

@@ -15,6 +15,7 @@
 package io.github.ifropc.kotomo.ocr
 
 import io.github.ifropc.kotomo.util.ImageUtil.createWhiteImage
+import io.github.ifropc.kotomo.util.JVMUtil.toAwt
 import io.github.ifropc.kotomo.util.Parameters
 import io.github.ifropc.kotomo.util.Util.printArray
 import java.awt.Color
@@ -99,7 +100,7 @@ class OCRResult(
 
     private fun buildDebugImageBasic(): BufferedImage {
         val image = createWhiteImage(32, 32)
-        addLayer(image, Color.BLACK, target.matrix, reference.matrix)
+        addLayer(image, Colors.BLACK, target.matrix, reference.matrix)
         addLayer(image, Parameters.ocrTargetHaloFirstColor, target.matrix)
         addLayer(image, Parameters.ocrReferenceHaloFirstColor, reference.matrix)
         return image
@@ -107,7 +108,7 @@ class OCRResult(
 
     private fun buildDebugImageRefined(): BufferedImage {
         val image = createWhiteImage(32, 32)
-        addLayer(image, Color.BLACK, target.matrix, reference.matrix)
+        addLayer(image, Colors.BLACK, target.matrix, reference.matrix)
         for (i in 1 until Parameters.ocrHaloSize) {
             val col = interpolate(Parameters.ocrTargetHaloFirstColor, Parameters.ocrTargetHaloLastColor, i)
             addLayer(image, col, target.matrix, reference.halo!![i - 1])
@@ -125,12 +126,12 @@ class OCRResult(
      * Paints pixels that can be found in both matrixes with color.
      * Only overwrites white pixels.
      */
-    private fun addLayer(image: BufferedImage, color: Color, matrix1: IntArray, matrix2: IntArray) {
+    private fun addLayer(image: BufferedImage, color: KotomoColor, matrix1: IntArray, matrix2: IntArray) {
         for (y in 0..31) {
             val paintPixels = BigInteger.valueOf((matrix1[y] and matrix2[y]).toLong())
             for (x in 0..31) {
                 if (paintPixels.testBit(31 - x) && image.getRGB(x, y) == Color.WHITE.rgb) {
-                    image.setRGB(x, y, color.rgb)
+                    image.setRGB(x, y, color.toInt())
                 }
             }
         }
@@ -140,12 +141,12 @@ class OCRResult(
      * Paints pixels that can be found in the matrix.
      * Only overwrites white pixels.
      */
-    private fun addLayer(image: BufferedImage, color: Color, matrix: IntArray) {
+    private fun addLayer(image: BufferedImage, color: KotomoColor, matrix: IntArray) {
         for (y in 0..31) {
             val paintPixels = BigInteger.valueOf(matrix[y].toLong())
             for (x in 0..31) {
                 if (paintPixels.testBit(31 - x) && image.getRGB(x, y) == Color.WHITE.rgb) {
-                    image.setRGB(x, y, color.rgb)
+                    image.setRGB(x, y, color.toInt())
                 }
             }
         }
@@ -154,7 +155,7 @@ class OCRResult(
     /**
      * Interpolates halo colors
      */
-    private fun interpolate(col1: Color, col2: Color, layer: Int): Color {
+    private fun interpolate(col1: KotomoColor, col2: KotomoColor, layer: Int): KotomoColor {
         if (layer == 1) {
             return col1
         }
@@ -164,7 +165,7 @@ class OCRResult(
         val red = interpolate(col1.red, col2.red, layer)
         val green = interpolate(col1.green, col2.green, layer)
         val blue = interpolate(col1.blue, col2.blue, layer)
-        return Color(red, green, blue)
+        return KotomoColor(red, green, blue)
     }
 
     /**

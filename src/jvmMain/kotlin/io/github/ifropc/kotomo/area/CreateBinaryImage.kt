@@ -18,8 +18,8 @@ import io.github.ifropc.kotomo.util.FixedParameters
 import io.github.ifropc.kotomo.util.ImageUtil.createImageFromMatrix
 import io.github.ifropc.kotomo.util.ImageUtil.createMatrixFromImage
 import io.github.ifropc.kotomo.util.ImageUtil.makeBlackAndWhite
+import io.github.ifropc.kotomo.util.JVMUtil.toBufferedImage
 import io.github.ifropc.kotomo.util.Parameters
-import io.github.ifropc.kotomo.util.Util.toBufferedImage
 import java.awt.image.BufferedImage
 
 /**

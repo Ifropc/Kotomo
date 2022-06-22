@@ -19,10 +19,10 @@ import kotlinx.serialization.Serializable
 
 // Copy of java awt rectangle
 @Serializable
-data class Rectangle(var x: Int, var y: Int, var width: Int, var height: Int) {
+data class KotomoRectangle(var x: Int, var y: Int, var width: Int, var height: Int) {
     constructor() : this(0, 0, 0, 0)
 
-    constructor(r: Rectangle) : this(r.x, r.y, r.width, r.height)
+    constructor(r: KotomoRectangle) : this(r.x, r.y, r.width, r.height)
 
 
     operator fun contains(p: Point): Boolean {
@@ -33,7 +33,7 @@ data class Rectangle(var x: Int, var y: Int, var width: Int, var height: Int) {
         return this.inside(x, y)
     }
 
-    operator fun contains(r: Rectangle): Boolean {
+    operator fun contains(r: KotomoRectangle): Boolean {
         return this.contains(r.x, r.y, r.width, r.height)
     }
 
@@ -91,16 +91,16 @@ data class Rectangle(var x: Int, var y: Int, var width: Int, var height: Int) {
         }
     }
 
-    fun union(r: Rectangle): Rectangle {
+    fun union(r: KotomoRectangle): KotomoRectangle {
         var tx2 = width.toLong()
         var ty2 = height.toLong()
         return if (tx2 or ty2 < 0L) {
-            Rectangle(r)
+            KotomoRectangle(r)
         } else {
             var rx2: Long = r.width.toLong()
             var ry2: Long = r.height.toLong()
             if (rx2 or ry2 < 0L) {
-                Rectangle(this)
+                KotomoRectangle(this)
             } else {
                 var tx1 = x
                 var ty1 = y
@@ -130,12 +130,12 @@ data class Rectangle(var x: Int, var y: Int, var width: Int, var height: Int) {
                 if (ty2 > 2147483647L) {
                     ty2 = 2147483647L
                 }
-                Rectangle(tx1, ty1, tx2.toInt(), ty2.toInt())
+                KotomoRectangle(tx1, ty1, tx2.toInt(), ty2.toInt())
             }
         }
     }
 
-    fun intersects(r: Rectangle): Boolean {
+    fun intersects(r: KotomoRectangle): Boolean {
         var tw = width
         var th = height
         var rw: Int = r.width
@@ -155,7 +155,7 @@ data class Rectangle(var x: Int, var y: Int, var width: Int, var height: Int) {
         }
     }
 
-    fun intersection(r: Rectangle): Rectangle {
+    fun intersection(r: KotomoRectangle): KotomoRectangle {
         var tx1 = x
         var ty1 = y
         val rx1: Int = r.x
@@ -188,6 +188,6 @@ data class Rectangle(var x: Int, var y: Int, var width: Int, var height: Int) {
         if (ty2 < -2147483648L) {
             ty2 = -2147483648L
         }
-        return Rectangle(tx1, ty1, tx2.toInt(), ty2.toInt())
+        return KotomoRectangle(tx1, ty1, tx2.toInt(), ty2.toInt())
     }
 }

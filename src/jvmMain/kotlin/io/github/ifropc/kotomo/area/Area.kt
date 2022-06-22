@@ -16,7 +16,7 @@ package io.github.ifropc.kotomo.area
 
 import java.awt.Color
 import io.github.ifropc.kotomo.ocr.Point
-import io.github.ifropc.kotomo.ocr.Rectangle
+import io.github.ifropc.kotomo.ocr.KotomoRectangle
 import kotlin.math.min
 
 /**
@@ -27,7 +27,7 @@ class Area(
     /**
      * Location of the area in target image
      */
-    var rect: Rectangle,
+    var rect: KotomoRectangle,
     /**
      * Number of black pixels inside the area
      */
@@ -75,7 +75,7 @@ class Area(
      * Initial areas created during FindAreas but later merged into this area
      */
     var sourceAreas: MutableList<Area?> = mutableListOf()
-    override val rectangle: Rectangle
+    override val rectangle: KotomoRectangle
         get() = rect
 
     /**
@@ -194,14 +194,14 @@ class Area(
      * Splits the area into two areas
      */
     fun splitX(x: Int): List<Area> {
-        val leftRect = Rectangle(rect.x, rect.y, x - rect.x, rect.height)
+        val leftRect = KotomoRectangle(rect.x, rect.y, x - rect.x, rect.height)
         val left = Area(leftRect, pixels / 2)
         left.isChanged = true
         left.column = column
         left.splitted = true
         left.minRGB = minRGB
         left.sourceAreas.addAll(sourceAreas)
-        val rightRect = Rectangle(x, rect.y, rect.x + rect.width - x, rect.height)
+        val rightRect = KotomoRectangle(x, rect.y, rect.x + rect.width - x, rect.height)
         val right = Area(rightRect, pixels / 2)
         right.isChanged = true
         right.column = column
@@ -215,13 +215,13 @@ class Area(
     }
 
     fun splitY(y: Int): List<Area> {
-        val upRect = Rectangle(rect.x, rect.y, rect.width, y - rect.y)
+        val upRect = KotomoRectangle(rect.x, rect.y, rect.width, y - rect.y)
         val up = Area(upRect, pixels / 2)
         up.isChanged = true
         up.column = column
         up.splitted = true
         up.sourceAreas.addAll(sourceAreas)
-        val downRect = Rectangle(rect.x, y, rect.width, rect.y + rect.height - y)
+        val downRect = KotomoRectangle(rect.x, y, rect.width, rect.y + rect.height - y)
         val down = Area(downRect, pixels / 2)
         down.isChanged = true
         down.column = column
@@ -244,7 +244,7 @@ class Area(
     /**
      * @return true if area's rectangle intersect with argument rectangle
      */
-    fun intersects(rect: Rectangle?): Boolean {
+    fun intersects(rect: KotomoRectangle?): Boolean {
         return if (rect == null) {
             false
         } else {

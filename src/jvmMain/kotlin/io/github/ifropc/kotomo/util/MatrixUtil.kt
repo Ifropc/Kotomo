@@ -15,7 +15,7 @@
 
 package io.github.ifropc.kotomo.util
 
-import io.github.ifropc.kotomo.ocr.Rectangle
+import io.github.ifropc.kotomo.ocr.KotomoRectangle
 import mu.KotlinLogging
 
 private val log = KotlinLogging.logger { }
@@ -135,7 +135,7 @@ fun countBits(matrix: IntArray): Int {
 /**
  * Counts set bits inside bounds in matrix
  */
-fun countBits(matrix: IntArray, bounds: Rectangle): Int {
+fun countBits(matrix: IntArray, bounds: KotomoRectangle): Int {
     val boundMatrix = IntArray(32)
     addBits(matrix, boundMatrix, bounds)
     var bits = 0
@@ -193,7 +193,7 @@ fun debugPrintMatrix(matrix1: IntArray?, matrix2: IntArray?) {
  * bits are added but not removed.
  */
 fun copyBits(
-    source: IntArray, target: IntArray, rect: Rectangle, deltaX: Int, deltaY: Int,
+    source: IntArray, target: IntArray, rect: KotomoRectangle, deltaX: Int, deltaY: Int,
     clearTargetRect: Boolean
 ) {
 
@@ -242,9 +242,9 @@ fun copyBits(
  * Stretches matrix by copying bits in the middle
  */
 fun stretchBits(
-    source: IntArray?, target: IntArray?, rect: Rectangle,
+    source: IntArray?, target: IntArray?, rect: KotomoRectangle,
     horizontalAmount: Int, verticalAmount: Int
-): Rectangle {
+): KotomoRectangle {
     return if (horizontalAmount != 0 && verticalAmount != 0) {
         throw Error("Not implemented")
         // TODO combined stretch
@@ -261,18 +261,18 @@ fun stretchBits(
  * @param amount how many pixels source is stretched
  * @return new bounds
  */
-fun stretchBitsX(source: IntArray?, target: IntArray?, rect: Rectangle, amount: Int): Rectangle {
+fun stretchBitsX(source: IntArray?, target: IntArray?, rect: KotomoRectangle, amount: Int): KotomoRectangle {
     if (amount <= 0) {
         throw Error("amount must be positive")
         // TODO shrink
     }
     val dividerX = rect.x + rect.width / 2
-    val rightBlock = Rectangle(
+    val rightBlock = KotomoRectangle(
         dividerX, rect.y,
         rect.x + rect.width - 1 - dividerX + 1, rect.height
     )
-    val leftBlock = Rectangle(rect.x, rect.y, dividerX - rect.x + 1, rect.height)
-    val divider = Rectangle(dividerX, rect.y, 1, rect.height)
+    val leftBlock = KotomoRectangle(rect.x, rect.y, dividerX - rect.x + 1, rect.height)
+    val divider = KotomoRectangle(dividerX, rect.y, 1, rect.height)
     val moveRight = (amount + 1) / 2
     val moveLeft = amount - moveRight
 
@@ -286,8 +286,8 @@ fun stretchBitsX(source: IntArray?, target: IntArray?, rect: Rectangle, amount: 
     }
 
     // check bounds
-    val unbounded = Rectangle(rect.x - moveLeft, rect.y, rect.width + amount, rect.height)
-    val limits = Rectangle(0, 0, 32, 32)
+    val unbounded = KotomoRectangle(rect.x - moveLeft, rect.y, rect.width + amount, rect.height)
+    val limits = KotomoRectangle(0, 0, 32, 32)
     return unbounded.intersection(limits)
 }
 
@@ -297,18 +297,18 @@ fun stretchBitsX(source: IntArray?, target: IntArray?, rect: Rectangle, amount: 
  * @param amount how many pixels source is stretched
  * @return new bounds
  */
-fun stretchBitsY(source: IntArray?, target: IntArray?, rect: Rectangle, amount: Int): Rectangle {
+fun stretchBitsY(source: IntArray?, target: IntArray?, rect: KotomoRectangle, amount: Int): KotomoRectangle {
     if (amount <= 0) {
         throw Error("amount must be positive")
         // TODO shrink
     }
     val dividerY = rect.y + rect.height / 2
-    val bottomBlock = Rectangle(
+    val bottomBlock = KotomoRectangle(
         rect.x, dividerY,
         rect.width, rect.y + rect.height - 1 - dividerY + 1
     )
-    val upBlock = Rectangle(rect.x, rect.y, rect.width, dividerY - rect.y + 1)
-    val divider = Rectangle(rect.x, dividerY, rect.width, 1)
+    val upBlock = KotomoRectangle(rect.x, rect.y, rect.width, dividerY - rect.y + 1)
+    val divider = KotomoRectangle(rect.x, dividerY, rect.width, 1)
     val moveDown = (amount + 1) / 2
     val moveUp = amount - moveDown
 
@@ -322,8 +322,8 @@ fun stretchBitsY(source: IntArray?, target: IntArray?, rect: Rectangle, amount: 
     }
 
     // check bounds
-    val unbounded = Rectangle(rect.x, rect.y - moveUp, rect.width, rect.height + amount)
-    val limits = Rectangle(0, 0, 32, 32)
+    val unbounded = KotomoRectangle(rect.x, rect.y - moveUp, rect.width, rect.height + amount)
+    val limits = KotomoRectangle(0, 0, 32, 32)
     return unbounded.intersection(limits)
 }
 
@@ -340,7 +340,7 @@ fun addBits(source: IntArray, target: IntArray) {
 /**
  * Adds all source bits into target within bounds. 0 in source doesn't overwrite target.
  */
-fun addBits(source: IntArray, target: IntArray, bounds: Rectangle) {
+fun addBits(source: IntArray, target: IntArray, bounds: KotomoRectangle) {
     val mask = (0.inv() shl (32 - bounds.width)) ushr bounds.x
     for (y in bounds.y until bounds.y + bounds.height) {
         target[y] = target[y] or (source[y] and mask)
@@ -352,7 +352,7 @@ fun addBits(source: IntArray, target: IntArray, bounds: Rectangle) {
  *
  * @return null if no bits found
  */
-fun findBounds(matrix: IntArray?): Rectangle? {
+fun findBounds(matrix: IntArray?): KotomoRectangle? {
     if (countBits(matrix!!) == 0) {
         return null
     }
@@ -394,5 +394,5 @@ fun findBounds(matrix: IntArray?): Rectangle? {
     }
     val width = right - left + 1
     val height = down - up + 1
-    return Rectangle(left, up, width, height)
+    return KotomoRectangle(left, up, width, height)
 }

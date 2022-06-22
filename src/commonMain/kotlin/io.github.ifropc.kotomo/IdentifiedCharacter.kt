@@ -15,7 +15,7 @@
 
 package io.github.ifropc.kotomo
 
-import io.github.ifropc.kotomo.ocr.Rectangle
+import io.github.ifropc.kotomo.ocr.KotomoRectangle
 
 /**
  * OCR results for a single target character
@@ -30,7 +30,7 @@ class IdentifiedCharacter     // TODO normalized scores
     /**
      * Location of the character in target image's coordinates
      */
-    val location: Rectangle,
+    val location: KotomoRectangle,
     /**
      * OCR scores for each reference character. Same order as in referenceCharacters.
      * Higher score is better but reference characters might have been re-ordered if

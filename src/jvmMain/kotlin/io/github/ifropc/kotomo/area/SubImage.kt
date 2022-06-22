@@ -14,7 +14,7 @@
  */
 package io.github.ifropc.kotomo.area
 
-import io.github.ifropc.kotomo.ocr.Rectangle
+import io.github.ifropc.kotomo.ocr.KotomoRectangle
 import java.awt.image.BufferedImage
 
 /**
@@ -28,7 +28,7 @@ class SubImage(
     /**
      * Location of the character in original image.
      */
-    var location: Rectangle?,
+    var location: KotomoRectangle?,
     /**
      * Column that contains the rectangle. This can be null if manual rectangles
      * are used.

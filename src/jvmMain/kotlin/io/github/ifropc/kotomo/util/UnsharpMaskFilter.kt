@@ -14,8 +14,8 @@
  */
 package io.github.ifropc.kotomo.util
 
-import io.github.ifropc.kotomo.ocr.Rectangle
-import io.github.ifropc.kotomo.util.Util.toAwt
+import io.github.ifropc.kotomo.ocr.KotomoRectangle
+import io.github.ifropc.kotomo.util.JVMUtil.toAwt
 import java.awt.GraphicsConfiguration
 import java.awt.GraphicsEnvironment
 import java.awt.RenderingHints
@@ -398,7 +398,7 @@ abstract class AbstractFilter : BufferedImageOp {
      * {@inheritDoc}
      */
     override fun getBounds2D(src: BufferedImage): Rectangle2D {
-        return Rectangle(0, 0, src.width, src.height).toAwt()
+        return KotomoRectangle(0, 0, src.width, src.height).toAwt()
     }
 
     /**

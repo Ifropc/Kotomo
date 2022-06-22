@@ -15,7 +15,7 @@
 package io.github.ifropc.kotomo.area
 
 import io.github.ifropc.kotomo.ocr.Point
-import io.github.ifropc.kotomo.ocr.Rectangle
+import io.github.ifropc.kotomo.ocr.KotomoRectangle
 import io.github.ifropc.kotomo.util.Parameters
 import kotlin.math.ceil
 import kotlin.math.floor
@@ -43,7 +43,7 @@ class FindPunctuation(task: AreaTask?) : AreaStep(task, "punctuation") {
     }
 
     /** Sub-area that must contain at least one pixel  */
-    private val square = Rectangle()
+    private val square = KotomoRectangle()
     private var squareSize = 0
 
     /** Sub-area that must be empty  */
@@ -223,7 +223,7 @@ class FindPunctuation(task: AreaTask?) : AreaStep(task, "punctuation") {
     /**
      * Tests if square contains at least one pixel
      */
-    private fun testSquare(square: Rectangle): Boolean {
+    private fun testSquare(square: KotomoRectangle): Boolean {
         for (x in square.x until square.x + square.width) {
             for (y in square.y until square.y + square.height) {
                 if (task!!.getPixel(x, y)) {

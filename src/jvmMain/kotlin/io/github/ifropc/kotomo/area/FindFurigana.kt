@@ -14,7 +14,7 @@
  */
 package io.github.ifropc.kotomo.area
 
-import io.github.ifropc.kotomo.ocr.Rectangle
+import io.github.ifropc.kotomo.ocr.KotomoRectangle
 import io.github.ifropc.kotomo.util.Parameters
 
 /**
@@ -41,14 +41,14 @@ class FindFurigana(task: AreaTask?) : AreaStep(task, "furigana") {
 
         // Furigana column must be close (right side if vertical, above if horizontal) 
         // but much thinner than main column.
-        val probe: Rectangle
+        val probe: KotomoRectangle
         probe = if (col.isVertical) {
-            Rectangle(
+            KotomoRectangle(
                 col.maxX + 1, col.y,
                 col.width / 2, col.height
             )
         } else {
-            Rectangle(
+            KotomoRectangle(
                 col.x, col.y - col.height / 2 - 1,
                 col.width, col.height / 2
             )
@@ -72,7 +72,7 @@ class FindFurigana(task: AreaTask?) : AreaStep(task, "furigana") {
     /**
      * @return true if probe intersects with the background
      */
-    private fun checkBackground(probe: Rectangle): Boolean {
+    private fun checkBackground(probe: KotomoRectangle): Boolean {
         val pixels = task!!.countPixels(probe, true, false)
         return pixels >= 2
     }

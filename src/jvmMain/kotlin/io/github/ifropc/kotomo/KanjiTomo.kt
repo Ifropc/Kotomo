@@ -22,9 +22,8 @@ import io.github.ifropc.kotomo.ocr.KotomoImage
 import io.github.ifropc.kotomo.ocr.OCR
 import io.github.ifropc.kotomo.ocr.OCRTask
 import io.github.ifropc.kotomo.ocr.Point
-import io.github.ifropc.kotomo.ocr.Rectangle
+import io.github.ifropc.kotomo.ocr.KotomoRectangle
 import io.github.ifropc.kotomo.ocr.ReferenceMatrixCacheLoader
-import io.github.ifropc.kotomo.util.Util.toBufferedImage
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -109,7 +108,7 @@ class KanjiTomo {
      * Runs OCR inside pre-defined areas where each rectangle contains single characters.
      * This can be used if area detection is done externally and KanjiTomo is only used for final OCR.
      */
-    suspend fun runOCR(areas: List<Rectangle?>): OCRResults? {
+    suspend fun runOCR(areas: List<KotomoRectangle?>): OCRResults? {
         if (areaTask == null) {
             throw Exception("Target image not set")
         }
@@ -128,7 +127,7 @@ class KanjiTomo {
         val started = System.currentTimeMillis()
 
         // get target locations
-        val locations = mutableListOf<Rectangle>()
+        val locations = mutableListOf<KotomoRectangle>()
         for (subImage in subImages!!) {
             locations.add(subImage.location!!)
             verticalOrientation = subImage.isVertical

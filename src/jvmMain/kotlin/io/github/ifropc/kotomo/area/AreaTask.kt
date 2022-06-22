@@ -17,7 +17,7 @@ package io.github.ifropc.kotomo.area
 import io.github.ifropc.kotomo.CharacterColor
 import io.github.ifropc.kotomo.ocr.KotomoImage
 import io.github.ifropc.kotomo.ocr.Point
-import io.github.ifropc.kotomo.ocr.Rectangle
+import io.github.ifropc.kotomo.ocr.KotomoRectangle
 import io.github.ifropc.kotomo.util.DebugImage
 import io.github.ifropc.kotomo.util.FixedParameters
 import io.github.ifropc.kotomo.util.ImageUtil.buildScaledImage
@@ -29,7 +29,6 @@ import io.github.ifropc.kotomo.util.ImageUtil.paintColumn
 import io.github.ifropc.kotomo.util.ImageUtil.setClipboard
 import io.github.ifropc.kotomo.util.Parameters
 import mu.KotlinLogging
-import java.awt.Color
 import java.awt.image.BufferedImage
 import java.io.File
 import javax.imageio.ImageIO
@@ -276,7 +275,7 @@ class AreaTask(targetImage: KotomoImage) {
      * @param inside If true, checks also pixels inside the rectangle. If false, only
      * checks the border pixels
      */
-    fun countPixels(rect: Rectangle?, background: Boolean, inside: Boolean): Int {
+    fun countPixels(rect: KotomoRectangle?, background: Boolean, inside: Boolean): Int {
         var pixels = 0
         for (y in rect!!.y..rect.y + rect.height - 1) {
             for (x in rect.x..rect.x + rect.width - 1) {
@@ -303,8 +302,7 @@ class AreaTask(targetImage: KotomoImage) {
      * Gets RGB value of pixel x,y (minimum from single channel)
      */
     fun getPixelRGB(x: Int, y: Int): Int {
-        val rgb = originalImage.getRGB(x, y).toInt()
-        val color = Color(rgb)
+        val color = originalImage.getRGB(x, y)
         val red = color.red
         val green = color.green
         val blue = color.blue
@@ -382,7 +380,7 @@ class AreaTask(targetImage: KotomoImage) {
     /**
      * Gets subimages from list of rectangles.
      */
-    fun getSubImages(areas: List<Rectangle?>): List<SubImage> {
+    fun getSubImages(areas: List<KotomoRectangle?>): List<SubImage> {
         val subImages: MutableList<SubImage> = ArrayList()
         for (area in areas) {
             val croppedImage = crop(binaryImage, area!!)
@@ -430,7 +428,7 @@ class AreaTask(targetImage: KotomoImage) {
                 }
                 maxY--
             }
-            subImage.location = Rectangle(minX, minY, maxX - minX + 1, maxY - minY + 1)
+            subImage.location = KotomoRectangle(minX, minY, maxX - minX + 1, maxY - minY + 1)
             subImage.image = crop(binaryImage, subImage.location!!)
         } catch (e: Exception) {
             log.error(e) {}

@@ -14,7 +14,8 @@
  */
 package io.github.ifropc.kotomo.area
 
-import io.github.ifropc.kotomo.ocr.Rectangle
+import io.github.ifropc.kotomo.ocr.Colors
+import io.github.ifropc.kotomo.ocr.KotomoRectangle
 import io.github.ifropc.kotomo.util.ImageUtil.paintRectangle
 import io.github.ifropc.kotomo.util.Parameters
 import mu.KotlinLogging
@@ -34,7 +35,7 @@ class MergeAreas(task: AreaTask?) : AreaStep(task, "mergeareas") {
     /**
      * Generates debug images only for columns containing this rectangle
      */
-    private val debugRect: Rectangle? = null // new Rectangle(320,32,90,149);
+    private val debugRect: KotomoRectangle? = null // new Rectangle(320,32,90,149);
 
     /**
      * Generates debug images for all columns.
@@ -333,21 +334,21 @@ class MergeAreas(task: AreaTask?) : AreaStep(task, "mergeareas") {
         val image = task!!.createDefaultDebugImage(areas, task!!.columns)
 
         // paint rectangle around chunk
-        val chunkRect: Rectangle
+        val chunkRect: KotomoRectangle
         val firstArea = chunkAreas[0]
         val lastArea = chunkAreas[chunkAreas.size - 1]
         chunkRect = if (col.isVertical) {
-            Rectangle(
+            KotomoRectangle(
                 col.x - 1, firstArea.y,
                 col.width + 2, lastArea.maxY - firstArea.y + 1
             )
         } else {
-            Rectangle(
+            KotomoRectangle(
                 firstArea.x, col.y - 1,
                 lastArea.maxX - firstArea.x + 1, col.height + 2
             )
         }
-        paintRectangle(image, chunkRect, Color.GREEN)
+        paintRectangle(image, chunkRect, Colors.GREEN)
         task!!.addDebugImage(image, "mergeareas", col.isVertical)
     }
 

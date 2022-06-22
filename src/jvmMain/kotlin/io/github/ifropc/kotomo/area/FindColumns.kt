@@ -14,7 +14,8 @@
  */
 package io.github.ifropc.kotomo.area
 
-import io.github.ifropc.kotomo.ocr.Rectangle
+import io.github.ifropc.kotomo.ocr.Colors
+import io.github.ifropc.kotomo.ocr.KotomoRectangle
 import io.github.ifropc.kotomo.util.ImageUtil.paintRectangle
 import io.github.ifropc.kotomo.util.Parameters
 import io.github.ifropc.kotomo.util.Util.scale
@@ -37,7 +38,7 @@ class FindColumns(task: AreaTask?) : AreaStep(task, "columns") {
     /**
      * Generates debug images only for columns containing this rectangle
      */
-    private val debugRect: Rectangle? = null // new Rectangle(273,96,4,9);
+    private val debugRect: KotomoRectangle? = null // new Rectangle(273,96,4,9);
 
     /**
      * Generates debug images for all columns.
@@ -83,7 +84,7 @@ class FindColumns(task: AreaTask?) : AreaStep(task, "columns") {
     private fun createColumn(area: Area?): Column {
         val column = Column()
         column.addArea(area)
-        column.rectangle = Rectangle(
+        column.rectangle = KotomoRectangle(
             area!!.rect.x,
             area.rect.y,
             area.rect.width,
@@ -254,7 +255,7 @@ class FindColumns(task: AreaTask?) : AreaStep(task, "columns") {
      * @param expandLength If true, column's length is expanded (in reading direction).
      * If false, column's width is expanded.
      */
-    private fun createProbe(col: Column, expandLength: Boolean, iteration: Int): Rectangle {
+    private fun createProbe(col: Column, expandLength: Boolean, iteration: Int): KotomoRectangle {
         return if (expandLength) {
             createLongProbe(col, iteration)
         } else {
@@ -265,17 +266,17 @@ class FindColumns(task: AreaTask?) : AreaStep(task, "columns") {
     /**
      * Creates a probe that is used to expand column in reading direction
      */
-    private fun createLongProbe(col: Column, iteration: Int): Rectangle {
+    private fun createLongProbe(col: Column, iteration: Int): KotomoRectangle {
         val width = col.width
         val height = col.height
         val extra = ceil((min(width, height) * 0.5f * iteration).toDouble()).toInt()
         return if (col.isVertical) {
-            Rectangle(
+            KotomoRectangle(
                 col.x, col.y - extra,
                 width, col.height + extra * 2
             )
         } else {
-            Rectangle(
+            KotomoRectangle(
                 col.x - extra, col.y,
                 col.width + extra * 2, height
             )
@@ -285,17 +286,17 @@ class FindColumns(task: AreaTask?) : AreaStep(task, "columns") {
     /**
      * Creates a probe that is used to expand column sideways
      */
-    private fun createThickProbe(col: Column): Rectangle {
+    private fun createThickProbe(col: Column): KotomoRectangle {
         val width = col.width
         val height = col.height
         val extra = floor(min(width, height).toDouble()).toInt()
         return if (col.isVertical) {
-            Rectangle(
+            KotomoRectangle(
                 col.x - extra, col.y,
                 width + extra * 2, col.height
             )
         } else {
-            Rectangle(
+            KotomoRectangle(
                 col.x, col.y - extra,
                 width, col.height + extra * 2
             )
@@ -392,24 +393,24 @@ class FindColumns(task: AreaTask?) : AreaStep(task, "columns") {
     private fun checkColumnEnds(col: Column): Boolean {
 
         // this prevents expansion into small unrelated fragments in the background
-        val firstProbe: Rectangle
-        val secondProbe: Rectangle
+        val firstProbe: KotomoRectangle
+        val secondProbe: KotomoRectangle
         val probeLength = col.minorDim
         if (col.isVertical) {
-            firstProbe = Rectangle(
+            firstProbe = KotomoRectangle(
                 col.x, col.y,
                 col.width, probeLength
             )
-            secondProbe = Rectangle(
+            secondProbe = KotomoRectangle(
                 col.x, col.maxY - probeLength,
                 col.width, probeLength
             )
         } else {
-            firstProbe = Rectangle(
+            firstProbe = KotomoRectangle(
                 col.x, col.y,
                 probeLength, col.height
             )
-            secondProbe = Rectangle(
+            secondProbe = KotomoRectangle(
                 col.maxX - probeLength, col.y,
                 probeLength, col.height
             )
@@ -425,7 +426,7 @@ class FindColumns(task: AreaTask?) : AreaStep(task, "columns") {
      *
      * @return true if column is valid (pixel to area ratio at end is high enough)
      */
-    private fun checkColumnEnd(col: Column?, probe: Rectangle): Boolean {
+    private fun checkColumnEnd(col: Column?, probe: KotomoRectangle): Boolean {
         var pixelsSum = 0f
         for (area in col!!.areas) {
             if (!probe.intersects(area.rect)) {
@@ -574,7 +575,7 @@ class FindColumns(task: AreaTask?) : AreaStep(task, "columns") {
      * Generates debug image from the current algorithm state
      */
 
-    private fun addIntermediateDebugImage(col: Column, probe: Rectangle?) {
+    private fun addIntermediateDebugImage(col: Column, probe: KotomoRectangle?) {
         col.isChanged = true
         val columns = index!!.all
         val areas: MutableList<Area> = ArrayList()
@@ -585,7 +586,7 @@ class FindColumns(task: AreaTask?) : AreaStep(task, "columns") {
         ///task.addDefaultDebugImage("columns", areas, columns, Parameters.vertical);
         val image = task!!.createDefaultDebugImage(areas, columns)
         if (probe != null) {
-            paintRectangle(image, probe, Color.GREEN)
+            paintRectangle(image, probe, Colors.GREEN)
         }
         task!!.addDebugImage(image, "columns", col.isVertical)
         col.isChanged = false

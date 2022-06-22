@@ -21,9 +21,9 @@ class KotomoImageJS(private val img: Image): KotomoImage {
     override val width = img.width.toInt()
     override val height = img.height.toInt()
 
-    override fun getRGB(x: Int, y: Int): RGB {
+    override fun getRGB(x: Int, y: Int): KotomoColor {
         val pixel = img.getPixelXY(x, y)
 
-        return RGB(pixel[0].toInt(), pixel[1].toInt(), pixel[2].toInt(), pixel[3].toInt())
+        return KotomoColor(pixel[0].toInt(), pixel[1].toInt(), pixel[2].toInt(), pixel[3].toInt())
     }
 }

@@ -14,24 +14,24 @@
  */
 package io.github.ifropc.kotomo.legacy
 
-import io.github.ifropc.kotomo.ocr.Rectangle
+import io.github.ifropc.kotomo.ocr.KotomoRectangle
 
 
 /**
  * Tests that represents correct area or column in the target image.
  */
 class AreaTest : Test {
-    val rect: Rectangle
+    val rect: KotomoRectangle
 
     /**
      * @param rect Expected area on target image
      */
-    constructor(rect: Rectangle) {
+    constructor(rect: KotomoRectangle) {
         this.rect = rect
     }
 
     constructor(x: Int, y: Int, width: Int, height: Int) {
-        rect = Rectangle(x, y, width, height)
+        rect = KotomoRectangle(x, y, width, height)
     }
 
     override fun toString(): String {

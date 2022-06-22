@@ -16,9 +16,9 @@ package io.github.ifropc.kotomo.util
 
 import io.github.ifropc.kotomo.CharacterColor
 import io.github.ifropc.kotomo.Orientation
-import io.github.ifropc.kotomo.ocr.Rectangle
+import io.github.ifropc.kotomo.ocr.KotomoColor
+import io.github.ifropc.kotomo.ocr.KotomoRectangle
 import io.github.ifropc.kotomo.util.Util.findFile
-import java.awt.Color
 import java.io.File
 
 object Parameters {
@@ -80,16 +80,16 @@ object Parameters {
      * In-between colors are iterpolated
      */
 
-    var ocrTargetHaloFirstColor = Color(255, 0, 0)
+    var ocrTargetHaloFirstColor = KotomoColor(255, 0, 0)
 
 
-    var ocrTargetHaloLastColor = Color(255, 175, 175)
+    var ocrTargetHaloLastColor = KotomoColor(255, 175, 175)
 
 
-    var ocrReferenceHaloFirstColor = Color(100, 100, 100)
+    var ocrReferenceHaloFirstColor = KotomoColor(100, 100, 100)
 
 
-    var ocrReferenceHaloLastColor = Color(195, 195, 195)
+    var ocrReferenceHaloLastColor = KotomoColor(195, 195, 195)
 
     /**
      * Score for common pixel that is found in both target and reference images.
@@ -237,7 +237,7 @@ object Parameters {
     /**
      * Areas or columns that should be present in test image
      */
-    var expectedRectangles: MutableList<Rectangle> = ArrayList()
+    var expectedRectangles: MutableList<KotomoRectangle> = ArrayList()
 
     /**
      * Directory relative to package root where debug images are stored

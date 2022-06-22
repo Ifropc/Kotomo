@@ -15,7 +15,7 @@
 package io.github.ifropc.kotomo.area
 
 import io.github.ifropc.kotomo.ocr.Point
-import io.github.ifropc.kotomo.ocr.Rectangle
+import io.github.ifropc.kotomo.ocr.KotomoRectangle
 import io.github.ifropc.kotomo.util.ImageUtil.createRectangle
 import io.github.ifropc.kotomo.util.Parameters
 import mu.KotlinLogging
@@ -51,16 +51,16 @@ class FindConnections(task: AreaTask?) : AreaStep(task, "connections") {
 
         // find closest column in reading direction
         val probeSizeFactor = 1.75f
-        val probe: Rectangle
+        val probe: KotomoRectangle
         probe = if (Parameters.vertical) {
             val probeSize = ceil((column.width * probeSizeFactor).toDouble()).toInt()
-            Rectangle(
+            KotomoRectangle(
                 column.x - probeSize - 1, column.y - probeSize / 2,
                 probeSize, probeSize
             )
         } else {
             val probeSize = ceil((column.height * probeSizeFactor).toDouble()).toInt()
-            Rectangle(
+            KotomoRectangle(
                 column.x - probeSize / 2, column.maxY + 1,
                 probeSize, probeSize
             )

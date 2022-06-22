@@ -16,11 +16,15 @@ package io.github.ifropc.kotomo.util
 
 import io.github.ifropc.kotomo.area.Area
 import io.github.ifropc.kotomo.area.Column
+import io.github.ifropc.kotomo.ocr.Colors
+import io.github.ifropc.kotomo.ocr.KotomoColor
 import io.github.ifropc.kotomo.ocr.Point
-import io.github.ifropc.kotomo.ocr.Rectangle
+import io.github.ifropc.kotomo.ocr.KotomoRectangle
+import io.github.ifropc.kotomo.util.JVMUtil.toAwt
+import io.github.ifropc.kotomo.util.JVMUtil.toKotomo
+import io.github.ifropc.kotomo.util.JVMUtil.toKotomoImage
 import mu.KotlinLogging
 import org.imgscalr.Scalr
-import java.awt.Color
 import java.awt.Image
 import java.awt.Toolkit
 import java.awt.datatransfer.DataFlavor
@@ -30,7 +34,6 @@ import java.awt.image.BufferedImage
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
-import kotlin.math.roundToLong
 
 private val log = KotlinLogging.logger { }
 
@@ -109,7 +112,7 @@ object ImageUtil {
      * Changes image's color (replaces black pixels)
      */
 
-	fun colorizeImage(image: BufferedImage, color: Color): BufferedImage {
+	fun colorizeImage(image: BufferedImage, color: KotomoColor): BufferedImage {
         val target = BufferedImage(
             image.width,
             image.height,
@@ -117,10 +120,10 @@ object ImageUtil {
         )
         for (y in 0 until image.height) {
             for (x in 0 until image.width) {
-                if (image.getRGB(x, y) == Color.BLACK.rgb) {
+                if (image.getRGB(x, y) == Colors.BLACK.rgb) {
                     target.setRGB(x, y, color.rgb)
-                } else if (image.getRGB(x, y) == Color.WHITE.rgb) {
-                    target.setRGB(x, y, Color.WHITE.rgb)
+                } else if (image.getRGB(x, y) == Colors.WHITE.rgb) {
+                    target.setRGB(x, y, Colors.WHITE.rgb)
                 } else {
                     throw Error("Unknown color")
                 }
@@ -164,7 +167,7 @@ object ImageUtil {
         for (x in 0 until width) {
             for (y in 0 until height) {
                 if (!image[x][y]) {
-                    copy.setRGB(x, y, Color.WHITE.rgb)
+                    copy.setRGB(x, y, Colors.WHITE.rgb)
                 }
             }
         }
@@ -181,7 +184,7 @@ object ImageUtil {
         for (x in 0 until width) {
             for (y in 0 until height) {
                 if (!image[x][y]) {
-                    bImage.setRGB(x, y, Color.WHITE.rgb)
+                    bImage.setRGB(x, y, Colors.WHITE.rgb)
                 }
             }
         }
@@ -197,7 +200,7 @@ object ImageUtil {
         val matrix = Array(width) { BooleanArray(height) }
         for (x in 0 until width) {
             for (y in 0 until height) {
-                if (image.getRGB(x, y) == Color.BLACK.rgb) {
+                if (image.getRGB(x, y) == Colors.BLACK.rgb) {
                     matrix[x][y] = true
                 }
             }
@@ -217,11 +220,11 @@ object ImageUtil {
                 val pixel = image[x][y]
                 val backgroundPixel = backgroundImage[x][y]
                 if (pixel && !backgroundPixel) {
-                    bImage.setRGB(x, y, Color.BLACK.rgb)
+                    bImage.setRGB(x, y, Colors.BLACK.rgb)
                 } else if (backgroundPixel) {
-                    bImage.setRGB(x, y, Color.GRAY.rgb)
+                    bImage.setRGB(x, y, Colors.GRAY.rgb)
                 } else {
-                    bImage.setRGB(x, y, Color.WHITE.rgb)
+                    bImage.setRGB(x, y, Colors.WHITE.rgb)
                 }
             }
         }
@@ -235,7 +238,7 @@ object ImageUtil {
 	fun createWhiteImage(width: Int, height: Int): BufferedImage {
         val newImage = BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)
         val g = newImage.createGraphics()
-        g.paint = Color.WHITE
+        g.paint = Colors.WHITE.toAwt()
         g.fillRect(0, 0, newImage.width, newImage.height)
         return newImage
     }
@@ -247,18 +250,18 @@ object ImageUtil {
     fun paintAreas(image: BufferedImage, areas: List<Area>): BufferedImage {
         val newImage = createCopy(image)
         for (area in areas) {
-            var col = Color.RED
+            var col = Colors.RED
             if (area.isPunctuation) {
-                col = Color.LIGHT_GRAY
+                col = Colors.LIGHT_GRAY
             }
             if (area.column != null && area.column!!.isFurigana) {
-                col = Color.LIGHT_GRAY
+                col = Colors.LIGHT_GRAY
             }
             if (area.isChanged) {
-                col = Color.BLUE
+                col = Colors.BLUE
             }
             if (area.debugColor != null) {
-                col = area.debugColor
+                col = area.debugColor!!.toKotomo()
             }
             paintRectangle(newImage, area.rectangle, col)
         }
@@ -266,17 +269,17 @@ object ImageUtil {
     }
 
     fun paintColumn(image: BufferedImage, column: Column) {
-        val color: Color?
+        val color: KotomoColor?
         color = if (column.debugColor != null) {
-            column.debugColor
+            column.debugColor?.toKotomo()
         } else if (column.isChanged) {
-            Color.BLUE
+            Colors.BLUE
         } else if (column.isFurigana) {
-            Color.LIGHT_GRAY
+            Colors.LIGHT_GRAY
         } else if (column.isVertical) {
-            Color.ORANGE
+            Colors.ORANGE
         } else {
-            Color.CYAN
+            Colors.CYAN
         }
         paintRectangle(image, column.rectangle, color)
         for (furigana in column.furiganaColumns) {
@@ -287,7 +290,7 @@ object ImageUtil {
     /**
      * Paints a rectangle to image.
      */
-    fun paintRectangle(image: BufferedImage, rect: Rectangle?, color: Color?) {
+    fun paintRectangle(image: BufferedImage, rect: KotomoRectangle?, color: KotomoColor?) {
 
         // TODO AlphaComposite with background? see InvertImage for example
 
@@ -319,14 +322,14 @@ object ImageUtil {
     /**
      * Creates a rectangle that spans argument points. Order doesn't matter.
      */
-    fun createRectangle(p1: Point, p2: Point): Rectangle {
+    fun createRectangle(p1: Point, p2: Point): KotomoRectangle {
         val minX = min(p1.x, p2.x)
         val maxX = max(p1.x, p2.x)
         val minY = min(p1.y, p2.y)
         val maxY = max(p1.y, p2.y)
         val width = maxX - minX + 1
         val height = maxY - minY + 1
-        return Rectangle(minX, minY, width, height)
+        return KotomoRectangle(minX, minY, width, height)
     }
 
     /**
@@ -334,17 +337,17 @@ object ImageUtil {
      * the end of the list replace earlier colors.
      */
     private val debugColorPriority = arrayOf(
-        Color.WHITE,
-        Color.LIGHT_GRAY,
-        Color.GRAY,
-        Color.ORANGE,
-        Color.CYAN,
-        Color.GREEN,
-        Color.RED,
-        Color.BLUE,
-        Color.BLACK
+        Colors.WHITE,
+        Colors.LIGHT_GRAY,
+        Colors.GRAY,
+        Colors.ORANGE,
+        Colors.CYAN,
+        Colors.GREEN,
+        Colors.RED,
+        Colors.BLUE,
+        Colors.BLACK
     )
-    private val debugColorPriorityMap: MutableMap<Color?, Int> = HashMap()
+    private val debugColorPriorityMap: MutableMap<KotomoColor, Int> = HashMap()
 
     init {
         var priority = 0
@@ -357,7 +360,7 @@ object ImageUtil {
      * Paints pixel at x,y coordinates. If pixel is already painted, it is replaced
      * if new color has higher priority.
      */
-    private fun paintPixel(image: BufferedImage, color: Color?, x: Int, y: Int) {
+    private fun paintPixel(image: BufferedImage, color: KotomoColor?, x: Int, y: Int) {
 
         // this version keeps single color according to priority
         val priority = debugColorPriorityMap[color]
@@ -365,7 +368,7 @@ object ImageUtil {
         if (x < 0 || x >= image.width || y < 0 || y >= image.height) {
             return
         }
-        val oldColor = Color(image.getRGB(x, y))
+        val oldColor = image.toKotomoImage().getRGB(x, y)
         var oldPriority = debugColorPriorityMap[oldColor]
         if (oldPriority == null) {
             oldPriority = -1
@@ -450,12 +453,12 @@ object ImageUtil {
     /**
      * Creates a sub-image defined by rectangle.
      */
-    fun crop(image: Array<BooleanArray>, rect: Rectangle): BufferedImage {
+    fun crop(image: Array<BooleanArray>, rect: KotomoRectangle): BufferedImage {
         val bImage = BufferedImage(rect.width, rect.height, BufferedImage.TYPE_INT_RGB)
         for (x in rect.x until rect.x + rect.width) {
             for (y in rect.y until rect.y + rect.height) {
                 if (!image[x][y]) {
-                    bImage.setRGB(x - rect.x, y - rect.y, Color.WHITE.rgb)
+                    bImage.setRGB(x - rect.x, y - rect.y, Colors.WHITE.rgb)
                 }
             }
         }
@@ -475,9 +478,9 @@ object ImageUtil {
                 val rgb = image.getRGB(x, y)
                 val pixel = containsPixel(rgb, blackThreshold)
                 if (pixel) {
-                    bwImage.setRGB(x, y, Color.BLACK.rgb)
+                    bwImage.setRGB(x, y, Colors.BLACK.rgb)
                 } else {
-                    bwImage.setRGB(x, y, Color.WHITE.rgb)
+                    bwImage.setRGB(x, y, Colors.WHITE.rgb)
                 }
             }
         }
@@ -493,9 +496,9 @@ object ImageUtil {
         for (y in 0..31) {
             for (x in 0..31) {
                 if (isBitSet(x, y, matrix)) {
-                    image.setRGB(x, y, Color.BLACK.rgb)
+                    image.setRGB(x, y, Colors.BLACK.rgb)
                 } else {
-                    image.setRGB(x, y, Color.WHITE.rgb)
+                    image.setRGB(x, y, Colors.WHITE.rgb)
                 }
             }
         }
@@ -510,7 +513,7 @@ object ImageUtil {
         val matrix = IntArray(32)
         for (y in 0..31) {
             for (x in 0..31) {
-                if (image.getRGB(x, y) == Color.BLACK.rgb) {
+                if (image.getRGB(x, y) == Colors.BLACK.rgb) {
                     matrix[y] = matrix[y] or 1
                 }
                 if (x < 31) matrix[y] = matrix[y] shl 1

@@ -14,13 +14,7 @@
  */
 package io.github.ifropc.kotomo.util
 
-import io.github.ifropc.kotomo.ocr.KotomoImage
-import io.github.ifropc.kotomo.ocr.KotomoImageImpl
-import io.github.ifropc.kotomo.ocr.Rectangle
-import mu.KotlinLogging
-import java.awt.image.BufferedImage
 import java.io.File
-import java.util.Base64
 
 internal object Util {
     /**
@@ -81,17 +75,5 @@ internal object Util {
         }
         ret += "]"
         return ret
-    }
-
-    fun Rectangle.toAwt(): java.awt.Rectangle{
-        return java.awt.Rectangle(this.x, this.y, this.width, this.height)
-    }
-
-    fun KotomoImage.toBufferedImage(): BufferedImage {
-        return (this as KotomoImageImpl).bufferedImage
-    }
-
-    fun BufferedImage.toKotomoImage(): KotomoImage {
-        return KotomoImageImpl(this)
     }
 }

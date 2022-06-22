@@ -15,7 +15,7 @@
 
 package io.github.ifropc.kotomo
 
-import io.github.ifropc.kotomo.ocr.Rectangle
+import io.github.ifropc.kotomo.ocr.KotomoRectangle
 
 /**
  * List of areas inside a single column (or row in horizontal orientation)
@@ -25,12 +25,12 @@ data class Column(
      * Rectangles around characters in this column.
      * Ordered in reading direction (top-down or left-right).
      */
-    val areas: List<Rectangle>,
+    val areas: List<KotomoRectangle>,
     /**
      * Bounding box around areas
      */
 
-    val rect: Rectangle,
+    val rect: KotomoRectangle,
 
     /**
      * If true, this column has vertical reading direction. If false, horizontal.

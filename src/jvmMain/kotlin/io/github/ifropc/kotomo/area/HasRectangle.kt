@@ -15,13 +15,13 @@
 package io.github.ifropc.kotomo.area
 
 import io.github.ifropc.kotomo.ocr.Point
-import io.github.ifropc.kotomo.ocr.Rectangle
+import io.github.ifropc.kotomo.ocr.KotomoRectangle
 
 /**
  * Rectangle on target image
  */
 interface HasRectangle {
-    val rectangle: Rectangle?
+    val rectangle: KotomoRectangle?
 
     /**
      * Center of the rectangle

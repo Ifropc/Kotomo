@@ -23,7 +23,7 @@ import java.util.*
  */
 class ComponentFindUnconnected {
     private lateinit  var matrix: IntArray
-    private var bounds: Rectangle? = null
+    private var bounds: KotomoRectangle? = null
     private lateinit var visited: Array<BooleanArray>
     private var todo: Stack<Pixel>? = null
     private var pixels: MutableList<Pixel>? = null
@@ -92,7 +92,7 @@ class ComponentFindUnconnected {
             if (pixel.y > maxY) maxY = pixel.y
         }
         component.pixels = pixels!!.size
-        component.bounds = Rectangle(minX, minY, maxX - minX + 1, maxY - minY + 1)
+        component.bounds = KotomoRectangle(minX, minY, maxX - minX + 1, maxY - minY + 1)
         return component
     }
 }

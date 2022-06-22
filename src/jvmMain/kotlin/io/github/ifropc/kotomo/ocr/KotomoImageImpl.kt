@@ -22,8 +22,8 @@ class KotomoImageImpl(val bufferedImage: BufferedImage): KotomoImage {
     override val width = bufferedImage.width
     override val height = bufferedImage.height
 
-    override fun getRGB(x: Int, y: Int): RGB {
+    override fun getRGB(x: Int, y: Int): KotomoColor {
         val color =  Color(bufferedImage.getRGB(x, y))
-        return RGB(color.red, color.green, color.blue, color.alpha)
+        return KotomoColor(color.red, color.green, color.blue, color.alpha)
     }
 }

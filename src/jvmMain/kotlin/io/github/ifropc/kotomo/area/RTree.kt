@@ -15,7 +15,7 @@
 package io.github.ifropc.kotomo.area
 
 import io.github.ifropc.kotomo.ocr.Point
-import io.github.ifropc.kotomo.ocr.Rectangle
+import io.github.ifropc.kotomo.ocr.KotomoRectangle
 
 /**
  * R-tree index used for finding intersecting rectangles (columns or areas)
@@ -36,7 +36,7 @@ class RTree<T : HasRectangle> {
      * Contains all rectangles inserted to this node. Will grow as new values
      * are inserted but it will not shrink after values are removed
      */
-    private var coverage: Rectangle? = null
+    private var coverage: KotomoRectangle? = null
 
     /**
      * Contains all possible rectangles that can be inserted to this node.
@@ -45,7 +45,7 @@ class RTree<T : HasRectangle> {
      * actual rectangles inserted so far, bounds represents all rectangles
      * that might be inserted in the future.
      */
-    private val bounds: Rectangle
+    private val bounds: KotomoRectangle
 
     /**
      * Rectangles in this node, only if leaf
@@ -67,7 +67,7 @@ class RTree<T : HasRectangle> {
      *
      * @param bound Outer limit of the rectangles that can be inserted to this node
      */
-    constructor(bounds: Rectangle) {
+    constructor(bounds: KotomoRectangle) {
         this.bounds = bounds
     }
 
@@ -77,7 +77,7 @@ class RTree<T : HasRectangle> {
     constructor(image: Array<BooleanArray>) {
         val width = image.size
         val height = image[0].size
-        bounds = Rectangle(0, 0, width, height)
+        bounds = KotomoRectangle(0, 0, width, height)
     }
 
     /**
@@ -156,7 +156,7 @@ class RTree<T : HasRectangle> {
      *
      * @param rect Rectangle used for intersect search
      */
-    operator fun get(rect: Rectangle?): MutableList<T> {
+    operator fun get(rect: KotomoRectangle?): MutableList<T> {
         val results: MutableList<T> = ArrayList()
         if (isLeaf) {
             for (rectangle in values!!) {
@@ -183,7 +183,7 @@ class RTree<T : HasRectangle> {
      * @param rect Rectangle used for intersect search
      * @param skip This rectangle is not included in the return list.
      */
-    operator fun get(rect: Rectangle?, skip: T): MutableList<T> {
+    operator fun get(rect: KotomoRectangle?, skip: T): MutableList<T> {
         val results = get(rect)
         val i = results.iterator()
         while (i.hasNext()) {
@@ -200,7 +200,7 @@ class RTree<T : HasRectangle> {
      *
      * @param rect Rectangle used for intersect search
      */
-    operator fun contains(rect: Rectangle?): Boolean {
+    operator fun contains(rect: KotomoRectangle?): Boolean {
         return get(rect).size > 0
     }
 
@@ -211,7 +211,7 @@ class RTree<T : HasRectangle> {
      * @param rect Rectangle used for intersect search
      * @param skip This object is not included
      */
-    fun contains(rect: Rectangle?, skip: T): Boolean {
+    fun contains(rect: KotomoRectangle?, skip: T): Boolean {
         return get(rect, skip).size > 0
     }
 
@@ -227,13 +227,13 @@ class RTree<T : HasRectangle> {
         val upHeight = midPoint.y - bounds.y
         val downHeight = bounds.y + bounds.height - midPoint.y
         nodes = ArrayList()
-        var rect = Rectangle(bounds.x, bounds.y, leftWidth, upHeight)
+        var rect = KotomoRectangle(bounds.x, bounds.y, leftWidth, upHeight)
         nodes!!.add(RTree(rect))
-        rect = Rectangle(midPoint.x, bounds.y, rightWidth, upHeight)
+        rect = KotomoRectangle(midPoint.x, bounds.y, rightWidth, upHeight)
         nodes!!.add(RTree(rect))
-        rect = Rectangle(bounds.x, midPoint.y, leftWidth, downHeight)
+        rect = KotomoRectangle(bounds.x, midPoint.y, leftWidth, downHeight)
         nodes!!.add(RTree(rect))
-        rect = Rectangle(midPoint.x, midPoint.y, rightWidth, downHeight)
+        rect = KotomoRectangle(midPoint.x, midPoint.y, rightWidth, downHeight)
         nodes!!.add(RTree(rect))
         overflow = RTree(bounds)
         for (value in values!!) {
