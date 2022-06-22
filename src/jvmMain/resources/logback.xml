@@ -9,6 +9,6 @@
         <appender-ref ref="STDOUT"/>
     </root>
 
-    <logger name="io.github.ifropc.kotomo.area.FindColumns" level="INFO"/>
-    <logger name="io.github.ifropc.kotomo.area.FindAreas" level="INFO"/>
+    <logger name="io.github.ifropc.kotomo.jvm.area.FindColumns" level="INFO"/>
+    <logger name="io.github.ifropc.kotomo.jvm.area.FindAreas" level="INFO"/>
 </configuration>

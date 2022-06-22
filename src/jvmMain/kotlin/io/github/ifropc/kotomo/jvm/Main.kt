@@ -13,18 +13,22 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-package io.github.ifropc.kotomo.ocr
+@file:Suppress("unused")
 
-import io.github.ifropc.kotomo.jvm.util.JVMUtil.toKotomoImage
-import io.github.ifropc.kotomo.ocr.KotomoImage
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import javax.imageio.ImageIO
+package io.github.ifropc.kotomo.jvm
 
-actual object ImageLoader {
-    actual suspend fun loadFromFile(path: String): KotomoImage {
-        return withContext(Dispatchers.IO) {
-            ImageIO.read(this::class.java.classLoader.getResourceAsStream(path))
-        }.toKotomoImage()
-    }
+import io.github.ifropc.kotomo.ocr.ImageLoader
+import io.github.ifropc.kotomo.ocr.Point
+import kotlinx.coroutines.runBlocking
+import mu.KotlinLogging
+
+private val log = KotlinLogging.logger { }
+
+fun main(args: Array<String>) {
+    val tomo = KanjiTomo()
+    tomo.loadData()
+    val image = runBlocking { ImageLoader.loadFromFile(args[0]) }
+    tomo.setTargetImage(image)
+    val results = runBlocking { tomo.runOCR(Point(args[1].toInt(), args[2].toInt())) }
+    log.info { results }
 }

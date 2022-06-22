@@ -12,19 +12,18 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and limitations under the License.
  */
+package io.github.ifropc.kotomo.jvm.ocr
 
-package io.github.ifropc.kotomo.ocr
+class Pixel(val x: Int, val y: Int) {
+    override fun hashCode(): Int {
+        return x + 100000 * y
+    }
 
-import io.github.ifropc.kotomo.jvm.util.JVMUtil.toKotomoImage
-import io.github.ifropc.kotomo.ocr.KotomoImage
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import javax.imageio.ImageIO
+    override fun equals(obj: Any?): Boolean {
+        return (obj as Pixel?)!!.x == x && obj!!.y == y
+    }
 
-actual object ImageLoader {
-    actual suspend fun loadFromFile(path: String): KotomoImage {
-        return withContext(Dispatchers.IO) {
-            ImageIO.read(this::class.java.classLoader.getResourceAsStream(path))
-        }.toKotomoImage()
+    override fun toString(): String {
+        return "$x,$y"
     }
 }

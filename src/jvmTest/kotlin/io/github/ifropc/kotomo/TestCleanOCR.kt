@@ -15,10 +15,11 @@
 
 package io.github.ifropc.kotomo
 
+import io.github.ifropc.kotomo.jvm.KanjiTomo
 import io.github.ifropc.kotomo.ocr.ImageLoader
 import io.github.ifropc.kotomo.ocr.Point
-import io.github.ifropc.kotomo.ocr.ReferenceMatrixCacheBuilder
-import io.github.ifropc.kotomo.util.Parameters
+import io.github.ifropc.kotomo.jvm.ocr.ReferenceMatrixCacheBuilder
+import io.github.ifropc.kotomo.jvm.util.Parameters
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Disabled
 import kotlin.test.BeforeTest

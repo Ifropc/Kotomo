@@ -14,12 +14,12 @@
  */
 package io.github.ifropc.kotomo.legacy
 
-import io.github.ifropc.kotomo.KanjiTomo
-import io.github.ifropc.kotomo.ocr.OCR
-import io.github.ifropc.kotomo.util.JVMUtil.toKotomoImage
-import io.github.ifropc.kotomo.util.Parameters
-import io.github.ifropc.kotomo.util.SaveAreaImages
-import io.github.ifropc.kotomo.util.SaveOCRImages
+import io.github.ifropc.kotomo.jvm.KanjiTomo
+import io.github.ifropc.kotomo.jvm.ocr.OCR
+import io.github.ifropc.kotomo.jvm.util.JVMUtil.toKotomoImage
+import io.github.ifropc.kotomo.jvm.util.Parameters
+import io.github.ifropc.kotomo.jvm.util.SaveAreaImages
+import io.github.ifropc.kotomo.jvm.util.SaveOCRImages
 import kotlinx.coroutines.runBlocking
 import java.io.File
 import java.util.regex.Pattern

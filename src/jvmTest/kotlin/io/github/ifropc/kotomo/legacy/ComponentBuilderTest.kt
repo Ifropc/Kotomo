@@ -15,12 +15,12 @@
 
 package io.github.ifropc.kotomo.legacy
 
-import io.github.ifropc.kotomo.ocr.Component
-import io.github.ifropc.kotomo.ocr.ComponentBuilder
-import io.github.ifropc.kotomo.ocr.ReferenceMatrix
-import io.github.ifropc.kotomo.ocr.ReferenceMatrixCacheLoader
-import io.github.ifropc.kotomo.util.addBits
-import io.github.ifropc.kotomo.util.debugPrintMatrix
+import io.github.ifropc.kotomo.jvm.ocr.Component
+import io.github.ifropc.kotomo.jvm.ocr.ComponentBuilder
+import io.github.ifropc.kotomo.jvm.ocr.ReferenceMatrix
+import io.github.ifropc.kotomo.jvm.ocr.ReferenceMatrixCacheLoader
+import io.github.ifropc.kotomo.jvm.util.addBits
+import io.github.ifropc.kotomo.jvm.util.debugPrintMatrix
 import kotlin.test.Test
 
 class ComponentBuilderTest {
