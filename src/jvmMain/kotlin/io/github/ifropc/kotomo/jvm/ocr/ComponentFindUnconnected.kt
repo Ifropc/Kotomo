@@ -16,7 +16,7 @@ package io.github.ifropc.kotomo.jvm.ocr
 
 import io.github.ifropc.kotomo.jvm.util.isBitSet
 import io.github.ifropc.kotomo.jvm.util.setBit
-import io.github.ifropc.kotomo.ocr.KotomoRectangle
+import io.github.ifropc.kotomo.ocr.entities.KotomoRectangle
 import java.util.*
 
 /**

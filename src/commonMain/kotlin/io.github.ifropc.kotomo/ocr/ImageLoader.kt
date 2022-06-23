@@ -15,6 +15,8 @@
 
 package io.github.ifropc.kotomo.ocr
 
+import io.github.ifropc.kotomo.ocr.entities.KotomoImage
+
 expect object ImageLoader {
     suspend fun loadFromFile(path: String): KotomoImage
 }

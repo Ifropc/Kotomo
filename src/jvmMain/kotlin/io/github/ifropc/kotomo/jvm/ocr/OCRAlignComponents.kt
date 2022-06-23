@@ -14,6 +14,7 @@
  */
 package io.github.ifropc.kotomo.jvm.ocr
 
+import io.github.ifropc.kotomo.jvm.util.FileParameters
 import io.github.ifropc.kotomo.jvm.util.ImageUtil.buildScaledImage
 import io.github.ifropc.kotomo.jvm.util.Parameters
 import io.github.ifropc.kotomo.jvm.util.buildMatrixHalo
@@ -178,7 +179,7 @@ class OCRAlignComponents {
     private fun writeDebugImage(result: OCRResult, transform: Transformation) {
         val transformStr = transform.horizontalTranslate.toString() + "," + transform.verticalTranslate
         val file = File(
-            Parameters.debugDir.absolutePath + "/" +
+            FileParameters.debugDir.absolutePath + "/" +
                     Parameters.getDebugFilePrefix(result.target.charIndex) + ".step3." + result.character + "." +
                     result.score + ".(" + transformStr + ").png"
         )

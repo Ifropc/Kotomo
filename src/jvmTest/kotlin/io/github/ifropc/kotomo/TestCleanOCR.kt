@@ -17,9 +17,10 @@ package io.github.ifropc.kotomo
 
 import io.github.ifropc.kotomo.jvm.KanjiTomo
 import io.github.ifropc.kotomo.ocr.ImageLoader
-import io.github.ifropc.kotomo.ocr.Point
+import io.github.ifropc.kotomo.ocr.entities.Point
 import io.github.ifropc.kotomo.jvm.ocr.ReferenceMatrixCacheBuilder
-import io.github.ifropc.kotomo.jvm.util.Parameters
+import io.github.ifropc.kotomo.jvm.util.FileParameters
+import io.github.ifropc.kotomo.ocr.results.IdentifiedCharacter
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Disabled
 import kotlin.test.BeforeTest
@@ -37,8 +38,8 @@ class TestCleanOCR {
     @BeforeTest
     fun init() {
         if (runRebuild) {
-            Parameters.cacheDir.deleteRecursively()
-            Parameters.cacheDir.mkdir()
+            FileParameters.cacheDir.deleteRecursively()
+            FileParameters.cacheDir.mkdir()
 
             val cache = ReferenceMatrixCacheBuilder()
             cache.buildCache()

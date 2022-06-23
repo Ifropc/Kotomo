@@ -14,8 +14,9 @@
  */
 package io.github.ifropc.kotomo.jvm.area
 
-import io.github.ifropc.kotomo.ocr.KotomoImage
+import io.github.ifropc.kotomo.ocr.entities.KotomoImage
 import io.github.ifropc.kotomo.jvm.util.DebugImage
+import io.github.ifropc.kotomo.jvm.util.FileParameters
 import io.github.ifropc.kotomo.jvm.util.ImageUtil.buildScaledImage
 import io.github.ifropc.kotomo.jvm.util.ImageUtil.createGrayImage
 import io.github.ifropc.kotomo.jvm.util.ImageUtil.createImageFromMatrix
@@ -163,7 +164,7 @@ class AreaTaskDebuggable(targetImage: KotomoImage): AreaTask(targetImage) {
         if (image == null) {
             return
         }
-        val targetDir = Parameters.debugDir
+        val targetDir = FileParameters.debugDir
         val filename = image.filename
         if (Parameters.debugImages != null && Parameters.debugImages.size > 0) {
             for (debugImage in Parameters.debugImages) {

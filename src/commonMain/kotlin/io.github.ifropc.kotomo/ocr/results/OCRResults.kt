@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-package io.github.ifropc.kotomo
+package io.github.ifropc.kotomo.ocr.results
 
-import io.github.ifropc.kotomo.ocr.KotomoRectangle
+import io.github.ifropc.kotomo.ocr.entities.KotomoRectangle
 
 /**
  * Results of the OCR run

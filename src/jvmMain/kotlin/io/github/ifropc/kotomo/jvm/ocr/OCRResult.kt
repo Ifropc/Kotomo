@@ -17,8 +17,8 @@ package io.github.ifropc.kotomo.jvm.ocr
 import io.github.ifropc.kotomo.jvm.util.ImageUtil.createWhiteImage
 import io.github.ifropc.kotomo.jvm.util.Parameters
 import io.github.ifropc.kotomo.jvm.util.Util.printArray
-import io.github.ifropc.kotomo.ocr.Colors
-import io.github.ifropc.kotomo.ocr.KotomoColor
+import io.github.ifropc.kotomo.ocr.entities.Colors
+import io.github.ifropc.kotomo.ocr.entities.KotomoColor
 import java.awt.Color
 import java.awt.image.BufferedImage
 import java.math.BigInteger

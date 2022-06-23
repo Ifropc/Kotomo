@@ -14,10 +14,10 @@
  */
 package io.github.ifropc.kotomo.jvm.area
 
-import io.github.ifropc.kotomo.CharacterColor
-import io.github.ifropc.kotomo.ocr.KotomoImage
-import io.github.ifropc.kotomo.ocr.KotomoRectangle
-import io.github.ifropc.kotomo.ocr.Point
+import io.github.ifropc.kotomo.config.CharacterColor
+import io.github.ifropc.kotomo.ocr.entities.KotomoImage
+import io.github.ifropc.kotomo.ocr.entities.KotomoRectangle
+import io.github.ifropc.kotomo.ocr.entities.Point
 import io.github.ifropc.kotomo.jvm.util.FixedParameters
 import io.github.ifropc.kotomo.jvm.util.ImageUtil.crop
 import io.github.ifropc.kotomo.jvm.util.Parameters

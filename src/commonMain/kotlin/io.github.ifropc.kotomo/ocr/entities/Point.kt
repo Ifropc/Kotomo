@@ -13,24 +13,16 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-package io.github.ifropc.kotomo
+package io.github.ifropc.kotomo.ocr.entities
 
-/**
- * Character and background color.
- */
-enum class CharacterColor {
-    /**
-     * Character color is detected automatically. (default)
-     */
-    AUTOMATIC,
+import kotlin.math.sqrt
 
-    /**
-     * Black characters over white background
-     */
-    BLACK_ON_WHITE,
+data class Point(var x: Int, var y: Int) {
+    constructor(): this(0, 0)
 
-    /**
-     * White characters over black background
-     */
-    WHITE_ON_BLACK
+    fun distance(pt: Point): Double {
+        val px: Double = (pt.x - this.x).toDouble()
+        val py: Double = (pt.y - this.y).toDouble()
+        return sqrt(px * px + py * py)
+    }
 }

@@ -16,6 +16,7 @@
 package io.github.ifropc.kotomo.ocr
 
 import io.github.ifropc.kotomo.externals.Image
+import io.github.ifropc.kotomo.ocr.entities.KotomoImage
 import kotlinx.coroutines.await
 
 actual object ImageLoader {

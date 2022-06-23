@@ -15,19 +15,20 @@
 
 package io.github.ifropc.kotomo.jvm
 
-import io.github.ifropc.kotomo.OCRResults
+import io.github.ifropc.kotomo.ocr.results.OCRResults
 import io.github.ifropc.kotomo.jvm.area.AreaDetector
 import io.github.ifropc.kotomo.jvm.area.AreaTask
 import io.github.ifropc.kotomo.jvm.area.AreaTaskDebuggable
 import io.github.ifropc.kotomo.jvm.area.Column
 import io.github.ifropc.kotomo.jvm.area.SubImage
-import io.github.ifropc.kotomo.ocr.KotomoImage
+import io.github.ifropc.kotomo.ocr.entities.KotomoImage
 import io.github.ifropc.kotomo.jvm.ocr.OCR
 import io.github.ifropc.kotomo.jvm.ocr.OCRTask
-import io.github.ifropc.kotomo.ocr.Point
-import io.github.ifropc.kotomo.ocr.KotomoRectangle
+import io.github.ifropc.kotomo.ocr.entities.Point
+import io.github.ifropc.kotomo.ocr.entities.KotomoRectangle
 import io.github.ifropc.kotomo.jvm.ocr.ReferenceMatrixCacheLoader
 import io.github.ifropc.kotomo.jvm.util.Parameters
+import io.github.ifropc.kotomo.ocr.entities.SimpleColumn
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -69,12 +70,12 @@ class KanjiTomo {
     /**
      * Gets columns detected from target image
      */
-    val columns: List<io.github.ifropc.kotomo.Column>
+    val columns: List<SimpleColumn>
         get() {
             if (areaTask == null) {
                 return ArrayList()
             }
-            val simpleColumns: MutableList<io.github.ifropc.kotomo.Column> = ArrayList()
+            val simpleColumns: MutableList<SimpleColumn> = ArrayList()
             for (column in areaTask!!.columns!!) {
                 val simpleColumn = column.getSimpleColumn()
                 if (column.previousColumn != null) {

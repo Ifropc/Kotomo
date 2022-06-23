@@ -17,10 +17,10 @@ package io.github.ifropc.kotomo.jvm.util
 
 import io.github.ifropc.kotomo.jvm.area.AreaTask
 import io.github.ifropc.kotomo.jvm.area.AreaTaskDebuggable
-import io.github.ifropc.kotomo.ocr.KotomoColor
-import io.github.ifropc.kotomo.ocr.KotomoImage
+import io.github.ifropc.kotomo.ocr.entities.KotomoColor
+import io.github.ifropc.kotomo.ocr.entities.KotomoImage
 import io.github.ifropc.kotomo.jvm.ocr.KotomoImageImpl
-import io.github.ifropc.kotomo.ocr.KotomoRectangle
+import io.github.ifropc.kotomo.ocr.entities.KotomoRectangle
 import mu.KotlinLogging
 import java.awt.Color
 import java.awt.image.BufferedImage

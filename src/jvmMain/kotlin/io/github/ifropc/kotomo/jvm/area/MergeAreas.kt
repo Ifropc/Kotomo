@@ -14,8 +14,8 @@
  */
 package io.github.ifropc.kotomo.jvm.area
 
-import io.github.ifropc.kotomo.ocr.Colors
-import io.github.ifropc.kotomo.ocr.KotomoRectangle
+import io.github.ifropc.kotomo.ocr.entities.Colors
+import io.github.ifropc.kotomo.ocr.entities.KotomoRectangle
 import io.github.ifropc.kotomo.jvm.util.ImageUtil.paintRectangle
 import io.github.ifropc.kotomo.jvm.util.JVMUtil.runWithDebuggable
 import io.github.ifropc.kotomo.jvm.util.JVMUtil.withDebuggable

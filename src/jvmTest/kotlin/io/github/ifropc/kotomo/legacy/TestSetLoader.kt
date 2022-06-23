@@ -14,6 +14,7 @@
  */
 package io.github.ifropc.kotomo.legacy
 
+import io.github.ifropc.kotomo.jvm.util.FileParameters
 import io.github.ifropc.kotomo.jvm.util.Parameters
 import java.io.BufferedReader
 import java.io.File
@@ -26,7 +27,6 @@ import java.util.*
  *
  */
 class TestSetLoader {
-    private val par = Parameters
     private var testDir: File? = null
 
     /**
@@ -37,7 +37,7 @@ class TestSetLoader {
     @Throws(Exception::class)
     fun readTestSets(): Map<String?, TestSet> {
         val testSets: MutableMap<String?, TestSet> = HashMap()
-        testDir = par.testDir
+        testDir = FileParameters.testDir
         for (file in testDir!!.listFiles()) {
             if (file.name.endsWith(".txt") && file.name.lowercase(Locale.getDefault()) != "readme.txt") {
                 val testSet = readTestSet(file)

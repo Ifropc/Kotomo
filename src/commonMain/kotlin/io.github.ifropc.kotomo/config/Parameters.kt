@@ -14,23 +14,14 @@
  */
 package io.github.ifropc.kotomo.jvm.util
 
-import io.github.ifropc.kotomo.CharacterColor
-import io.github.ifropc.kotomo.Orientation
-import io.github.ifropc.kotomo.ocr.KotomoColor
-import io.github.ifropc.kotomo.ocr.KotomoRectangle
-import io.github.ifropc.kotomo.jvm.util.Util.findFile
-import java.io.File
+import io.github.ifropc.kotomo.config.CharacterColor
+import io.github.ifropc.kotomo.config.Orientation
+import io.github.ifropc.kotomo.config.SaveAreaImages
+import io.github.ifropc.kotomo.config.SaveOCRImages
+import io.github.ifropc.kotomo.ocr.entities.KotomoColor
+import io.github.ifropc.kotomo.ocr.entities.KotomoRectangle
 
 object Parameters {
-    /**
-     * Directory relative to package root that contains the data files
-     */
-    private var dataDirName = "data"
-
-    /**
-     * Directory inside data dir that contains cache files
-     */
-    private var cacheDirName = "cache"
 
     /**
      * Current orientation.
@@ -148,9 +139,6 @@ object Parameters {
 
     var ocrThreads = 4
 
-    val cacheDir: File
-        get() = File(findFile(dataDirName).toString() + "/" + cacheDirName)
-
     // debug-related parameters
     val enableDebugImages = true
     var saveAreaImages = SaveAreaImages.OFF
@@ -240,28 +228,6 @@ object Parameters {
      */
     var expectedRectangles: MutableList<KotomoRectangle> = ArrayList()
 
-    /**
-     * Directory relative to package root where debug images are stored
-     */
-    private var debugDirName = "test results"
-
-    /**
-     * Directory relative to package root where debug images are stored
-     */
-    val debugDir: File
-        get() = File(testDir.absolutePath + "//" + debugDirName)
-
-    /**
-     * Directory relative to package root where test set specifications are stored
-     */
-    private var testDirName = "test"
-
-    /**
-     * Directory relative to package root where test set specifications are stored
-     */
-    val testDir: File
-        get() = findFile(testDirName)
-
     // rest of the parameters are for internal use and should not be edited
     var tempDebugFilePrefix: String? = null
     private var tempDebugFileIndex = 1
@@ -309,3 +275,4 @@ object FixedParameters {
     var fixedBlackLevelBlue = 0
     var fixedBlackLevelRange = 50
 }
+

@@ -14,6 +14,7 @@
  */
 package io.github.ifropc.kotomo.jvm.ocr
 
+import io.github.ifropc.kotomo.jvm.util.FileParameters
 import io.github.ifropc.kotomo.jvm.util.ImageUtil.buildImage
 import io.github.ifropc.kotomo.jvm.util.ImageUtil.buildMatrix32
 import io.github.ifropc.kotomo.jvm.util.ImageUtil.buildScaledImage
@@ -168,7 +169,7 @@ class Transform(private val task: OCRTask) {
     
     private fun writeDebugImage(target: TargetMatrix, parameters: Transformation) {
         val file = File(
-            Parameters.debugDir.absolutePath + "/" +
+            FileParameters.debugDir.absolutePath + "/" +
                     Parameters.debugFilePrefix + ".ocr.transform." + parameters + ".png"
         )
         val image = buildImage(target.matrix)

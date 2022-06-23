@@ -14,6 +14,7 @@
  */
 package io.github.ifropc.kotomo.jvm.ocr
 
+import io.github.ifropc.kotomo.jvm.util.FileParameters
 import io.github.ifropc.kotomo.jvm.util.ImageUtil.buildImage
 import io.github.ifropc.kotomo.jvm.util.ImageUtil.buildScaledImage
 import io.github.ifropc.kotomo.jvm.util.ImageUtil.colorizeImage
@@ -121,7 +122,7 @@ class OCR {
     
     private fun writeTargetImage(result: OCRResult, stage: Int) {
         val file = File(
-            Parameters.debugDir.absolutePath + "/" +
+            FileParameters.debugDir.absolutePath + "/" +
                     Parameters.getDebugFilePrefix(result.target.charIndex) + ".ocr." + stage + ".ori.png"
         )
         val targetImage = buildImage(result.target.matrix)
@@ -133,7 +134,7 @@ class OCR {
     
     private fun writeReferenceImage(result: OCRResult, stage: Int) {
         val file = File(
-            Parameters.debugDir.absolutePath + "/" +
+            FileParameters.debugDir.absolutePath + "/" +
                     Parameters.getDebugFilePrefix(result.target.charIndex) + ".ocr." + stage + ".ref." + result.character + ".png"
         )
         val referenceImage = buildImage(result.reference.matrix)
@@ -145,7 +146,7 @@ class OCR {
     
     private fun writeDebugImage(result: OCRResult, stage: Int) {
         val file = File(
-            Parameters.debugDir.absolutePath + "/" +
+            FileParameters.debugDir.absolutePath + "/" +
                     Parameters.getDebugFilePrefix(result.target.charIndex) + ".ocr." + stage + ".res." + result.character + "." +
                     result.score + "." + result.target.transform + ".png"
         )

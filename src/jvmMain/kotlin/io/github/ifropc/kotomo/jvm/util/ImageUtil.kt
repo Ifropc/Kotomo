@@ -16,10 +16,10 @@ package io.github.ifropc.kotomo.jvm.util
 
 import io.github.ifropc.kotomo.jvm.area.Area
 import io.github.ifropc.kotomo.jvm.area.Column
-import io.github.ifropc.kotomo.ocr.Colors
-import io.github.ifropc.kotomo.ocr.KotomoColor
-import io.github.ifropc.kotomo.ocr.Point
-import io.github.ifropc.kotomo.ocr.KotomoRectangle
+import io.github.ifropc.kotomo.ocr.entities.Colors
+import io.github.ifropc.kotomo.ocr.entities.KotomoColor
+import io.github.ifropc.kotomo.ocr.entities.Point
+import io.github.ifropc.kotomo.ocr.entities.KotomoRectangle
 import io.github.ifropc.kotomo.jvm.util.JVMUtil.toAwt
 import io.github.ifropc.kotomo.jvm.util.JVMUtil.toKotomo
 import io.github.ifropc.kotomo.jvm.util.JVMUtil.toKotomoImage

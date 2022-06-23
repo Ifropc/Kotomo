@@ -14,7 +14,7 @@
  */
 package io.github.ifropc.kotomo.jvm.util
 
-import io.github.ifropc.kotomo.ocr.KotomoRectangle
+import io.github.ifropc.kotomo.ocr.entities.KotomoRectangle
 import io.github.ifropc.kotomo.jvm.util.JVMUtil.toAwt
 import java.awt.GraphicsConfiguration
 import java.awt.GraphicsEnvironment

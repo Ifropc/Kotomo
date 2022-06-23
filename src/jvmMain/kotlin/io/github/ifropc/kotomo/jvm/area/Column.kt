@@ -14,9 +14,10 @@
  */
 package io.github.ifropc.kotomo.jvm.area
 
-import io.github.ifropc.kotomo.ocr.KotomoRectangle
+import io.github.ifropc.kotomo.ocr.entities.KotomoRectangle
 import java.awt.Color
-import io.github.ifropc.kotomo.ocr.Point
+import io.github.ifropc.kotomo.ocr.entities.Point
+import io.github.ifropc.kotomo.ocr.entities.SimpleColumn
 import java.util.*
 import kotlin.math.max
 import kotlin.math.min
@@ -412,16 +413,16 @@ class Column : HasRectangle {
     /**
      * Simplified Column representation intended for API users.
      */
-    private var simpleColumn: io.github.ifropc.kotomo.Column? = null
+    private var simpleColumn: SimpleColumn? = null
 
     /**
      * Simplified Column representation intended for API users.
      */
-    fun getSimpleColumn(): io.github.ifropc.kotomo.Column {
+    fun getSimpleColumn(): SimpleColumn {
         if (simpleColumn != null) {
             return simpleColumn!!
         }
-        simpleColumn = io.github.ifropc.kotomo.Column(
+        simpleColumn = SimpleColumn(
             areas.filter { !it.isPunctuation }.map { it.rectangle },
             rectangle!!,
             vertical = isVertical,

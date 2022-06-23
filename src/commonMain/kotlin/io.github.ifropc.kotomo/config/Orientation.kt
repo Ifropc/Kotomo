@@ -13,16 +13,24 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-package io.github.ifropc.kotomo.ocr
+package io.github.ifropc.kotomo.config
 
-import kotlin.math.sqrt
+/**
+ * Text reading direction
+ */
+enum class Orientation {
+    /**
+     * Reading direction is detected automatically. (default)
+     */
+    AUTOMATIC,
 
-data class Point(var x: Int, var y: Int) {
-    constructor(): this(0, 0)
+    /**
+     * Vertical reading direction
+     */
+    VERTICAL,
 
-    fun distance(pt: Point): Double {
-        val px: Double = (pt.x - this.x).toDouble()
-        val py: Double = (pt.y - this.y).toDouble()
-        return sqrt(px * px + py * py)
-    }
+    /**
+     * Horizontal reading direction.
+     */
+    HORIZONTAL
 }

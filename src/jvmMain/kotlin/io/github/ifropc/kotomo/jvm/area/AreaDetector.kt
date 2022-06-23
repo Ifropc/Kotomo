@@ -14,7 +14,7 @@
  */
 package io.github.ifropc.kotomo.jvm.area
 
-import io.github.ifropc.kotomo.Orientation
+import io.github.ifropc.kotomo.config.Orientation
 import io.github.ifropc.kotomo.jvm.util.Parameters
 import mu.KotlinLogging
 

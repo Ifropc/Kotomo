@@ -15,6 +15,7 @@
 
 package io.github.ifropc.kotomo
 
+// TODO: remove this class. Just for testing everything together
 expect object Greeter {
     fun greet(): String
 }

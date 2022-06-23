@@ -14,8 +14,8 @@
  */
 package io.github.ifropc.kotomo.jvm.area
 
-import io.github.ifropc.kotomo.ocr.Point
-import io.github.ifropc.kotomo.ocr.KotomoRectangle
+import io.github.ifropc.kotomo.ocr.entities.Point
+import io.github.ifropc.kotomo.ocr.entities.KotomoRectangle
 
 /**
  * R-tree index used for finding intersecting rectangles (columns or areas)

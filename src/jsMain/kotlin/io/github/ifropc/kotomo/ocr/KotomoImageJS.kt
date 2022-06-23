@@ -16,6 +16,8 @@
 package io.github.ifropc.kotomo.ocr
 
 import io.github.ifropc.kotomo.externals.Image
+import io.github.ifropc.kotomo.ocr.entities.KotomoColor
+import io.github.ifropc.kotomo.ocr.entities.KotomoImage
 
 class KotomoImageJS(private val img: Image): KotomoImage {
     override val width = img.width.toInt()

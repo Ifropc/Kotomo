@@ -14,7 +14,7 @@
  */
 package io.github.ifropc.kotomo.legacy
 
-import io.github.ifropc.kotomo.ocr.Point
+import io.github.ifropc.kotomo.ocr.entities.Point
 
 
 class OCRTest : Test {

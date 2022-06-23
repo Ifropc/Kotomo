@@ -13,24 +13,24 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-package io.github.ifropc.kotomo
+package io.github.ifropc.kotomo.config
 
 /**
- * Text reading direction
+ * Character and background color.
  */
-enum class Orientation {
+enum class CharacterColor {
     /**
-     * Reading direction is detected automatically. (default)
+     * Character color is detected automatically. (default)
      */
     AUTOMATIC,
 
     /**
-     * Vertical reading direction
+     * Black characters over white background
      */
-    VERTICAL,
+    BLACK_ON_WHITE,
 
     /**
-     * Horizontal reading direction.
+     * White characters over black background
      */
-    HORIZONTAL
+    WHITE_ON_BLACK
 }

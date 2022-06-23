@@ -14,8 +14,8 @@
  */
 package io.github.ifropc.kotomo.jvm.area
 
-import io.github.ifropc.kotomo.Orientation
-import io.github.ifropc.kotomo.ocr.KotomoRectangle
+import io.github.ifropc.kotomo.config.Orientation
+import io.github.ifropc.kotomo.ocr.entities.KotomoRectangle
 import io.github.ifropc.kotomo.jvm.util.JVMUtil
 import io.github.ifropc.kotomo.jvm.util.Parameters
 import io.github.ifropc.kotomo.jvm.util.Util.scale

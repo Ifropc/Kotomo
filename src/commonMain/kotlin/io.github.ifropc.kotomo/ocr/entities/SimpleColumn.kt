@@ -13,14 +13,12 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-package io.github.ifropc.kotomo
-
-import io.github.ifropc.kotomo.ocr.KotomoRectangle
+package io.github.ifropc.kotomo.ocr.entities
 
 /**
  * List of areas inside a single column (or row in horizontal orientation)
  */
-data class Column(
+data class SimpleColumn(
     /**
      * Rectangles around characters in this column.
      * Ordered in reading direction (top-down or left-right).
@@ -46,12 +44,12 @@ data class Column(
     /**
      * Next column in reading direction
      */
-    var nextColumn: Column? = null,
+    var nextColumn: SimpleColumn? = null,
 
     /**
      * Previous column in reading direction
      */
-    var previousColumn: Column? = null
+    var previousColumn: SimpleColumn? = null
 
 ) {
     // this is a simplified version of Column intended to be used

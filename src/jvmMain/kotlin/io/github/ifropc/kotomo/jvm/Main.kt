@@ -18,7 +18,7 @@
 package io.github.ifropc.kotomo.jvm
 
 import io.github.ifropc.kotomo.ocr.ImageLoader
-import io.github.ifropc.kotomo.ocr.Point
+import io.github.ifropc.kotomo.ocr.entities.Point
 import kotlinx.coroutines.runBlocking
 import mu.KotlinLogging
 

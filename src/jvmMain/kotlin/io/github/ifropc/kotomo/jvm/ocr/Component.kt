@@ -14,7 +14,7 @@
  */
 package io.github.ifropc.kotomo.jvm.ocr
 
-import io.github.ifropc.kotomo.ocr.KotomoRectangle
+import io.github.ifropc.kotomo.ocr.entities.KotomoRectangle
 import kotlinx.serialization.Serializable
 
 

@@ -15,8 +15,8 @@
 
 package io.github.ifropc.kotomo.jvm.ocr
 
-import io.github.ifropc.kotomo.ocr.KotomoColor
-import io.github.ifropc.kotomo.ocr.KotomoImage
+import io.github.ifropc.kotomo.ocr.entities.KotomoColor
+import io.github.ifropc.kotomo.ocr.entities.KotomoImage
 import java.awt.Color
 import java.awt.image.BufferedImage
 

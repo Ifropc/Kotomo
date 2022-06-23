@@ -16,10 +16,11 @@ package io.github.ifropc.kotomo.legacy
 
 import io.github.ifropc.kotomo.jvm.KanjiTomo
 import io.github.ifropc.kotomo.jvm.ocr.OCR
+import io.github.ifropc.kotomo.jvm.util.FileParameters
 import io.github.ifropc.kotomo.jvm.util.JVMUtil.toKotomoImage
 import io.github.ifropc.kotomo.jvm.util.Parameters
-import io.github.ifropc.kotomo.jvm.util.SaveAreaImages
-import io.github.ifropc.kotomo.jvm.util.SaveOCRImages
+import io.github.ifropc.kotomo.config.SaveAreaImages
+import io.github.ifropc.kotomo.config.SaveOCRImages
 import kotlinx.coroutines.runBlocking
 import java.io.File
 import java.util.regex.Pattern
@@ -246,7 +247,7 @@ class Tester {
      */
     @Throws(Exception::class)
     private fun testDebugImageDirExists() {
-        val debugDir = par.debugDir
+        val debugDir = FileParameters.debugDir
         if (!debugDir.exists()) {
             debugDir.mkdir()
         }
@@ -258,7 +259,7 @@ class Tester {
     @Throws(Exception::class)
     private fun clearDebugImages() {
         testDebugImageDirExists()
-        for (file in par.debugDir.listFiles()) {
+        for (file in FileParameters.debugDir.listFiles()) {
             if (file.name.endsWith(".png")) {
                 file.delete()
             }

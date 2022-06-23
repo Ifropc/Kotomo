@@ -15,7 +15,7 @@
 
 package io.github.ifropc.kotomo.jvm.util
 
-import io.github.ifropc.kotomo.ocr.KotomoRectangle
+import io.github.ifropc.kotomo.ocr.entities.KotomoRectangle
 import mu.KotlinLogging
 
 private val log = KotlinLogging.logger { }
