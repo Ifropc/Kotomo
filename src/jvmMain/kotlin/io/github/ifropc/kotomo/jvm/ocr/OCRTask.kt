@@ -14,6 +14,7 @@
  */
 package io.github.ifropc.kotomo.jvm.ocr
 
+import io.github.ifropc.kotomo.ocr.results.OCRResult
 import java.awt.image.BufferedImage
 
 /**

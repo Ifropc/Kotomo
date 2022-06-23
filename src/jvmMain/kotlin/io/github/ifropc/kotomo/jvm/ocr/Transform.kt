@@ -27,6 +27,8 @@ import io.github.ifropc.kotomo.jvm.util.Parameters
 import io.github.ifropc.kotomo.jvm.util.buildMatrixHalo
 import io.github.ifropc.kotomo.jvm.util.countBits
 import io.github.ifropc.kotomo.jvm.util.moveMatrix
+import io.github.ifropc.kotomo.ocr.matrix.TargetMatrix
+import io.github.ifropc.kotomo.ocr.matrix.Transformation
 import java.awt.image.BufferedImage
 import java.io.File
 import javax.imageio.ImageIO

@@ -15,6 +15,7 @@
 package io.github.ifropc.kotomo.jvm.ocr
 
 import io.github.ifropc.kotomo.jvm.util.Parameters
+import io.github.ifropc.kotomo.ocr.matrix.ReferenceMatrix
 
 /**
  * Cache of reference matrices for each character listed in Character class

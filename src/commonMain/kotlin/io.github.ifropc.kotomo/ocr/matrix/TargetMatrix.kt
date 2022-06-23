@@ -12,7 +12,9 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and limitations under the License.
  */
-package io.github.ifropc.kotomo.jvm.ocr
+package io.github.ifropc.kotomo.ocr.matrix
+
+import io.github.ifropc.kotomo.ocr.matrix.Transformation
 
 /**
  * Matrix that represents pixels in target image around single character, possibly after

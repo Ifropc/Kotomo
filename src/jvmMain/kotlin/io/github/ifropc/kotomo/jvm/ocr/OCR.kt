@@ -14,11 +14,13 @@
  */
 package io.github.ifropc.kotomo.jvm.ocr
 
+import io.github.ifropc.kotomo.jvm.debug.buildDebugImage
 import io.github.ifropc.kotomo.jvm.util.FileParameters
 import io.github.ifropc.kotomo.jvm.util.ImageUtil.buildImage
 import io.github.ifropc.kotomo.jvm.util.ImageUtil.buildScaledImage
 import io.github.ifropc.kotomo.jvm.util.ImageUtil.colorizeImage
 import io.github.ifropc.kotomo.jvm.util.Parameters
+import io.github.ifropc.kotomo.ocr.results.OCRResult
 import mu.KotlinLogging
 import java.io.File
 import javax.imageio.ImageIO

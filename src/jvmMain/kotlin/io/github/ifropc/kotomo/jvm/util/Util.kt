@@ -60,20 +60,4 @@ internal object Util {
         val scale = (sourceValue - minSourceValue) / (maxSourceValue - minSourceValue)
         return targetValue1 * (1 - scale) + targetValue2 * scale
     }
-
-    /**
-     * Prints array as: [a,b,c,..]
-     */
-
-	fun printArray(array: IntArray): String {
-        var ret = "["
-        for (i in array.indices) {
-            ret += array[i]
-            if (i < array.size - 1) {
-                ret += ","
-            }
-        }
-        ret += "]"
-        return ret
-    }
 }

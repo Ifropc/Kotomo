@@ -20,6 +20,7 @@ import io.github.ifropc.kotomo.jvm.util.ImageUtil.stretchCheckRatio
 import io.github.ifropc.kotomo.jvm.util.Parameters
 import io.github.ifropc.kotomo.jvm.util.buildMatrixHalo
 import io.github.ifropc.kotomo.jvm.util.countBits
+import io.github.ifropc.kotomo.ocr.matrix.ReferenceMatrix
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import mu.KotlinLogging

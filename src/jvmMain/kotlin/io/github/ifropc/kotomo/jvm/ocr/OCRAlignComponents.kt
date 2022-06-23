@@ -14,6 +14,7 @@
  */
 package io.github.ifropc.kotomo.jvm.ocr
 
+import io.github.ifropc.kotomo.jvm.debug.buildDebugImage
 import io.github.ifropc.kotomo.jvm.util.FileParameters
 import io.github.ifropc.kotomo.jvm.util.ImageUtil.buildScaledImage
 import io.github.ifropc.kotomo.jvm.util.Parameters
@@ -21,6 +22,11 @@ import io.github.ifropc.kotomo.jvm.util.buildMatrixHalo
 import io.github.ifropc.kotomo.jvm.util.copyBits
 import io.github.ifropc.kotomo.jvm.util.countBits
 import io.github.ifropc.kotomo.jvm.util.stretchBits
+import io.github.ifropc.kotomo.ocr.matrix.Component
+import io.github.ifropc.kotomo.ocr.matrix.ReferenceMatrix
+import io.github.ifropc.kotomo.ocr.matrix.TargetMatrix
+import io.github.ifropc.kotomo.ocr.matrix.Transformation
+import io.github.ifropc.kotomo.ocr.results.OCRResult
 import mu.KotlinLogging
 import java.io.File
 import java.util.*

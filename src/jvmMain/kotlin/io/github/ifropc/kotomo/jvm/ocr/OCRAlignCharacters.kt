@@ -15,6 +15,9 @@
 package io.github.ifropc.kotomo.jvm.ocr
 
 import io.github.ifropc.kotomo.jvm.util.Parameters
+import io.github.ifropc.kotomo.ocr.matrix.ReferenceMatrix
+import io.github.ifropc.kotomo.ocr.matrix.TargetMatrix
+import io.github.ifropc.kotomo.ocr.results.OCRResult
 import mu.KotlinLogging
 import java.util.*
 

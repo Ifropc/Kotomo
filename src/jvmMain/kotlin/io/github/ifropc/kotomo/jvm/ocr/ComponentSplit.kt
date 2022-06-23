@@ -18,6 +18,7 @@ import io.github.ifropc.kotomo.ocr.entities.KotomoRectangle
 import io.github.ifropc.kotomo.jvm.util.addBits
 import io.github.ifropc.kotomo.jvm.util.countBits
 import io.github.ifropc.kotomo.jvm.util.findBounds
+import io.github.ifropc.kotomo.ocr.matrix.Component
 
 /**
  * Splits large components into subcomponents along x and y axis.
