@@ -24,10 +24,32 @@ import io.github.ifropc.kotomo.ocr.entities.KotomoRectangle
 import mu.KotlinLogging
 import java.awt.Color
 import java.awt.image.BufferedImage
+import java.io.File
 
 private val log = KotlinLogging.logger { }
 
 internal object JVMUtil {
+    /**
+     * Finds file reference
+     */
+    fun findFile(fileName: String): File {
+
+        // this is needed because location can be relative to class or jar file,
+        // depending on if the program is launched directly from Eclipse or packaged first
+        var file: File
+        val projectDir = File("")
+        file = File(projectDir.absolutePath + "/" + fileName)
+        if (file.exists()) {
+            return file
+        }
+        file = File(projectDir.absolutePath + "/../" + fileName)
+        return if (file.exists()) {
+            file
+        } else {
+            throw Exception("File not found:$fileName")
+        }
+    }
+
     fun KotomoRectangle.toAwt(): java.awt.Rectangle{
         return java.awt.Rectangle(this.x, this.y, this.width, this.height)
     }

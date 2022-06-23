@@ -12,11 +12,11 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and limitations under the License.
  */
-package io.github.ifropc.kotomo.jvm.ocr
+package io.github.ifropc.kotomo.ocr.component
 
 import io.github.ifropc.kotomo.ocr.entities.KotomoRectangle
-import io.github.ifropc.kotomo.jvm.util.addBits
-import io.github.ifropc.kotomo.jvm.util.countBits
+import io.github.ifropc.kotomo.util.addBits
+import io.github.ifropc.kotomo.util.countBits
 import io.github.ifropc.kotomo.ocr.matrix.Component
 import io.github.ifropc.kotomo.ocr.matrix.ReferenceMatrix
 

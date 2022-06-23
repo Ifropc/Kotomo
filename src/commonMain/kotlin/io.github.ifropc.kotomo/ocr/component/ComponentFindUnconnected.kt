@@ -12,13 +12,16 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and limitations under the License.
  */
-package io.github.ifropc.kotomo.jvm.ocr
+package io.github.ifropc.kotomo.ocr.component
 
-import io.github.ifropc.kotomo.jvm.util.isBitSet
-import io.github.ifropc.kotomo.jvm.util.setBit
+import io.github.ifropc.kotomo.util.isBitSet
+import io.github.ifropc.kotomo.util.setBit
 import io.github.ifropc.kotomo.ocr.entities.KotomoRectangle
 import io.github.ifropc.kotomo.ocr.matrix.Component
-import java.util.*
+import io.github.ifropc.kotomo.util.Pixel
+import io.github.ifropc.kotomo.util.x
+import io.github.ifropc.kotomo.util.y
+import kotlin.collections.ArrayList
 
 /**
  * Finds unconnected components from characters (pixel groups that are not touching)
@@ -27,7 +30,7 @@ class ComponentFindUnconnected {
     private lateinit  var matrix: IntArray
     private var bounds: KotomoRectangle? = null
     private lateinit var visited: Array<BooleanArray>
-    private var todo: Stack<Pixel>? = null
+    private var todo: ArrayDeque<Pixel>? = null
     private var pixels: MutableList<Pixel>? = null
 
     /**
@@ -37,14 +40,14 @@ class ComponentFindUnconnected {
         matrix = component.matrix
         bounds = component.bounds
         visited = Array(32) { BooleanArray(32) }
-        todo = Stack()
+        todo = ArrayDeque()
         pixels = ArrayList()
         val components: MutableList<Component> = ArrayList()
         for (x in bounds!!.x until bounds!!.x + bounds!!.width) {
             for (y in bounds!!.y until bounds!!.y + bounds!!.height) {
                 todo!!.add(Pixel(x, y))
                 while (!todo!!.isEmpty()) {
-                    checkPixel(todo!!.pop())
+                    checkPixel(todo!!.removeFirst())
                 }
                 if (pixels!!.size == 0) {
                     continue

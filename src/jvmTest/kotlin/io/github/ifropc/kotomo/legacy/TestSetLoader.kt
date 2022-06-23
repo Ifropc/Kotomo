@@ -15,7 +15,6 @@
 package io.github.ifropc.kotomo.legacy
 
 import io.github.ifropc.kotomo.jvm.util.FileParameters
-import io.github.ifropc.kotomo.jvm.util.Parameters
 import java.io.BufferedReader
 import java.io.File
 import java.io.FileInputStream

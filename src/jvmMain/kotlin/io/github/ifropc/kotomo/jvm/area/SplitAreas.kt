@@ -15,7 +15,7 @@
 package io.github.ifropc.kotomo.jvm.area
 
 import io.github.ifropc.kotomo.jvm.util.JVMUtil
-import io.github.ifropc.kotomo.jvm.util.Parameters
+import io.github.ifropc.kotomo.config.Parameters
 import kotlin.math.ceil
 import kotlin.math.floor
 

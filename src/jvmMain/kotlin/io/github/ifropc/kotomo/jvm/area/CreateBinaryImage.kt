@@ -14,13 +14,13 @@
  */
 package io.github.ifropc.kotomo.jvm.area
 
-import io.github.ifropc.kotomo.jvm.util.FixedParameters
+import io.github.ifropc.kotomo.config.FixedParameters
 import io.github.ifropc.kotomo.jvm.util.ImageUtil.createImageFromMatrix
 import io.github.ifropc.kotomo.jvm.util.ImageUtil.createMatrixFromImage
 import io.github.ifropc.kotomo.jvm.util.ImageUtil.makeBlackAndWhite
 import io.github.ifropc.kotomo.jvm.util.JVMUtil.toBufferedImage
 import io.github.ifropc.kotomo.jvm.util.JVMUtil.withDebuggable
-import io.github.ifropc.kotomo.jvm.util.Parameters
+import io.github.ifropc.kotomo.config.Parameters
 import java.awt.image.BufferedImage
 
 /**

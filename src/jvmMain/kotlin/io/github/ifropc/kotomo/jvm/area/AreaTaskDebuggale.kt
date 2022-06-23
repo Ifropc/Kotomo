@@ -15,7 +15,7 @@
 package io.github.ifropc.kotomo.jvm.area
 
 import io.github.ifropc.kotomo.ocr.entities.KotomoImage
-import io.github.ifropc.kotomo.jvm.util.DebugImage
+import io.github.ifropc.kotomo.jvm.debug.DebugImage
 import io.github.ifropc.kotomo.jvm.util.FileParameters
 import io.github.ifropc.kotomo.jvm.util.ImageUtil.buildScaledImage
 import io.github.ifropc.kotomo.jvm.util.ImageUtil.createGrayImage
@@ -23,7 +23,7 @@ import io.github.ifropc.kotomo.jvm.util.ImageUtil.createImageFromMatrix
 import io.github.ifropc.kotomo.jvm.util.ImageUtil.paintAreas
 import io.github.ifropc.kotomo.jvm.util.ImageUtil.paintColumn
 import io.github.ifropc.kotomo.jvm.util.ImageUtil.setClipboard
-import io.github.ifropc.kotomo.jvm.util.Parameters
+import io.github.ifropc.kotomo.config.Parameters
 import mu.KotlinLogging
 import java.awt.image.BufferedImage
 import java.io.File

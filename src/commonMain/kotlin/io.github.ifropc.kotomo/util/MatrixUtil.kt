@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-package io.github.ifropc.kotomo.jvm.util
+package io.github.ifropc.kotomo.util
 
 import io.github.ifropc.kotomo.ocr.entities.KotomoRectangle
 import mu.KotlinLogging
@@ -45,7 +45,7 @@ fun buildMatrixHalo(matrix: IntArray, layers: Int): ArrayList<IntArray> {
     var matrix = matrix
     val halo = ArrayList<IntArray>()
     if (layers > 1) {
-        matrix = matrix.clone()
+        matrix = matrix.copyOf()
     }
     for (i in 1..layers) {
         val layer = IntArray(32)
@@ -127,7 +127,7 @@ fun clearBit(x: Int, y: Int, matrix: IntArray) {
 fun countBits(matrix: IntArray): Int {
     var bits = 0
     for (row in matrix) {
-        bits += Integer.bitCount(row)
+        bits += row.countOneBits()
     }
     return bits
 }
@@ -140,7 +140,7 @@ fun countBits(matrix: IntArray, bounds: KotomoRectangle): Int {
     addBits(matrix, boundMatrix, bounds)
     var bits = 0
     for (y in bounds.y until bounds.y + bounds.height) {
-        bits += Integer.bitCount(boundMatrix[y])
+        bits += boundMatrix[y].countOneBits()
     }
     return bits
 }

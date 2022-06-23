@@ -14,7 +14,7 @@
  */
 package io.github.ifropc.kotomo.jvm.ocr
 
-import io.github.ifropc.kotomo.jvm.util.Parameters
+import io.github.ifropc.kotomo.config.Parameters
 import io.github.ifropc.kotomo.ocr.matrix.ReferenceMatrix
 import io.github.ifropc.kotomo.ocr.matrix.TargetMatrix
 import io.github.ifropc.kotomo.ocr.results.OCRResult
@@ -72,8 +72,8 @@ class OCRScoreCalculator {
      * Aligns halo matrices
      */
     private fun refine() {
-        val targetMatrix = target!!.matrix.clone()
-        val referenceMatrix = reference!!.matrix.clone()
+        val targetMatrix = target!!.matrix.copyOf()
+        val referenceMatrix = reference!!.matrix.copyOf()
         var targetHaloRemaining = targetHaloPixels[0]
         var referenceHaloRemaining = referenceHaloPixels[0]
         targetHaloPixels = IntArray(Parameters.ocrHaloSize)

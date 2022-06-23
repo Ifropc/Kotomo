@@ -14,8 +14,9 @@
  */
 package io.github.ifropc.kotomo.jvm.ocr
 
-import io.github.ifropc.kotomo.jvm.ocr.Characters.getScoreModifier
-import io.github.ifropc.kotomo.jvm.util.Parameters
+import io.github.ifropc.kotomo.ocr.Characters.getScoreModifier
+import io.github.ifropc.kotomo.config.Parameters
+import io.github.ifropc.kotomo.ocr.Characters
 import io.github.ifropc.kotomo.ocr.matrix.ReferenceMatrix
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json

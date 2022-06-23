@@ -17,7 +17,7 @@ package io.github.ifropc.kotomo.jvm.debug
 
 import io.github.ifropc.kotomo.ocr.results.OCRResult
 import io.github.ifropc.kotomo.jvm.util.ImageUtil
-import io.github.ifropc.kotomo.jvm.util.Parameters
+import io.github.ifropc.kotomo.config.Parameters
 import io.github.ifropc.kotomo.ocr.entities.Colors
 import io.github.ifropc.kotomo.ocr.entities.KotomoColor
 import java.awt.Color

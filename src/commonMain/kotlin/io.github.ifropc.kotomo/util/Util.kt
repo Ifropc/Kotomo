@@ -12,34 +12,9 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and limitations under the License.
  */
-package io.github.ifropc.kotomo.jvm.util
-
-import java.io.File
+package io.github.ifropc.kotomo.util
 
 internal object Util {
-    /**
-     * Finds file reference
-     */
-
-	
-    fun findFile(fileName: String): File {
-
-        // this is needed because location can be relative to class or jar file,
-        // depending on if the program is launched directly from Eclipse or packaged first
-        var file: File
-        val projectDir = File("")
-        file = File(projectDir.absolutePath + "/" + fileName)
-        if (file.exists()) {
-            return file
-        }
-        file = File(projectDir.absolutePath + "/../" + fileName)
-        return if (file.exists()) {
-            file
-        } else {
-            throw Exception("File not found:$fileName")
-        }
-    }
-
     /**
      * Scales sourceValue to target value range
      */
@@ -61,3 +36,11 @@ internal object Util {
         return targetValue1 * (1 - scale) + targetValue2 * scale
     }
 }
+
+typealias Pixel = Pair<Int, Int>
+
+val Pixel.x : Int
+    get() = this.first
+
+val Pixel.y : Int
+    get() = this.second

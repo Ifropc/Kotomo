@@ -18,7 +18,7 @@ import io.github.ifropc.kotomo.jvm.KanjiTomo
 import io.github.ifropc.kotomo.jvm.ocr.OCR
 import io.github.ifropc.kotomo.jvm.util.FileParameters
 import io.github.ifropc.kotomo.jvm.util.JVMUtil.toKotomoImage
-import io.github.ifropc.kotomo.jvm.util.Parameters
+import io.github.ifropc.kotomo.config.Parameters
 import io.github.ifropc.kotomo.config.SaveAreaImages
 import io.github.ifropc.kotomo.config.SaveOCRImages
 import kotlinx.coroutines.runBlocking

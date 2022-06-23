@@ -27,7 +27,7 @@ import io.github.ifropc.kotomo.jvm.ocr.OCRTask
 import io.github.ifropc.kotomo.ocr.entities.Point
 import io.github.ifropc.kotomo.ocr.entities.KotomoRectangle
 import io.github.ifropc.kotomo.jvm.ocr.ReferenceMatrixCacheLoader
-import io.github.ifropc.kotomo.jvm.util.Parameters
+import io.github.ifropc.kotomo.config.Parameters
 import io.github.ifropc.kotomo.ocr.entities.SimpleColumn
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async

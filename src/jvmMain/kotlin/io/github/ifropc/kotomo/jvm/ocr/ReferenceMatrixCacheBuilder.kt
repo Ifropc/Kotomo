@@ -17,9 +17,11 @@ package io.github.ifropc.kotomo.jvm.ocr
 import io.github.ifropc.kotomo.jvm.util.ImageUtil.buildMatrix32
 import io.github.ifropc.kotomo.jvm.util.ImageUtil.makeBlackAndWhite
 import io.github.ifropc.kotomo.jvm.util.ImageUtil.stretchCheckRatio
-import io.github.ifropc.kotomo.jvm.util.Parameters
-import io.github.ifropc.kotomo.jvm.util.buildMatrixHalo
-import io.github.ifropc.kotomo.jvm.util.countBits
+import io.github.ifropc.kotomo.config.Parameters
+import io.github.ifropc.kotomo.ocr.Characters
+import io.github.ifropc.kotomo.ocr.component.ComponentBuilder
+import io.github.ifropc.kotomo.util.buildMatrixHalo
+import io.github.ifropc.kotomo.util.countBits
 import io.github.ifropc.kotomo.ocr.matrix.ReferenceMatrix
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json

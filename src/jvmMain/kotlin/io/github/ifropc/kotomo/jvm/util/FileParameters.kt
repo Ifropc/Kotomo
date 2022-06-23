@@ -15,6 +15,8 @@
 
 package io.github.ifropc.kotomo.jvm.util
 
+import io.github.ifropc.kotomo.jvm.util.JVMUtil.findFile
+import io.github.ifropc.kotomo.util.Util
 import java.io.File
 
 object FileParameters {
@@ -30,7 +32,7 @@ object FileParameters {
 
 
     val cacheDir: File
-        get() = File(Util.findFile(dataDirName).toString() + "/" + cacheDirName)
+        get() = File(findFile(dataDirName).toString() + "/" + cacheDirName)
 
     /**
      * Directory relative to package root where debug images are stored
@@ -52,5 +54,5 @@ object FileParameters {
      * Directory relative to package root where test set specifications are stored
      */
     val testDir: File
-        get() = Util.findFile(testDirName)
+        get() = findFile(testDirName)
 }

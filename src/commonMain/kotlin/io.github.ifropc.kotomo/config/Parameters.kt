@@ -12,12 +12,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and limitations under the License.
  */
-package io.github.ifropc.kotomo.jvm.util
+package io.github.ifropc.kotomo.config
 
-import io.github.ifropc.kotomo.config.CharacterColor
-import io.github.ifropc.kotomo.config.Orientation
-import io.github.ifropc.kotomo.config.SaveAreaImages
-import io.github.ifropc.kotomo.config.SaveOCRImages
 import io.github.ifropc.kotomo.ocr.entities.KotomoColor
 import io.github.ifropc.kotomo.ocr.entities.KotomoRectangle
 

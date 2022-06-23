@@ -23,10 +23,10 @@ import io.github.ifropc.kotomo.jvm.util.ImageUtil.makeBlackAndWhite
 import io.github.ifropc.kotomo.jvm.util.ImageUtil.sharpenImage
 import io.github.ifropc.kotomo.jvm.util.ImageUtil.stretch
 import io.github.ifropc.kotomo.jvm.util.ImageUtil.stretchCheckRatio
-import io.github.ifropc.kotomo.jvm.util.Parameters
-import io.github.ifropc.kotomo.jvm.util.buildMatrixHalo
-import io.github.ifropc.kotomo.jvm.util.countBits
-import io.github.ifropc.kotomo.jvm.util.moveMatrix
+import io.github.ifropc.kotomo.config.Parameters
+import io.github.ifropc.kotomo.util.buildMatrixHalo
+import io.github.ifropc.kotomo.util.countBits
+import io.github.ifropc.kotomo.util.moveMatrix
 import io.github.ifropc.kotomo.ocr.matrix.TargetMatrix
 import io.github.ifropc.kotomo.ocr.matrix.Transformation
 import java.awt.image.BufferedImage

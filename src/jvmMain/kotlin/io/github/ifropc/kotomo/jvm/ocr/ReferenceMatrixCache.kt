@@ -14,7 +14,7 @@
  */
 package io.github.ifropc.kotomo.jvm.ocr
 
-import io.github.ifropc.kotomo.jvm.util.Parameters
+import io.github.ifropc.kotomo.config.Parameters
 import io.github.ifropc.kotomo.ocr.matrix.ReferenceMatrix
 
 /**

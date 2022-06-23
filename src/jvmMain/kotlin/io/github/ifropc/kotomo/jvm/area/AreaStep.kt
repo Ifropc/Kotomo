@@ -14,7 +14,7 @@
  */
 package io.github.ifropc.kotomo.jvm.area
 
-import io.github.ifropc.kotomo.jvm.util.Parameters
+import io.github.ifropc.kotomo.config.Parameters
 import mu.KotlinLogging
 
 private val log = KotlinLogging.logger { }

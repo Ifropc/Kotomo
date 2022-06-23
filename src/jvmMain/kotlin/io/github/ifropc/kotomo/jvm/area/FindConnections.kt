@@ -19,7 +19,7 @@ import io.github.ifropc.kotomo.ocr.entities.KotomoRectangle
 import io.github.ifropc.kotomo.jvm.util.ImageUtil.createRectangle
 import io.github.ifropc.kotomo.jvm.util.JVMUtil
 import io.github.ifropc.kotomo.jvm.util.JVMUtil.runWithDebuggable
-import io.github.ifropc.kotomo.jvm.util.Parameters
+import io.github.ifropc.kotomo.config.Parameters
 import mu.KotlinLogging
 import java.awt.Color
 import java.awt.Graphics2D

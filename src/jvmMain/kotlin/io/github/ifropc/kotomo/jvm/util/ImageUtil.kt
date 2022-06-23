@@ -14,6 +14,8 @@
  */
 package io.github.ifropc.kotomo.jvm.util
 
+import io.github.ifropc.kotomo.config.FixedParameters
+import io.github.ifropc.kotomo.config.Parameters
 import io.github.ifropc.kotomo.jvm.area.Area
 import io.github.ifropc.kotomo.jvm.area.Column
 import io.github.ifropc.kotomo.ocr.entities.Colors
@@ -23,6 +25,11 @@ import io.github.ifropc.kotomo.ocr.entities.KotomoRectangle
 import io.github.ifropc.kotomo.jvm.util.JVMUtil.toAwt
 import io.github.ifropc.kotomo.jvm.util.JVMUtil.toKotomo
 import io.github.ifropc.kotomo.jvm.util.JVMUtil.toKotomoImage
+import io.github.ifropc.kotomo.util.Util
+import io.github.ifropc.kotomo.util.addBits
+import io.github.ifropc.kotomo.util.debugPrintMatrix
+import io.github.ifropc.kotomo.util.isBitSet
+import io.github.ifropc.kotomo.util.setBit
 import mu.KotlinLogging
 import org.imgscalr.Scalr
 import java.awt.Image

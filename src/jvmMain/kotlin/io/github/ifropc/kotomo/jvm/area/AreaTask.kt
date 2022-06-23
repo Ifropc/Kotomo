@@ -18,9 +18,9 @@ import io.github.ifropc.kotomo.config.CharacterColor
 import io.github.ifropc.kotomo.ocr.entities.KotomoImage
 import io.github.ifropc.kotomo.ocr.entities.KotomoRectangle
 import io.github.ifropc.kotomo.ocr.entities.Point
-import io.github.ifropc.kotomo.jvm.util.FixedParameters
+import io.github.ifropc.kotomo.config.FixedParameters
 import io.github.ifropc.kotomo.jvm.util.ImageUtil.crop
-import io.github.ifropc.kotomo.jvm.util.Parameters
+import io.github.ifropc.kotomo.config.Parameters
 import mu.KotlinLogging
 import kotlin.math.min
 
