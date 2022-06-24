@@ -66,10 +66,6 @@ internal object JVMUtil {
         return (this as KotomoImageImpl).bufferedImage
     }
 
-    fun BufferedImage.toKotomoImage(): KotomoImage {
-        return KotomoImageImpl(this)
-    }
-
     inline fun withDebuggable(t: AreaTask, block: (AreaTaskDebuggable) -> Unit) {
         when (t) {
             is AreaTaskDebuggable -> block(t)
@@ -80,4 +76,8 @@ internal object JVMUtil {
     inline fun <T> runWithDebuggable(t: AreaTask, block: (AreaTaskDebuggable) -> T): T{
         return block(t as AreaTaskDebuggable)
     }
+}
+
+fun BufferedImage.toKotomoImage(): KotomoImage {
+    return KotomoImageImpl(this)
 }

@@ -15,16 +15,28 @@
 
 package io.github.ifropc.kotomo.ocr
 
-import io.github.ifropc.kotomo.jvm.util.JVMUtil.toKotomoImage
+import io.github.ifropc.kotomo.jvm.util.toKotomoImage
 import io.github.ifropc.kotomo.ocr.entities.KotomoImage
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import javax.imageio.ImageIO
 
 actual object ImageLoader {
+    /**
+     * Loads image from file
+     */
     actual suspend fun loadFromFile(path: String): KotomoImage {
         return withContext(Dispatchers.IO) {
             ImageIO.read(this::class.java.classLoader.getResourceAsStream(path))
         }.toKotomoImage()
+    }
+
+    // TODO: better API for suspend functions
+    /**
+     * Loads image from file (sync)
+     */
+    fun loadFromFileSync(path: String): KotomoImage {
+        return runBlocking { loadFromFile(path) }
     }
 }

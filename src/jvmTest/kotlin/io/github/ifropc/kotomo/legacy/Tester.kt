@@ -17,10 +17,10 @@ package io.github.ifropc.kotomo.legacy
 import io.github.ifropc.kotomo.jvm.KanjiTomo
 import io.github.ifropc.kotomo.jvm.ocr.OCR
 import io.github.ifropc.kotomo.jvm.util.FileParameters
-import io.github.ifropc.kotomo.jvm.util.JVMUtil.toKotomoImage
 import io.github.ifropc.kotomo.config.Parameters
 import io.github.ifropc.kotomo.config.SaveAreaImages
 import io.github.ifropc.kotomo.config.SaveOCRImages
+import io.github.ifropc.kotomo.jvm.util.toKotomoImage
 import kotlinx.coroutines.runBlocking
 import java.io.File
 import java.util.regex.Pattern

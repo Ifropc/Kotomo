@@ -32,6 +32,7 @@ import io.github.ifropc.kotomo.ocr.entities.SimpleColumn
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.runBlocking
 import mu.KotlinLogging
 
 private val log = KotlinLogging.logger { }
@@ -107,6 +108,20 @@ class KanjiTomo {
         // select areas near point
         subImages = areaTask!!.getSubImages(point)
         return runOCR()
+    }
+
+
+    /**
+     * Runs OCR starting from a point.
+     *
+     * @param point Coordinates inside target image. Closest character near this point
+     * will be selected as the first target character. Point should correspond to mouse
+     * cursor position relative to target image.
+     *
+     * @return null if no characters found near point
+     */
+    fun runOCRSync(point: Point): OCRResults? {
+        return runBlocking { runOCR(point) }
     }
 
     /**

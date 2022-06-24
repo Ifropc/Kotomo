@@ -66,7 +66,7 @@ object ReferenceMatrixCacheLoader {
                 font, Parameters.targetSize,
                 Parameters.ocrHaloSize, Characters.all
             )
-            if (deserializeFile(font, file)) {
+            if (deserializeFile(font, file, fileName)) {
                 continue
             }
             throw Exception(file.name + " not found, rebuild cache")
@@ -74,8 +74,16 @@ object ReferenceMatrixCacheLoader {
     }
 
 
-    private fun deserializeFile(font: String, file: File): Boolean {
+    private fun deserializeFile(font: String, file: File, fileName: String): Boolean {
         if (!file.exists()) {
+            log.debug { "File not found, trying loading resource with name $fileName" }
+            val resource  = this.javaClass.getResource("/$fileName")
+            if (resource != null) {
+                log.debug { "Found resource $resource" }
+                val list = Json.decodeFromString<List<ReferenceMatrix>>(resource.readText())
+                cache.put(font, list)
+                return true
+            }
             return false
         }
         log.info { ("Deserializing references from file:$file") }

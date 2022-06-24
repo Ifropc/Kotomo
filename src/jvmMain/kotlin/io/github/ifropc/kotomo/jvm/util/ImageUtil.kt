@@ -24,7 +24,6 @@ import io.github.ifropc.kotomo.ocr.entities.Point
 import io.github.ifropc.kotomo.ocr.entities.KotomoRectangle
 import io.github.ifropc.kotomo.jvm.util.JVMUtil.toAwt
 import io.github.ifropc.kotomo.jvm.util.JVMUtil.toKotomo
-import io.github.ifropc.kotomo.jvm.util.JVMUtil.toKotomoImage
 import io.github.ifropc.kotomo.util.Util
 import io.github.ifropc.kotomo.util.addBits
 import io.github.ifropc.kotomo.util.debugPrintMatrix

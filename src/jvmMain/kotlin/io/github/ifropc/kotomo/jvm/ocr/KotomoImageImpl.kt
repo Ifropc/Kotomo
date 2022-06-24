@@ -20,7 +20,7 @@ import io.github.ifropc.kotomo.ocr.entities.KotomoImage
 import java.awt.Color
 import java.awt.image.BufferedImage
 
-class KotomoImageImpl(val bufferedImage: BufferedImage): KotomoImage {
+internal class KotomoImageImpl(val bufferedImage: BufferedImage): KotomoImage {
     override val width = bufferedImage.width
     override val height = bufferedImage.height
 

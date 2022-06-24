@@ -24,3 +24,5 @@ build
 
 extension/node_modules
 extension/dist
+
+*.cache

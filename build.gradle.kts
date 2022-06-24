@@ -1,7 +1,7 @@
 group = "io.github.ifropc.kotomo"
-version = "0.0.1-SNAPSHOT"
+version = "0.1"
 
-val jvmVersion = "11"
+val jvmVersion = "1.8"
 
 repositories {
     mavenCentral()
@@ -10,6 +10,9 @@ repositories {
 plugins {
     kotlin("multiplatform") version "1.6.21"
     kotlin("plugin.serialization") version "1.6.21"
+    id("org.jetbrains.dokka") version "1.6.21"
+    `maven-publish`
+    signing
 }
 
 kotlin {
@@ -31,7 +34,7 @@ kotlin {
                 output.libraryTarget = "commonjs2"
             }
             testTask {
-                useMocha {  }
+                useMocha { }
 //                useKarma {
 //                    useFirefox()
 //                    // TODO: enable chrome
@@ -70,4 +73,74 @@ kotlin {
         }
         val jsTest by getting
     }
+}
+
+val sonatypeUsername: String = extra["ossUser"] as String
+val sonatypePassword: String = extra["ossToken"] as String
+
+val dokkaOutputDir = buildDir.resolve("dokka")
+
+tasks.dokkaHtml {
+    outputDirectory.set(dokkaOutputDir)
+}
+
+val deleteDokkaOutputDir by tasks.register<Delete>("deleteDokkaOutputDirectory") {
+    delete(dokkaOutputDir)
+}
+
+val javadocJar = tasks.register<Jar>("javadocJar") {
+    dependsOn(deleteDokkaOutputDir, tasks.dokkaHtml)
+    archiveClassifier.set("javadoc")
+    from(dokkaOutputDir)
+}
+
+publishing {
+    repositories {
+        maven {
+            name="oss"
+            val releasesRepoUrl = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+            val snapshotsRepoUrl = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+            url = if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl
+            credentials {
+                username = sonatypeUsername
+                password = sonatypePassword
+            }
+        }
+    }
+
+    publications {
+        withType<MavenPublication> {
+            artifact(javadocJar)
+            pom {
+                name.set("Kotomo")
+                description.set("Kotomo OCR Core")
+                licenses {
+                    license {
+                        name.set("The Apache License, Version 2.0")
+                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                    }
+                }
+                url.set("https://github.com/Ifropc/Kotomo")
+                issueManagement {
+                    system.set("Github")
+                    url.set("https://github.com/Ifropc/Kotomo/issues")
+                }
+                scm {
+                    connection.set("https://github.com/Ifropc/Kotomo.git")
+                    url.set("https://github.com/Ifropc/Kotomo")
+                }
+                developers {
+                    developer {
+                        name.set("Gleb")
+                        email.set("ifropc@apache.org")
+                    }
+                }
+            }
+        }
+    }
+}
+
+signing {
+    useGpgCmd()
+    sign(publishing.publications)
 }
